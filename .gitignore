@@ -1,0 +1,37 @@
+# Datasets and large assets
+cifar10.tgz
+.cifar10
+cifar10/
+logs/
+
+# Model Checkpoints
+*.pt
+*.pth
+*.ckpt
+model/checkpoint/
+model/checkpoints/
+
+# Virtual Environments
+env/
+venv/
+.env/
+.venv/
+ENV/
+
+# Python Cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# IDE configurations
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
