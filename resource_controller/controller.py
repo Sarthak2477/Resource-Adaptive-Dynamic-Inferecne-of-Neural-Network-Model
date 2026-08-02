@@ -151,7 +151,7 @@ class RuleBasedController:
                 return self.baseline_config
 
 FEATURES = [
-    "width_mult", "bit_width", "depth_mult",
+    "width_mult", "bit_width",
     "approx_flops", "approx_params",
     "flops_per_speed",
     "cpu_pct", "mem_available_mb", "thermal_c",
@@ -159,36 +159,31 @@ FEATURES = [
 ]
 
 def extract_config_features(config):
-    """Extracts width_mult, bit_width, depth_mult, approx_flops, approx_params
+    """Extracts width_mult, bit_width, approx_flops, approx_params
     from a config tuple or dict."""
     if isinstance(config, dict) and "config" in config:
         config = config["config"]
 
     width = 32.0
     bit_width = 16.0
-    depth = 1.0
 
     if isinstance(config, (list, tuple)):
         if len(config) >= 1:
             width = float(config[0])
         if len(config) >= 2:
             bit_width = float(config[1])
-        if len(config) >= 3:
-            depth = float(config[2])
     elif isinstance(config, (int, float)):
         width = float(config)
 
     width_mult = width / 32.0
-    depth_mult = depth
 
     # Approximate FLOPs and Params
-    approx_flops = (width_mult ** 2) * depth_mult * 1e6
-    approx_params = (width_mult ** 2) * depth_mult * 1e5
+    approx_flops = (width_mult ** 2) * 1e6
+    approx_params = (width_mult ** 2) * 1e5
 
     return {
         "width_mult": width_mult,
         "bit_width": bit_width,
-        "depth_mult": depth_mult,
         "approx_flops": approx_flops,
         "approx_params": approx_params,
     }
@@ -216,7 +211,7 @@ class SurrogateBackedController:
     """Uses a machine learning surrogate model to predict model config latencies
     under current hardware & resource state, selecting the best fit config."""
 
-    def __init__(self, frontier, surrogate_model=None, baseline_config=None, safety_margin=0.9, min_dwell_s=2.0):
+    def __init__(self, frontier, surrogate_model=None, baseline_config=None, safety_margin=0.9, min_dwell_s=2.0, k_risk=0.0, switching_penalty_ms=0.0):
         self.frontier = frontier
         self.surrogate_model = surrogate_model if surrogate_model is not None else PhysicsSurrogateModel()
         self.baseline_config = baseline_config if baseline_config is not None else frontier[0]['config']
@@ -224,6 +219,27 @@ class SurrogateBackedController:
         self.safety_margin = safety_margin
         self._last_switch_time = time.time()
         self.min_dwell_s = min_dwell_s
+        self.k_adapt = 1.0
+        self.lr_adapt = 0.05
+        self.last_predicted_latency = None
+        self.k_risk = k_risk
+        self.switching_penalty_ms = switching_penalty_ms
+
+    def update_feedback(self, actual_latency_ms, predicted_latency_ms):
+        """
+        Updates the prediction bias scale factor (k_adapt) on-the-fly.
+        """
+        if predicted_latency_ms <= 0:
+            return
+        
+        # Calculate proportional error ratio
+        error_ratio = (actual_latency_ms - predicted_latency_ms) / predicted_latency_ms
+        
+        # Apply gradient update to the feedback multiplier
+        self.k_adapt += self.lr_adapt * error_ratio
+        
+        # Clip to a safe operating range to prevent runaway feedback
+        self.k_adapt = max(0.5, min(self.k_adapt, 3.0))
 
     def select(self, resource_state, latency_budget_ms, hw_fingerprint):
         now = time.time()
@@ -250,6 +266,7 @@ class SurrogateBackedController:
         candidate = None
         best_acc = -1.0
         target_budget = latency_budget_ms * self.safety_margin
+        selected_pred = None
 
         for r in self.frontier:
             r_config = r['config']
@@ -268,7 +285,6 @@ class SurrogateBackedController:
             row = {
                 "width_mult": cfg_feat["width_mult"],
                 "bit_width": cfg_feat["bit_width"],
-                "depth_mult": cfg_feat["depth_mult"],
                 "approx_flops": cfg_feat["approx_flops"],
                 "approx_params": cfg_feat["approx_params"],
                 "flops_per_speed": flops_per_speed,
@@ -291,20 +307,58 @@ class SurrogateBackedController:
                 if thermal_c > 70:
                     pred_latency *= 1.3
 
-            if pred_latency <= target_budget:
+            # Scale by online adaptation factor
+            pred_latency_adj = pred_latency * self.k_adapt
+
+            # Fetch standard deviation and scale by k_adapt
+            std_latency = r.get('std_ms', 1.0) * self.k_adapt
+
+            # Calculate upper bound using risk multiplier
+            risk_averse_pred = pred_latency_adj + (self.k_risk * std_latency)
+
+            # Apply switching cost if candidate config differs from currently active config
+            if r_config != self.current_config:
+                risk_averse_pred += self.switching_penalty_ms
+
+            if risk_averse_pred <= target_budget:
                 if r_acc > best_acc:
                     best_acc = r_acc
                     candidate = r_config
+                    selected_pred = pred_latency_adj
 
         if candidate is not None:
             if candidate != self.current_config:
                 self.current_config = candidate
                 self._last_switch_time = now
+            self.last_predicted_latency = selected_pred
             return self.current_config
         else:
             # Fallback: lowest latency config
             fallback_config = self.frontier[0]['config']
+            cfg_feat = extract_config_features(fallback_config)
+            flops_per_speed = cfg_feat["approx_flops"] / speed
+            row = {
+                "width_mult": cfg_feat["width_mult"],
+                "bit_width": cfg_feat["bit_width"],
+                "approx_flops": cfg_feat["approx_flops"],
+                "approx_params": cfg_feat["approx_params"],
+                "flops_per_speed": flops_per_speed,
+                "cpu_pct": cpu_pct,
+                "mem_available_mb": mem_available_mb,
+                "thermal_c": thermal_c,
+                "device_speed_score": speed,
+                "cpu_cores": cpu_cores,
+                "ram_gb": ram_gb,
+                "has_cuda": has_cuda,
+            }
+            try:
+                feature_values = [row[feat] for feat in FEATURES]
+                fallback_pred = float(self.surrogate_model.predict([feature_values])[0]) * self.k_adapt
+            except Exception:
+                fallback_pred = (cfg_feat["approx_flops"] / speed) * 1000.0 * (1.0 + cpu_pct / 100.0) * self.k_adapt
+
             if fallback_config != self.current_config:
                 self.current_config = fallback_config
                 self._last_switch_time = now
+            self.last_predicted_latency = fallback_pred
             return self.current_config

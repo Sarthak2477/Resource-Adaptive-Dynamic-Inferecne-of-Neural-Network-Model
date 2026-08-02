@@ -39,7 +39,6 @@ print("\n--- 3. Testing Multi-Hardware Calibration Profiling ---")
 class MockSupernet:
     def set_width(self, w): pass
     def set_bit_width(self, bw): pass
-    def set_depth(self, d): pass
     def __call__(self, x): return x
 
 model = MockSupernet()

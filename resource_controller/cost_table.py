@@ -1,5 +1,5 @@
 def build_cost_table(model, device, configs, input_shape=(1,3,32,32), n_reps=30):
-    """configs: list of (width, bit_width) or (width, bit_width, depth) tuples."""
+    """configs: list of (width, bit_width) tuples."""
     table = []
     for cfg in configs:
         latency = profile_config(model, *cfg, device, input_shape, n_reps)  # from earlier profiling harness

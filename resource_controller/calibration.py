@@ -32,8 +32,7 @@ def collect_profiling_data(model, device, configs, load_levels=[0], n_repeats=3,
             core.set_width(cfg[0])
         if hasattr(core, 'set_bit_width') and len(cfg) >= 2:
             core.set_bit_width(cfg[1])
-        if hasattr(core, 'set_depth') and len(cfg) >= 3:
-            core.set_depth(cfg[2])
+
 
         # Warmup
         try:
@@ -77,7 +76,6 @@ def collect_profiling_data(model, device, configs, load_levels=[0], n_repeats=3,
             "config": str(cfg),
             "width_mult": cfg_feat["width_mult"],
             "bit_width": cfg_feat["bit_width"],
-            "depth_mult": cfg_feat["depth_mult"],
             "approx_flops": cfg_feat["approx_flops"],
             "approx_params": cfg_feat["approx_params"],
             "cpu_pct": cpu_pct,
