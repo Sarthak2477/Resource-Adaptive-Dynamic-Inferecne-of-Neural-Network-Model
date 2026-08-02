@@ -6,10 +6,12 @@ import platform
 import torch
 import numpy as np
 
-# Ensure model directory can be imported correctly
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+# Ensure project root and resource_control directories can be imported correctly
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(project_root)
+sys.path.append(os.path.join(project_root, "resource_control"))
 
-from model import Model, set_model_width, set_model_bit_width, FLAGS
+from models import Model, set_model_width, set_model_bit_width, FLAGS
 
 def get_clean_hardware_name(device):
     if device.type == "cuda":
@@ -115,8 +117,8 @@ def main():
 
         print(f"Avg: {avg_lat:.2f}ms | Std: {std_lat:.2f}ms")
 
-        from resource_controller.telemetry import hardware_fingerprint
-        from resource_controller.controller import extract_config_features
+        from resource_control.telemetry import hardware_fingerprint
+        from resource_control.controller import extract_config_features
         fingerprint = hardware_fingerprint(device)
         cfg_feat = extract_config_features(config)
         approx_flops = cfg_feat["approx_flops"]

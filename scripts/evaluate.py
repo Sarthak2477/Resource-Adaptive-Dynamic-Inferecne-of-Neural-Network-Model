@@ -4,13 +4,15 @@ import time
 import torch
 from torch.utils.data import Subset
 
-# Set up paths
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'resource_controller')))
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+# Ensure project root and resource_control directories can be imported correctly
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.append(project_root)
+sys.path.append(os.path.join(project_root, "resource_control"))
+sys.path.append(os.path.dirname(__file__))  # Add scripts/ dir for profile_hardware import
 
 from telemetry import ResourceMonitor, ResourceState
 from controller import SurrogateBackedController
-from model import Model, set_model_width, set_model_bit_width, get_dataloaders
+from models import Model, set_model_width, set_model_bit_width, get_dataloaders
 
 def print_banner(msg):
     print("\n" + "=" * 60)
@@ -100,9 +102,9 @@ def main():
     model = Model(num_classes=10, input_size=32)
     
     checkpoint_paths = [
-        "./model/checkpoint/us_resnet_epoch100_checkpoint.pt",
-        "./model/checkpoints/best_model.pt",
-        "./model/checkpoints/us_resnet_epoch100_checkpoint.pt",
+        "./models/checkpoint/us_resnet_epoch100_checkpoint.pt",
+        "./models/checkpoints/best_model.pt",
+        "./models/checkpoints/us_resnet_epoch100_checkpoint.pt",
         "us_resnet_epoch100_checkpoint.pt"
     ]
     loaded = False
@@ -136,7 +138,7 @@ def main():
     # Load dataset
     train_loader, test_loader = get_dataloaders()
     test_dataset = test_loader.dataset
-    from model import recalibrate_bn
+    from models import recalibrate_bn
     
     # Select a balanced subset of 100 samples (10 from each of the 10 classes)
     subset_indices = []
@@ -215,7 +217,7 @@ def main():
 
     # Load trained surrogate model if available
     surrogate_model = None
-    surrogate_path = "resource_controller/surrogate_model.pkl"
+    surrogate_path = "weights/surrogate_model.pkl"
     if os.path.exists(surrogate_path):
         print(f"Loading trained learned surrogate model from: {surrogate_path}")
         import pickle
@@ -292,7 +294,7 @@ def main():
 
         # 4b. Lazy BN statistics calibration if needed
         key = (selected_cfg[0], selected_cfg[1])
-        from model.ops import ResnetBatchNorm2d
+        from models.ops import ResnetBatchNorm2d
         first_bn = next(m for m in model.modules() if isinstance(m, ResnetBatchNorm2d))
         if key not in first_bn.calibrated_running_mean:
             print(f"\n[BN Calibration] Lazily calibrating BN statistics for {key} on 10 batches...")

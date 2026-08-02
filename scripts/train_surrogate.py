@@ -4,7 +4,11 @@ import pickle
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
-from resource_controller.controller import FEATURES, extract_config_features
+# Ensure project root and resource_control directories can be imported correctly
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../resource_control")))
+
+from resource_control.controller import FEATURES, extract_config_features
 
 def load_and_enrich_profiles():
     profile_files = glob.glob("profiles/*_profile.csv")
@@ -123,8 +127,8 @@ def main():
     for idx in indices:
         print(f"  {FEATURES[idx]:<20} : {importances[idx]:.4f}")
 
-    # Save trained model to surrogate_model.pkl
-    model_dir = "resource_controller"
+    # Save trained model to surrogate_model.pkl in weights/ folder
+    model_dir = "weights"
     os.makedirs(model_dir, exist_ok=True)
     model_path = os.path.join(model_dir, "surrogate_model.pkl")
     with open(model_path, "wb") as f:
