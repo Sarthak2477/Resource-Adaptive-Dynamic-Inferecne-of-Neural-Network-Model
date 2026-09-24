@@ -5,6 +5,7 @@ import csv
 import platform
 import torch
 import numpy as np
+import argparse
 
 # Ensure project root and resource_control directories can be imported correctly
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -12,6 +13,16 @@ sys.path.append(project_root)
 sys.path.append(os.path.join(project_root, "resource_control"))
 
 from models import Model, set_model_width, set_model_bit_width, FLAGS
+
+
+def configure_cpu_threads(requested=None):
+    if requested is None:
+        requested = int(os.environ.get("INFERENCE_NUM_THREADS", "1"))
+    requested = max(1, int(requested))
+    torch.set_num_threads(requested)
+    if hasattr(torch, "set_num_interop_threads"):
+        torch.set_num_interop_threads(1)
+    return requested
 
 def get_clean_hardware_name(device):
     if device.type == "cuda":
@@ -27,6 +38,10 @@ def get_clean_hardware_name(device):
     return clean_name if clean_name else "unknown_device"
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--threads", type=int, default=None)
+    args = parser.parse_args()
+    thread_count = configure_cpu_threads(args.threads)
     print("=" * 60)
     print(" AUTOMATED HARDWARE PROFILER ".center(60, "="))
     print("=" * 60)
@@ -40,10 +55,11 @@ def main():
 
     # 2. Check and load checkpoint if available
     checkpoint_paths = [
-        "./model/checkpoint/us_resnet_epoch100_checkpoint.pt",
-        "./model/checkpoints/best_model.pt",
-        "./model/checkpoints/us_resnet_epoch100_checkpoint.pt",
-        "us_resnet_epoch100_checkpoint.pt"
+        os.path.join(project_root, "models", "checkpoint", "us_resnet_epoch100_checkpoint.pt.zip"),
+        os.path.join(project_root, "models", "checkpoint", "us_resnet_epoch100_checkpoint.pt"),
+        os.path.join(project_root, "models", "checkpoints", "best_model.pt"),
+        os.path.join(project_root, "models", "checkpoints", "us_resnet_epoch100_checkpoint.pt"),
+        os.path.join(project_root, "us_resnet_epoch100_checkpoint.pt")
     ]
     loaded = False
     for path in checkpoint_paths:
@@ -83,7 +99,8 @@ def main():
     configs = FLAGS.deploy_configs
     results = []
 
-    print(f"\nProfiling {len(configs)} sub-network configurations (20 warmup + 200 inference passes each):")
+    print(f"\nCPU threads: {thread_count}")
+    print(f"Profiling {len(configs)} sub-network configurations (cold sample + 20 warmup + 200 warm samples each):")
     
     for idx, config in enumerate(configs):
         width_mult, bit_width = config
@@ -91,6 +108,20 @@ def main():
 
         set_model_width(model, width_mult)
         set_model_bit_width(model, bit_width)
+
+        # Repeatedly measure the first inference after applying a configuration.
+        # This captures transition overhead instead of treating one sample as a
+        # percentile estimate.
+        cold_latencies = []
+        for _ in range(10):
+            set_model_width(model, width_mult)
+            set_model_bit_width(model, bit_width)
+            with torch.no_grad():
+                t_start = time.perf_counter()
+                _ = model(dummy_input)
+                if device.type == "cuda":
+                    torch.cuda.synchronize()
+                cold_latencies.append((time.perf_counter() - t_start) * 1000.0)
 
         # Warmup passes for this specific config
         with torch.no_grad():
@@ -114,6 +145,9 @@ def main():
         std_lat = np.std(latencies)
         max_lat = np.max(latencies)
         min_lat = np.min(latencies)
+        p50_lat = np.percentile(latencies, 50)
+        p95_lat = np.percentile(latencies, 95)
+        p99_lat = np.percentile(latencies, 99)
 
         print(f"Avg: {avg_lat:.2f}ms | Std: {std_lat:.2f}ms")
 
@@ -138,20 +172,32 @@ def main():
             "ram_gb": fingerprint["ram_gb"],
             "has_cuda": fingerprint["has_cuda"],
             "avg_latency_ms": avg_lat,
+            "latency_ms": avg_lat,
             "std_latency_ms": std_lat,
+            "latency_p50_ms": p50_lat,
+            "latency_p95_ms": p95_lat,
+            "latency_p99_ms": p99_lat,
+            "cold_latency_p50_ms": np.percentile(cold_latencies, 50),
+            "cold_latency_p95_ms": np.percentile(cold_latencies, 95),
+            "cold_latency_p99_ms": np.percentile(cold_latencies, 99),
+            "thread_count": thread_count,
             "max_latency_ms": max_lat,
             "min_latency_ms": min_lat
         })
 
     # Save to profiles/ directory
-    os.makedirs("profiles", exist_ok=True)
-    profile_csv_path = f"profiles/{hw_name}_profile.csv"
+    profiles_dir = os.path.join(project_root, "profiles")
+    os.makedirs(profiles_dir, exist_ok=True)
+    profile_csv_path = os.path.join(profiles_dir, f"{hw_name}_profile.csv")
     
     fieldnames = [
         "width_mult", "bit_width", "approx_flops", "approx_params",
         "flops_per_speed", "cpu_pct", "mem_available_mb", "thermal_c",
         "device_speed_score", "cpu_cores", "ram_gb", "has_cuda",
-        "avg_latency_ms", "std_latency_ms", "max_latency_ms", "min_latency_ms"
+        "avg_latency_ms", "latency_ms", "std_latency_ms",
+        "latency_p50_ms", "latency_p95_ms", "latency_p99_ms",
+        "cold_latency_p50_ms", "cold_latency_p95_ms", "cold_latency_p99_ms",
+        "max_latency_ms", "min_latency_ms", "thread_count"
     ]
     with open(profile_csv_path, mode="w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)

@@ -175,7 +175,8 @@ def extract_config_features(config):
     elif isinstance(config, (int, float)):
         width = float(config)
 
-    width_mult = width / 32.0
+    # Frontier configs store width multipliers directly, e.g. 0.25 or 1.0.
+    width_mult = width
 
     # Approximate FLOPs and Params
     approx_flops = (width_mult ** 2) * 1e6
@@ -194,10 +195,11 @@ class PhysicsSurrogateModel:
     def predict(self, X):
         preds = []
         for row in X:
-            approx_flops = row[3]
-            device_speed = row[9]
-            cpu_pct = row[6]
-            thermal_c = row[8]
+            # Keep this positional fallback aligned with FEATURES.
+            approx_flops = row[FEATURES.index("approx_flops")]
+            device_speed = row[FEATURES.index("device_speed_score")]
+            cpu_pct = row[FEATURES.index("cpu_pct")]
+            thermal_c = row[FEATURES.index("thermal_c")]
             
             # latency (ms) ≈ (flops / speed) * 1000.0 * contention
             base_lat = (approx_flops / device_speed) * 1000.0
@@ -207,11 +209,45 @@ class PhysicsSurrogateModel:
             preds.append(base_lat * contention)
         return preds
 
+
+class MeasuredFrontierLatencyModel:
+    """Predict latency from measured warm latency percentiles."""
+
+    def __init__(self, frontier, latency_policy="avg"):
+        if latency_policy not in ("avg", "p50", "p95", "p99"):
+            raise ValueError("latency_policy must be avg, p50, p95, or p99")
+        self.latency_policy = latency_policy
+        self._latencies = {
+            (float(row["config"][0]), float(row["config"][1])): self._row_latency(row)
+            for row in frontier
+        }
+
+    def _row_latency(self, row):
+        key = {
+            "avg": "latency_ms",
+            "p50": "latency_p50_ms",
+            "p95": "latency_p95_ms",
+            "p99": "latency_p99_ms",
+        }[self.latency_policy]
+        return float(row.get(key, row.get("latency_ms", row.get("avg_latency_ms", 0.0))))
+
+    def predict(self, X):
+        predictions = []
+        for row in X:
+            config = (float(row[FEATURES.index("width_mult")]),
+                      float(row[FEATURES.index("bit_width")]))
+            if config not in self._latencies:
+                raise ValueError(f"No measured latency for configuration {config}")
+            predictions.append(self._latencies[config])
+        return predictions
+
 class SurrogateBackedController:
     """Uses a machine learning surrogate model to predict model config latencies
     under current hardware & resource state, selecting the best fit config."""
 
-    def __init__(self, frontier, surrogate_model=None, baseline_config=None, safety_margin=0.9, min_dwell_s=2.0, k_risk=0.0, switching_penalty_ms=0.0):
+    def __init__(self, frontier, surrogate_model=None, baseline_config=None, safety_margin=0.9, min_dwell_s=2.0, k_risk=0.0, switching_penalty_ms=0.0, latency_policy="avg", calibration_lr=0.05):
+        if latency_policy not in ("avg", "p50", "p95", "p99"):
+            raise ValueError("latency_policy must be avg, p50, p95, or p99")
         self.frontier = frontier
         self.surrogate_model = surrogate_model if surrogate_model is not None else PhysicsSurrogateModel()
         self.baseline_config = baseline_config if baseline_config is not None else frontier[0]['config']
@@ -224,19 +260,47 @@ class SurrogateBackedController:
         self.last_predicted_latency = None
         self.k_risk = k_risk
         self.switching_penalty_ms = switching_penalty_ms
+        self.latency_policy = latency_policy
+        self.calibration_lr = calibration_lr
+        self.k_adapt_by_config = {row["config"]: 1.0 for row in frontier}
+        self.last_selected_config = None
+        self.last_prediction_is_cold = False
+        self.last_budget_feasible = True
+        self.last_selection_status = "uninitialized"
+        self.last_min_safe_latency = None
 
-    def update_feedback(self, actual_latency_ms, predicted_latency_ms):
+    @staticmethod
+    def _latency_key(policy):
+        return {
+            "avg": "latency_ms",
+            "p50": "latency_p50_ms",
+            "p95": "latency_p95_ms",
+            "p99": "latency_p99_ms",
+        }[policy]
+
+    def _profile_latency(self, row, cold=False):
+        if cold:
+            key = f"cold_latency_{self.latency_policy}_ms"
+            if key in row:
+                return float(row[key])
+        key = self._latency_key(self.latency_policy)
+        return float(row.get(key, row.get("latency_ms", 0.0)))
+
+    def update_feedback(self, actual_latency_ms, predicted_latency_ms, config=None):
         """
         Updates the prediction bias scale factor (k_adapt) on-the-fly.
         """
         if predicted_latency_ms <= 0:
             return
         
-        # Calculate proportional error ratio
+        config = config or self.last_selected_config or self.current_config
+        # Calculate proportional error ratio and limit one OS interruption's influence.
         error_ratio = (actual_latency_ms - predicted_latency_ms) / predicted_latency_ms
+        error_ratio = max(-0.5, min(1.0, error_ratio))
         
-        # Apply gradient update to the feedback multiplier
-        self.k_adapt += self.lr_adapt * error_ratio
+        updated = self.k_adapt_by_config.get(config, 1.0) + self.calibration_lr * error_ratio
+        self.k_adapt_by_config[config] = max(0.5, min(updated, 3.0))
+        self.k_adapt = self.k_adapt_by_config[config]
         
         # Clip to a safe operating range to prevent runaway feedback
         self.k_adapt = max(0.5, min(self.k_adapt, 3.0))
@@ -265,8 +329,16 @@ class SurrogateBackedController:
 
         candidate = None
         best_acc = -1.0
+        safe_latencies = [self._profile_latency(row) for row in self.frontier]
+        self.last_min_safe_latency = min(safe_latencies) if safe_latencies else None
+        self.last_budget_feasible = (
+            self.last_min_safe_latency is not None
+            and latency_budget_ms >= self.last_min_safe_latency
+        )
+        self.last_selection_status = "feasible_budget" if self.last_budget_feasible else "infeasible_budget"
         target_budget = latency_budget_ms * self.safety_margin
         selected_pred = None
+        selected_is_cold = False
 
         for r in self.frontier:
             r_config = r['config']
@@ -307,14 +379,22 @@ class SurrogateBackedController:
                 if thermal_c > 70:
                     pred_latency *= 1.3
 
-            # Scale by online adaptation factor
-            pred_latency_adj = pred_latency * self.k_adapt
+            # Scale by configuration-specific online calibration.
+            config_factor = self.k_adapt_by_config.get(r_config, 1.0)
+            pred_latency_adj = pred_latency * config_factor
+
+            is_cold = r_config != self.current_config
+            policy_latency = self._profile_latency(r, cold=is_cold)
+            if self.latency_policy != "avg" and is_cold:
+                pred_latency_adj = policy_latency * config_factor
 
             # Fetch standard deviation and scale by k_adapt
             std_latency = r.get('std_ms', 1.0) * self.k_adapt
 
             # Calculate upper bound using risk multiplier
-            risk_averse_pred = pred_latency_adj + (self.k_risk * std_latency)
+            risk_averse_pred = pred_latency_adj
+            if self.latency_policy in ("avg", "p50"):
+                risk_averse_pred += self.k_risk * std_latency
 
             # Apply switching cost if candidate config differs from currently active config
             if r_config != self.current_config:
@@ -325,16 +405,20 @@ class SurrogateBackedController:
                     best_acc = r_acc
                     candidate = r_config
                     selected_pred = pred_latency_adj
+                    selected_is_cold = is_cold
 
         if candidate is not None:
             if candidate != self.current_config:
                 self.current_config = candidate
                 self._last_switch_time = now
             self.last_predicted_latency = selected_pred
+            self.last_selected_config = self.current_config
+            self.last_prediction_is_cold = selected_is_cold
             return self.current_config
         else:
             # Fallback: lowest latency config
             fallback_config = self.frontier[0]['config']
+            fallback_is_cold = fallback_config != self.current_config
             cfg_feat = extract_config_features(fallback_config)
             flops_per_speed = cfg_feat["approx_flops"] / speed
             row = {
@@ -361,4 +445,7 @@ class SurrogateBackedController:
                 self.current_config = fallback_config
                 self._last_switch_time = now
             self.last_predicted_latency = fallback_pred
+            self.last_selected_config = self.current_config
+            self.last_prediction_is_cold = fallback_is_cold
+            self.last_selection_status = "infeasible_budget" if not self.last_budget_feasible else "no_feasible_candidate"
             return self.current_config

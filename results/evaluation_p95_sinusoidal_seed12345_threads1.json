@@ -1,0 +1,3938 @@
+{
+  "seed": 12345,
+  "trace": "sinusoidal",
+  "latency_policy": "p95",
+  "interpolated_frontier": false,
+  "thread_count": 1,
+  "device": "cuda",
+  "hardware_profile": "C:\\Users\\sarth\\Resource-Adaptive-Dynamic-Inferecne-of-Neural-Network-Model\\profiles\\nvidia_geforce_gtx_1650_profile.csv",
+  "hardware_fingerprint": {
+    "device_speed_score": 20180.27716533546,
+    "cpu_cores": 4,
+    "cpu_cores_logical": 8,
+    "ram_gb": 8.362713088,
+    "has_cuda": 1.0,
+    "arch": "AMD64"
+  },
+  "total_samples": 100,
+  "accuracy_percent": 94.0,
+  "average_latency_ms": 16.95280800049659,
+  "p95_latency_ms": 32.21952999738277,
+  "p99_latency_ms": 53.827197008359,
+  "prediction_mae_ms": 2.539949594777423,
+  "deadline_miss_rate_percent": 28.999999999999996,
+  "deadline_misses": 29,
+  "infeasible_budget_count": 26,
+  "infeasible_budget_rate_percent": 26.0,
+  "feasible_budget_miss_count": 6,
+  "feasible_budget_miss_rate_percent": 8.108108108108109,
+  "cold_transition_misses": 4,
+  "warm_misses": 25,
+  "config_counts": {
+    "(1.0, 32)": 72,
+    "(0.25, 4)": 27,
+    "(0.5, 32)": 1
+  },
+  "samples": [
+    {
+      "sample_index": 0,
+      "scenario": "Normal Load",
+      "budget_ms": 20.859232185634294,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 15.345044995774515,
+      "actual_latency_ms": 96.44640001351945,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.05,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": true
+    },
+    {
+      "sample_index": 1,
+      "scenario": "Normal Load",
+      "budget_ms": 21.509964689646342,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.626830074113968,
+      "actual_latency_ms": 8.98160002543591,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0386244572604213,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 2,
+      "scenario": "Normal Load",
+      "budget_ms": 23.076041555853557,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.500866738462632,
+      "actual_latency_ms": 8.824800024740398,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.026990261444672,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 3,
+      "scenario": "Normal Load",
+      "budget_ms": 24.85700655398064,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.372039292940075,
+      "actual_latency_ms": 9.380900010000914,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0182357222118745,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 4,
+      "scenario": "Normal Load",
+      "budget_ms": 27.188873085673052,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.275098778619219,
+      "actual_latency_ms": 9.648899984313175,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0110242608037059,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 5,
+      "scenario": "Normal Load",
+      "budget_ms": 28.676370780197075,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.19524502968702,
+      "actual_latency_ms": 9.884200000669807,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0051688953090667,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 6,
+      "scenario": "Normal Load",
+      "budget_ms": 30.63723297197061,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.13040756337464,
+      "actual_latency_ms": 10.1180000056047,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.00062095961127,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 7,
+      "scenario": "Normal Load",
+      "budget_ms": 30.998432484003555,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.080047491425804,
+      "actual_latency_ms": 9.844100015470758,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9950436032104447,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 8,
+      "scenario": "Normal Load",
+      "budget_ms": 31.910491470609667,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.018288467487547,
+      "actual_latency_ms": 9.684799995739013,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9889923527114068,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 9,
+      "scenario": "Normal Load",
+      "budget_ms": 32.159399828845125,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 10.951281932927348,
+      "actual_latency_ms": 9.633000008761883,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9829735051817776,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 10,
+      "scenario": "Normal Load",
+      "budget_ms": 32.495429618542545,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 10.88463420200449,
+      "actual_latency_ms": 10.001799993915483,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9789180900355046,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 11,
+      "scenario": "Normal Load",
+      "budget_ms": 32.77487355928729,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 10.839727894589533,
+      "actual_latency_ms": 16.98960000067018,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0072853708652671,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 12,
+      "scenario": "Normal Load",
+      "budget_ms": 30.429454791424952,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.153843660182218,
+      "actual_latency_ms": 9.71800001570955,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.000848828951028,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 13,
+      "scenario": "Normal Load",
+      "budget_ms": 29.904967043655855,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.082570727704342,
+      "actual_latency_ms": 10.054299986222759,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9962096943732035,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 14,
+      "scenario": "Normal Load",
+      "budget_ms": 29.30561136003813,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.031200794916426,
+      "actual_latency_ms": 9.766000002855435,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9904750476398939,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 15,
+      "scenario": "Normal Load",
+      "budget_ms": 28.79810374040311,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 10.967700068151414,
+      "actual_latency_ms": 9.359499992569908,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9831435193085737,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 16,
+      "scenario": "Normal Load",
+      "budget_ms": 27.67304813259155,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 10.886516797587783,
+      "actual_latency_ms": 9.697900008177385,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9776843958280782,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 17,
+      "scenario": "Normal Load",
+      "budget_ms": 26.192237824323126,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 10.826066987053185,
+      "actual_latency_ms": 14.108199975453317,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.99284286931769,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 18,
+      "scenario": "Normal Load",
+      "budget_ms": 24.63749912724323,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 10.993919363669068,
+      "actual_latency_ms": 9.970099985366687,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.988186570938398,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 19,
+      "scenario": "Normal Load",
+      "budget_ms": 22.324584274322678,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 10.942359373163926,
+      "actual_latency_ms": 12.404699984472245,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9948685878665511,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 20,
+      "scenario": "Normal Load",
+      "budget_ms": 20.284950655791683,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.016350492569629,
+      "actual_latency_ms": 16.228499996941537,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0185250134127763,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 21,
+      "scenario": "Normal Load",
+      "budget_ms": 18.55769366114206,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.278302149700002,
+      "actual_latency_ms": 10.610499972244725,
+      "missed_deadline": false,
+      "correct": false,
+      "k_adapt": 1.0155644517582323,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 22,
+      "scenario": "Normal Load",
+      "budget_ms": 16.22699408193923,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.245519342765409,
+      "actual_latency_ms": 10.026200005086139,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0101430954806154,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 23,
+      "scenario": "Normal Load",
+      "budget_ms": 14.203283358204196,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.185487734945331,
+      "actual_latency_ms": 9.532199997920543,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0027527707303605,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 24,
+      "scenario": "Normal Load",
+      "budget_ms": 12.825866184259942,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 11.1036534015513,
+      "actual_latency_ms": 12.631400022655725,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0096322479882285,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 25,
+      "scenario": "Normal Load",
+      "budget_ms": 11.974096791255134,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 27.649821555644298,
+      "actual_latency_ms": 53.39670000830665,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.04655885102341,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": true
+    },
+    {
+      "sample_index": 26,
+      "scenario": "Normal Load",
+      "budget_ms": 11.279825239300557,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 28.66109470645078,
+      "actual_latency_ms": 29.91969999857247,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0487545195856411,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 27,
+      "scenario": "Normal Load",
+      "budget_ms": 9.661669133287127,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 28.721225357053505,
+      "actual_latency_ms": 29.37999999267049,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0499013624299616,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 28,
+      "scenario": "Normal Load",
+      "budget_ms": 9.168966840153736,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 28.75263283245954,
+      "actual_latency_ms": 29.11769997444935,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0505362036706178,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 29,
+      "scenario": "Normal Load",
+      "budget_ms": 7.489568428443217,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 45.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 45.0
+      },
+      "predicted_latency_ms": 28.770018615307983,
+      "actual_latency_ms": 28.963099990505725,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0508717637162672,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 30,
+      "scenario": "Contention Spike",
+      "budget_ms": 7.053698551579871,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 28.77920827362357,
+      "actual_latency_ms": 31.00710001308471,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.054742425685629,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 31,
+      "scenario": "Contention Spike",
+      "budget_ms": 8.74848040070927,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 28.885210348109922,
+      "actual_latency_ms": 30.700699979206547,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0578850194372709,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 32,
+      "scenario": "Contention Spike",
+      "budget_ms": 9.394766880892156,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 28.971273522724164,
+      "actual_latency_ms": 30.748299992410466,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0609518961285775,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 33,
+      "scenario": "Contention Spike",
+      "budget_ms": 8.357274130598116,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 29.055263107463322,
+      "actual_latency_ms": 29.475499992258847,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0616750643945836,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 34,
+      "scenario": "Contention Spike",
+      "budget_ms": 10.2752907043924,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 29.075067817098553,
+      "actual_latency_ms": 37.544799997704104,
+      "missed_deadline": true,
+      "correct": false,
+      "k_adapt": 1.076240348014704,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 35,
+      "scenario": "Contention Spike",
+      "budget_ms": 11.567228960461144,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 29.47395314767921,
+      "actual_latency_ms": 27.127800014568493,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0722603031232785,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 36,
+      "scenario": "Contention Spike",
+      "budget_ms": 13.139308993329081,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 29.364955508934365,
+      "actual_latency_ms": 28.16079999320209,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0702099756242875,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 37,
+      "scenario": "Contention Spike",
+      "budget_ms": 13.656029093330503,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 29.308805173413,
+      "actual_latency_ms": 26.838799996767193,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0659962160356053,
+      "budget_feasible": true,
+      "selection_status": "no_feasible_candidate",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 38,
+      "scenario": "Contention Spike",
+      "budget_ms": 17.08197512360847,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 29.193407016373538,
+      "actual_latency_ms": 29.052199999568984,
+      "missed_deadline": true,
+      "correct": false,
+      "k_adapt": 1.0657543685925759,
+      "budget_feasible": true,
+      "selection_status": "no_feasible_candidate",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 39,
+      "scenario": "Contention Spike",
+      "budget_ms": 18.579318780171462,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "selected_width_mult": 0.5,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 0.5,
+        "bit_width": 32.0,
+        "approx_flops": 250000.0,
+        "approx_params": 25000.0,
+        "flops_per_speed": 12.388333319298303,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 14.985004998743532,
+      "actual_latency_ms": 28.89430001960136,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.046410711981825,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": true
+    },
+    {
+      "sample_index": 40,
+      "scenario": "Contention Spike",
+      "budget_ms": 20.636700022779827,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 15.49285227456434,
+      "actual_latency_ms": 9.18900000397116,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9892878589794253,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": true
+    },
+    {
+      "sample_index": 41,
+      "scenario": "Contention Spike",
+      "budget_ms": 21.877659086151652,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.95455412451219,
+      "actual_latency_ms": 10.087900009239092,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9853321794263258,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 42,
+      "scenario": "Contention Spike",
+      "budget_ms": 24.328582750105877,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.910752206425014,
+      "actual_latency_ms": 9.595400013495237,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9793043998193652,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 43,
+      "scenario": "Contention Spike",
+      "budget_ms": 24.63982304836369,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.844005569078025,
+      "actual_latency_ms": 9.898999996948987,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9749471281169985,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 44,
+      "scenario": "Contention Spike",
+      "budget_ms": 26.491323114973852,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.795756752249297,
+      "actual_latency_ms": 10.417600016808137,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9731957143712119,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 45,
+      "scenario": "Contention Spike",
+      "budget_ms": 28.002719497444794,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.776363047476222,
+      "actual_latency_ms": 9.486499999184161,
+      "missed_deadline": false,
+      "correct": false,
+      "k_adapt": 0.9672110280600258,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 46,
+      "scenario": "Contention Spike",
+      "budget_ms": 29.644415440405236,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.710093589583806,
+      "actual_latency_ms": 10.654699988663197,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9669524234061202,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 47,
+      "scenario": "Contention Spike",
+      "budget_ms": 30.61082469546738,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.707230015900631,
+      "actual_latency_ms": 9.824400010984391,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9628298351942054,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 48,
+      "scenario": "Contention Spike",
+      "budget_ms": 31.831697755960203,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.661579889609698,
+      "actual_latency_ms": 9.906799998134375,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9592901164128881,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 49,
+      "scenario": "Contention Spike",
+      "budget_ms": 31.208366098908726,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.622383976485388,
+      "actual_latency_ms": 9.586400003172457,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9544136970723414,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 50,
+      "scenario": "Contention Spike",
+      "budget_ms": 32.06289976871927,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.568386548825712,
+      "actual_latency_ms": 9.535799996228889,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9495284359786715,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 51,
+      "scenario": "Contention Spike",
+      "budget_ms": 31.187744544714626,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.51429121491735,
+      "actual_latency_ms": 10.318699991330504,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9485983151574537,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 52,
+      "scenario": "Contention Spike",
+      "budget_ms": 31.950306032353463,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.50399182754907,
+      "actual_latency_ms": 9.361000003991649,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9431575653819271,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 53,
+      "scenario": "Contention Spike",
+      "budget_ms": 31.548419388491055,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.443745472200668,
+      "actual_latency_ms": 9.95789997978136,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9408315536378046,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 54,
+      "scenario": "Contention Spike",
+      "budget_ms": 29.92719124848638,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.417989145248947,
+      "actual_latency_ms": 9.572300012223423,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.936772761095238,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 55,
+      "scenario": "Contention Spike",
+      "budget_ms": 27.785648363576332,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.373045439345612,
+      "actual_latency_ms": 9.489099989878014,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9325119803311109,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 56,
+      "scenario": "Contention Spike",
+      "budget_ms": 27.03267643489767,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.325865083224128,
+      "actual_latency_ms": 10.05260000238195,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9311887736136121,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 57,
+      "scenario": "Contention Spike",
+      "budget_ms": 25.20257590454103,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.311212988312427,
+      "actual_latency_ms": 9.942399978172034,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.929400366126741,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 58,
+      "scenario": "Contention Spike",
+      "budget_ms": 24.40540675645493,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.291409645499929,
+      "actual_latency_ms": 9.447799995541573,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9253017553483467,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 59,
+      "scenario": "Contention Spike",
+      "budget_ms": 22.69940803774613,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.24602502544248,
+      "actual_latency_ms": 9.67349999700673,
+      "missed_deadline": false,
+      "correct": false,
+      "k_adapt": 0.9225078668549355,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 60,
+      "scenario": "Contention Spike",
+      "budget_ms": 19.76769744231458,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.215087819005417,
+      "actual_latency_ms": 9.49249998666346,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9189710013617306,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 61,
+      "scenario": "Contention Spike",
+      "budget_ms": 17.75377822630947,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.175923500829713,
+      "actual_latency_ms": 10.090600000694394,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9185517593139284,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 62,
+      "scenario": "Contention Spike",
+      "budget_ms": 16.428584373091482,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.171281161734742,
+      "actual_latency_ms": 10.244800010696054,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9189131633877726,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 63,
+      "scenario": "Contention Spike",
+      "budget_ms": 13.92775007317423,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.175283051024913,
+      "actual_latency_ms": 9.64370000292547,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.916301034342154,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 64,
+      "scenario": "Contention Spike",
+      "budget_ms": 12.198260060145067,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.146358498124851,
+      "actual_latency_ms": 10.043100017355755,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9157921893176648,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 65,
+      "scenario": "Contention Spike",
+      "budget_ms": 11.889910235850426,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 10.140723969902188,
+      "actual_latency_ms": 9.857299999566749,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9143947349979503,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 66,
+      "scenario": "Contention Spike",
+      "budget_ms": 10.891009503395438,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 25.041643929749718,
+      "actual_latency_ms": 44.48840001714416,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.1045832013600037,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": true
+    },
+    {
+      "sample_index": 67,
+      "scenario": "Contention Spike",
+      "budget_ms": 9.45499484013688,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 30.2501514505136,
+      "actual_latency_ms": 27.367799979401752,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0998190079049277,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 68,
+      "scenario": "Contention Spike",
+      "budget_ms": 9.53378176765713,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 30.11967909372042,
+      "actual_latency_ms": 28.660599986324087,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0973968720268257,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 69,
+      "scenario": "Contention Spike",
+      "budget_ms": 8.415848667133304,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 80.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 85.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 80.0
+      },
+      "predicted_latency_ms": 30.053346401845246,
+      "actual_latency_ms": 30.093699984718114,
+      "missed_deadline": true,
+      "correct": false,
+      "k_adapt": 1.0974640086151,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 70,
+      "scenario": "Normal Load",
+      "budget_ms": 8.776843449622854,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 30.05518500663361,
+      "actual_latency_ms": 31.36419999646023,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0996416944113074,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 71,
+      "scenario": "Normal Load",
+      "budget_ms": 8.138569430373277,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 30.114823180621592,
+      "actual_latency_ms": 29.39780001179315,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0984512122946968,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 72,
+      "scenario": "Normal Load",
+      "budget_ms": 8.29055486423858,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 30.082220598686376,
+      "actual_latency_ms": 33.6546000035014,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.1043889046154742,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 73,
+      "scenario": "Normal Load",
+      "budget_ms": 9.73638244682862,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 30.244830433553428,
+      "actual_latency_ms": 30.694900022353977,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.1051329484443682,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 74,
+      "scenario": "Normal Load",
+      "budget_ms": 10.299654300396458,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 30.265206842032345,
+      "actual_latency_ms": 29.527500009862706,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.103914210974606,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 75,
+      "scenario": "Normal Load",
+      "budget_ms": 10.965993838802698,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 30.23183045807745,
+      "actual_latency_ms": 30.481399997370318,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.1043269705321839,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 76,
+      "scenario": "Normal Load",
+      "budget_ms": 12.436525852974047,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 30.24313430473563,
+      "actual_latency_ms": 32.143999997060746,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.10746961056607,
+      "budget_feasible": false,
+      "selection_status": "infeasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 77,
+      "scenario": "Normal Load",
+      "budget_ms": 15.137715403224624,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 30.329198746836916,
+      "actual_latency_ms": 30.006400018464774,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.1069374522142015,
+      "budget_feasible": true,
+      "selection_status": "no_feasible_candidate",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 78,
+      "scenario": "Normal Load",
+      "budget_ms": 16.282140896523366,
+      "selected_config": [
+        0.25,
+        4
+      ],
+      "selected_width_mult": 0.25,
+      "selected_bit_width": 4,
+      "controller_features": {
+        "width_mult": 0.25,
+        "bit_width": 4.0,
+        "approx_flops": 62500.0,
+        "approx_params": 6250.0,
+        "flops_per_speed": 3.0970833298245757,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 30.314625040917928,
+      "actual_latency_ms": 30.354699993040413,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.1070035505942217,
+      "budget_feasible": true,
+      "selection_status": "no_feasible_candidate",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 79,
+      "scenario": "Normal Load",
+      "budget_ms": 18.952973766316784,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 14.03142835244286,
+      "actual_latency_ms": 10.373400000389665,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9013596103471647,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": true
+    },
+    {
+      "sample_index": 80,
+      "scenario": "Normal Load",
+      "budget_ms": 20.89074366775003,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.980909547786727,
+      "actual_latency_ms": 9.430599980987608,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8986027996368565,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 81,
+      "scenario": "Normal Load",
+      "budget_ms": 21.943678039793184,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.950382910000773,
+      "actual_latency_ms": 10.680300008971244,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9022705836084505,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 82,
+      "scenario": "Normal Load",
+      "budget_ms": 23.2131891216142,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.990996910940089,
+      "actual_latency_ms": 9.290299989515916,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8987639419406059,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 83,
+      "scenario": "Normal Load",
+      "budget_ms": 25.88961011322426,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.95216726636596,
+      "actual_latency_ms": 9.905299986712635,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8985284792599709,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 84,
+      "scenario": "Normal Load",
+      "budget_ms": 26.78830055509883,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.949559947721637,
+      "actual_latency_ms": 10.10600000154227,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8993146449529393,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 85,
+      "scenario": "Normal Load",
+      "budget_ms": 28.48257826006068,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.95826529526663,
+      "actual_latency_ms": 9.769099997356534,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8983648545411493,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 86,
+      "scenario": "Normal Load",
+      "budget_ms": 29.161354027424277,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.947748103148625,
+      "actual_latency_ms": 9.730199992191046,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8972714004814877,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 87,
+      "scenario": "Normal Load",
+      "budget_ms": 30.399209583752498,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.935640098819542,
+      "actual_latency_ms": 9.591499983798712,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8955395537579851,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 88,
+      "scenario": "Normal Load",
+      "budget_ms": 31.714381768788247,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.916463063039947,
+      "actual_latency_ms": 9.933900000760332,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8956274728961372,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 89,
+      "scenario": "Normal Load",
+      "budget_ms": 31.478125877751957,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.917436606734762,
+      "actual_latency_ms": 9.80230001732707,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8950469973459859,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 90,
+      "scenario": "Normal Load",
+      "budget_ms": 32.53747089433868,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.91100890141687,
+      "actual_latency_ms": 11.037800024496391,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9007315403339275,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 91,
+      "scenario": "Normal Load",
+      "budget_ms": 32.41593429388416,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.973954820816674,
+      "actual_latency_ms": 9.960499999579042,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9006640905535779,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 92,
+      "scenario": "Normal Load",
+      "budget_ms": 32.117497161423294,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.973207937831281,
+      "actual_latency_ms": 9.860199992544949,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9000975329023648,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 93,
+      "scenario": "Normal Load",
+      "budget_ms": 31.591889770564396,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.96693434779524,
+      "actual_latency_ms": 10.242800024570897,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9014814372562481,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 94,
+      "scenario": "Normal Load",
+      "budget_ms": 28.922849756901446,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.982258558044219,
+      "actual_latency_ms": 9.300700010498986,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8980675878574265,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 95,
+      "scenario": "Normal Load",
+      "budget_ms": 29.306732086169372,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.944456418178776,
+      "actual_latency_ms": 9.539000020595267,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8960289827264194,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 96,
+      "scenario": "Normal Load",
+      "budget_ms": 26.725533351334658,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.921882593944074,
+      "actual_latency_ms": 9.677599999122322,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8947979532695155,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 97,
+      "scenario": "Normal Load",
+      "budget_ms": 26.100646850503864,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.908251193647265,
+      "actual_latency_ms": 9.840000013355166,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8944535373935038,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 98,
+      "scenario": "Normal Load",
+      "budget_ms": 24.504405202739086,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.904437417585154,
+      "actual_latency_ms": 9.876900003291667,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8943145218536378,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    },
+    {
+      "sample_index": 99,
+      "scenario": "Normal Load",
+      "budget_ms": 20.962644189155434,
+      "selected_config": [
+        1.0,
+        32
+      ],
+      "selected_width_mult": 1.0,
+      "selected_bit_width": 32,
+      "controller_features": {
+        "width_mult": 1.0,
+        "bit_width": 32.0,
+        "approx_flops": 1000000.0,
+        "approx_params": 100000.0,
+        "flops_per_speed": 49.55333327719321,
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "thermal_c": 50.0,
+        "device_speed_score": 20180.27716533546,
+        "cpu_cores": 4,
+        "ram_gb": 8.362713088,
+        "has_cuda": 1.0
+      },
+      "resource_state": {
+        "cpu_pct": 15.0,
+        "mem_available_mb": 1024.0,
+        "battery_pct": 80.0,
+        "thermal_c": 50.0
+      },
+      "predicted_latency_ms": 9.902898074671171,
+      "actual_latency_ms": 9.852499992121011,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.8940600605728585,
+      "budget_feasible": true,
+      "selection_status": "feasible_budget",
+      "prediction_is_cold": false
+    }
+  ]
+}

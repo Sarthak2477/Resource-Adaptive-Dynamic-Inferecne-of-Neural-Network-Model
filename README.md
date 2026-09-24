@@ -260,6 +260,36 @@ python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
 
 ## 7. Step-by-Step Usage Guide
 
+### Controlled latency experiments
+
+Regenerate the device profile with one CPU thread and warm/cold percentile measurements:
+
+```powershell
+python .\scripts\profile_hardware.py --threads 1
+```
+
+Run a single P95 or P99 evaluation. The default uses only the measured deployable configurations; use `--interpolate` only for the interpolation ablation:
+
+```powershell
+python .\scripts\evaluate.py --policy p95 --trace sinusoidal --threads 1 --seed 12345
+python .\scripts\evaluate.py --policy p99 --trace sinusoidal --threads 1 --seed 12345
+```
+
+Run repeated sinusoidal and held-out traces:
+
+```powershell
+python .\scripts\run_experiments.py --repetitions 10 --threads 1 --policies p95 p99 --traces sinusoidal heldout
+```
+
+Each evaluation writes a separate JSON file under `results/`, including infeasible-budget rate, feasible-only miss rate, cold-transition misses, warm misses, and per-sample decisions. Each sample records:
+
+- `selected_width_mult` and `selected_bit_width`: the chosen subnet width and precision.
+- `controller_features`: the full feature vector used for selection, including FLOPs, parameters, CPU load, available memory, thermal state, device speed, CPU cores, RAM, and CUDA availability.
+- `resource_state`: the simulated resource state at selection time.
+- `budget_ms`, predicted/actual latency, feasibility status, and deadline result.
+
+The periodic console log also prints the selected configuration, CPU utilization, and temperature. This makes it possible to correlate each width/precision decision with the hardware conditions that caused it.
+
 All scripts must be run from the **project root** (`anynet/`).
 
 ### Step 0: Obtain a Pre-Trained Checkpoint

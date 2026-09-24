@@ -1,0 +1,1425 @@
+{
+  "seed": 12345,
+  "device": "cpu",
+  "hardware_profile": "C:\\Users\\sarth\\Resource-Adaptive-Dynamic-Inferecne-of-Neural-Network-Model\\profiles\\cpu_intel64_family_6_model_140_stepping_2_genuineintel_profile.csv",
+  "total_samples": 100,
+  "accuracy_percent": 92.0,
+  "average_latency_ms": 17.205176000279607,
+  "p95_latency_ms": 46.430820003297406,
+  "p99_latency_ms": 54.62129499952427,
+  "prediction_mae_ms": 4.766890099089038,
+  "deadline_miss_rate_percent": 20.0,
+  "deadline_misses": 20,
+  "config_counts": {
+    "(0.35, 32)": 7,
+    "(0.4, 32)": 11,
+    "(0.45, 32)": 11,
+    "(0.5, 32)": 19,
+    "(0.3, 32)": 6,
+    "(0.25, 32)": 35,
+    "(0.55, 32)": 8,
+    "(0.6, 32)": 3
+  },
+  "samples": [
+    {
+      "sample_index": 0,
+      "scenario": "Normal Load",
+      "budget_ms": 20.859232185634294,
+      "selected_config": [
+        0.35,
+        32
+      ],
+      "predicted_latency_ms": 14.045074696652591,
+      "actual_latency_ms": 57.15520000376273,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.1534706159924686
+    },
+    {
+      "sample_index": 1,
+      "scenario": "Normal Load",
+      "budget_ms": 21.509964689646342,
+      "selected_config": [
+        0.35,
+        32
+      ],
+      "predicted_latency_ms": 16.200580962008097,
+      "actual_latency_ms": 14.779999997699633,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1490862640743496
+    },
+    {
+      "sample_index": 2,
+      "scenario": "Normal Load",
+      "budget_ms": 23.076041555853557,
+      "selected_config": [
+        0.35,
+        32
+      ],
+      "predicted_latency_ms": 16.139002411821703,
+      "actual_latency_ms": 15.82810000400059,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1481230620130085
+    },
+    {
+      "sample_index": 3,
+      "scenario": "Normal Load",
+      "budget_ms": 24.85700655398064,
+      "selected_config": [
+        0.4,
+        32
+      ],
+      "predicted_latency_ms": 18.207816470791144,
+      "actual_latency_ms": 48.845400000573136,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.2322561143725008
+    },
+    {
+      "sample_index": 4,
+      "scenario": "Normal Load",
+      "budget_ms": 27.188873085673052,
+      "selected_config": [
+        0.4,
+        32
+      ],
+      "predicted_latency_ms": 19.542062970293774,
+      "actual_latency_ms": 17.385499988449737,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2267383678962913
+    },
+    {
+      "sample_index": 5,
+      "scenario": "Normal Load",
+      "budget_ms": 28.676370780197075,
+      "selected_config": [
+        0.45,
+        32
+      ],
+      "predicted_latency_ms": 21.679484615475054,
+      "actual_latency_ms": 46.30400000314694,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.283530574501827
+    },
+    {
+      "sample_index": 6,
+      "scenario": "Normal Load",
+      "budget_ms": 30.63723297197061,
+      "selected_config": [
+        0.45,
+        32
+      ],
+      "predicted_latency_ms": 22.683142609391883,
+      "actual_latency_ms": 17.980899996473454,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2731655146556409
+    },
+    {
+      "sample_index": 7,
+      "scenario": "Normal Load",
+      "budget_ms": 30.998432484003555,
+      "selected_config": [
+        0.45,
+        32
+      ],
+      "predicted_latency_ms": 22.4999665048903,
+      "actual_latency_ms": 17.159499999252148,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2612977936426397
+    },
+    {
+      "sample_index": 8,
+      "scenario": "Normal Load",
+      "budget_ms": 31.910491470609667,
+      "selected_config": [
+        0.45,
+        32
+      ],
+      "predicted_latency_ms": 22.290234681173622,
+      "actual_latency_ms": 17.13569999265019,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2497354777625
+    },
+    {
+      "sample_index": 9,
+      "scenario": "Normal Load",
+      "budget_ms": 32.159399828845125,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 24.352536108015865,
+      "actual_latency_ms": 48.840400006156415,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.3000133292961646
+    },
+    {
+      "sample_index": 10,
+      "scenario": "Normal Load",
+      "budget_ms": 32.495429618542545,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 25.33225799052108,
+      "actual_latency_ms": 19.430799991823733,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.288365220389123
+    },
+    {
+      "sample_index": 11,
+      "scenario": "Normal Load",
+      "budget_ms": 32.77487355928729,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 25.1052811639876,
+      "actual_latency_ms": 22.726600000169128,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2836278084711266
+    },
+    {
+      "sample_index": 12,
+      "scenario": "Normal Load",
+      "budget_ms": 30.429454791424952,
+      "selected_config": [
+        0.45,
+        32
+      ],
+      "predicted_latency_ms": 22.68486097281533,
+      "actual_latency_ms": 16.040299989981577,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2689824443430493
+    },
+    {
+      "sample_index": 13,
+      "scenario": "Normal Load",
+      "budget_ms": 29.904967043655855,
+      "selected_config": [
+        0.45,
+        32
+      ],
+      "predicted_latency_ms": 22.42604136252861,
+      "actual_latency_ms": 16.34580000245478,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.255426236937151
+    },
+    {
+      "sample_index": 14,
+      "scenario": "Normal Load",
+      "budget_ms": 29.30561136003813,
+      "selected_config": [
+        0.45,
+        32
+      ],
+      "predicted_latency_ms": 22.186469830740336,
+      "actual_latency_ms": 18.125300004612654,
+      "missed_deadline": false,
+      "correct": false,
+      "k_adapt": 1.2462738799891773
+    },
+    {
+      "sample_index": 15,
+      "scenario": "Normal Load",
+      "budget_ms": 28.79810374040311,
+      "selected_config": [
+        0.45,
+        32
+      ],
+      "predicted_latency_ms": 22.024725169579053,
+      "actual_latency_ms": 15.171399994869716,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2307156264310914
+    },
+    {
+      "sample_index": 16,
+      "scenario": "Normal Load",
+      "budget_ms": 27.67304813259155,
+      "selected_config": [
+        0.45,
+        32
+      ],
+      "predicted_latency_ms": 21.749772557446605,
+      "actual_latency_ms": 18.733700009761378,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2237820538162076
+    },
+    {
+      "sample_index": 17,
+      "scenario": "Normal Load",
+      "budget_ms": 26.192237824323126,
+      "selected_config": [
+        0.4,
+        32
+      ],
+      "predicted_latency_ms": 19.407674815856016,
+      "actual_latency_ms": 18.10240000486374,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.220419273824846
+    },
+    {
+      "sample_index": 18,
+      "scenario": "Normal Load",
+      "budget_ms": 24.63749912724323,
+      "selected_config": [
+        0.4,
+        32
+      ],
+      "predicted_latency_ms": 19.354345270496125,
+      "actual_latency_ms": 14.094700003624894,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2068315104741294
+    },
+    {
+      "sample_index": 19,
+      "scenario": "Normal Load",
+      "budget_ms": 22.324584274322678,
+      "selected_config": [
+        0.3,
+        32
+      ],
+      "predicted_latency_ms": 14.7612173283598,
+      "actual_latency_ms": 34.338400000706315,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.273144410815804
+    },
+    {
+      "sample_index": 20,
+      "scenario": "Normal Load",
+      "budget_ms": 20.284950655791683,
+      "selected_config": [
+        0.3,
+        32
+      ],
+      "predicted_latency_ms": 15.572315750237067,
+      "actual_latency_ms": 9.82520000252407,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.254691420779221
+    },
+    {
+      "sample_index": 21,
+      "scenario": "Normal Load",
+      "budget_ms": 18.55769366114206,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 13.070985630531826,
+      "actual_latency_ms": 41.570000001229346,
+      "missed_deadline": true,
+      "correct": false,
+      "k_adapt": 1.3637077382026301
+    },
+    {
+      "sample_index": 22,
+      "scenario": "Normal Load",
+      "budget_ms": 16.22699408193923,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 14.206683775060396,
+      "actual_latency_ms": 12.831400003051385,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.358867467968618
+    },
+    {
+      "sample_index": 23,
+      "scenario": "Normal Load",
+      "budget_ms": 14.203283358204196,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 14.156259342702858,
+      "actual_latency_ms": 8.438900011242367,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.3386737176527634
+    },
+    {
+      "sample_index": 24,
+      "scenario": "Normal Load",
+      "budget_ms": 12.825866184259942,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 13.945887122224015,
+      "actual_latency_ms": 8.532499996363185,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.319265174193258
+    },
+    {
+      "sample_index": 25,
+      "scenario": "Normal Load",
+      "budget_ms": 11.974096791255134,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 13.743694942961964,
+      "actual_latency_ms": 10.259999995469116,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.3065913810031784
+    },
+    {
+      "sample_index": 26,
+      "scenario": "Normal Load",
+      "budget_ms": 11.279825239300557,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 13.611663300816057,
+      "actual_latency_ms": 8.20580001163762,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2867339132943851
+    },
+    {
+      "sample_index": 27,
+      "scenario": "Normal Load",
+      "budget_ms": 9.661669133287127,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 13.40479436811929,
+      "actual_latency_ms": 11.658400006126612,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.2802198470803365
+    },
+    {
+      "sample_index": 28,
+      "scenario": "Normal Load",
+      "budget_ms": 9.168966840153736,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 13.336932848968006,
+      "actual_latency_ms": 7.871199995861389,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2597288806977265
+    },
+    {
+      "sample_index": 29,
+      "scenario": "Normal Load",
+      "budget_ms": 7.489568428443217,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 13.123464323793531,
+      "actual_latency_ms": 8.407000001170672,
+      "missed_deadline": true,
+      "correct": false,
+      "k_adapt": 1.2417592950522973
+    },
+    {
+      "sample_index": 30,
+      "scenario": "Contention Spike",
+      "budget_ms": 7.053698551579871,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 12.936262760231276,
+      "actual_latency_ms": 11.445399999502115,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.2359969555406403
+    },
+    {
+      "sample_index": 31,
+      "scenario": "Contention Spike",
+      "budget_ms": 8.74848040070927,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 12.876232496448699,
+      "actual_latency_ms": 8.57489999907557,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2192943505723024
+    },
+    {
+      "sample_index": 32,
+      "scenario": "Contention Spike",
+      "budget_ms": 9.394766880892156,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 12.702229944173329,
+      "actual_latency_ms": 8.425899999565445,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.2024613615483182
+    },
+    {
+      "sample_index": 33,
+      "scenario": "Contention Spike",
+      "budget_ms": 8.357274130598116,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 12.526869091291468,
+      "actual_latency_ms": 8.638700004667044,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.1869420443977645
+    },
+    {
+      "sample_index": 34,
+      "scenario": "Contention Spike",
+      "budget_ms": 10.2752907043924,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 12.365193664081986,
+      "actual_latency_ms": 9.33699999586679,
+      "missed_deadline": false,
+      "correct": false,
+      "k_adapt": 1.1746972152811312
+    },
+    {
+      "sample_index": 35,
+      "scenario": "Contention Spike",
+      "budget_ms": 11.567228960461144,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 12.237630836456663,
+      "actual_latency_ms": 12.327600008575246,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.1750648075599022
+    },
+    {
+      "sample_index": 36,
+      "scenario": "Contention Spike",
+      "budget_ms": 13.139308993329081,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 12.241460298676724,
+      "actual_latency_ms": 9.33400000212714,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1631893440710246
+    },
+    {
+      "sample_index": 37,
+      "scenario": "Contention Spike",
+      "budget_ms": 13.656029093330503,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 12.117745407470549,
+      "actual_latency_ms": 10.002099996199831,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1544598100689056
+    },
+    {
+      "sample_index": 38,
+      "scenario": "Contention Spike",
+      "budget_ms": 17.08197512360847,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 12.026803832822598,
+      "actual_latency_ms": 8.66360000509303,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1404776919830057
+    },
+    {
+      "sample_index": 39,
+      "scenario": "Contention Spike",
+      "budget_ms": 18.579318780171462,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 11.88114246815678,
+      "actual_latency_ms": 9.279000005335547,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1295269670430625
+    },
+    {
+      "sample_index": 40,
+      "scenario": "Contention Spike",
+      "budget_ms": 20.636700022779827,
+      "selected_config": [
+        0.3,
+        32
+      ],
+      "predicted_latency_ms": 13.815675920009186,
+      "actual_latency_ms": 15.20350000646431,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.134549609780524
+    },
+    {
+      "sample_index": 41,
+      "scenario": "Contention Spike",
+      "budget_ms": 21.877659086151652,
+      "selected_config": [
+        0.35,
+        32
+      ],
+      "predicted_latency_ms": 15.93483401642551,
+      "actual_latency_ms": 15.101500001037493,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1319347911557145
+    },
+    {
+      "sample_index": 42,
+      "scenario": "Contention Spike",
+      "budget_ms": 24.328582750105877,
+      "selected_config": [
+        0.4,
+        32
+      ],
+      "predicted_latency_ms": 17.951090450296203,
+      "actual_latency_ms": 17.54349999828264,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1307995106747262
+    },
+    {
+      "sample_index": 43,
+      "scenario": "Contention Spike",
+      "budget_ms": 24.63982304836369,
+      "selected_config": [
+        0.4,
+        32
+      ],
+      "predicted_latency_ms": 17.933086301329396,
+      "actual_latency_ms": 14.339899993501604,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.120781195234061
+    },
+    {
+      "sample_index": 44,
+      "scenario": "Contention Spike",
+      "budget_ms": 26.491323114973852,
+      "selected_config": [
+        0.45,
+        32
+      ],
+      "predicted_latency_ms": 19.806960730394895,
+      "actual_latency_ms": 18.33400000759866,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1170629046218725
+    },
+    {
+      "sample_index": 45,
+      "scenario": "Contention Spike",
+      "budget_ms": 28.002719497444794,
+      "selected_config": [
+        0.45,
+        32
+      ],
+      "predicted_latency_ms": 19.74124938865131,
+      "actual_latency_ms": 17.97610000357963,
+      "missed_deadline": false,
+      "correct": false,
+      "k_adapt": 1.1125921911672154
+    },
+    {
+      "sample_index": 46,
+      "scenario": "Contention Spike",
+      "budget_ms": 29.644415440405236,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 21.68014111066561,
+      "actual_latency_ms": 16.99910000024829,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1017965024156453
+    },
+    {
+      "sample_index": 47,
+      "scenario": "Contention Spike",
+      "budget_ms": 30.61082469546738,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 21.46977467327823,
+      "actual_latency_ms": 15.190899997833185,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0871739114220382
+    },
+    {
+      "sample_index": 48,
+      "scenario": "Contention Spike",
+      "budget_ms": 31.831697755960203,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 21.184836635188674,
+      "actual_latency_ms": 16.674899990903214,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0765296550561565
+    },
+    {
+      "sample_index": 49,
+      "scenario": "Contention Spike",
+      "budget_ms": 31.208366098908726,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 20.9774210323627,
+      "actual_latency_ms": 17.062800005078316,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0671990966876013
+    },
+    {
+      "sample_index": 50,
+      "scenario": "Contention Spike",
+      "budget_ms": 32.06289976871927,
+      "selected_config": [
+        0.55,
+        32
+      ],
+      "predicted_latency_ms": 24.082442884635814,
+      "actual_latency_ms": 54.406199997174554,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.130157321602327
+    },
+    {
+      "sample_index": 51,
+      "scenario": "Contention Spike",
+      "budget_ms": 31.187744544714626,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 22.022417921058246,
+      "actual_latency_ms": 22.026099992217496,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1301656814272392
+    },
+    {
+      "sample_index": 52,
+      "scenario": "Contention Spike",
+      "budget_ms": 31.950306032353463,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 22.02258082188138,
+      "actual_latency_ms": 17.317999998340383,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1194844155447532
+    },
+    {
+      "sample_index": 53,
+      "scenario": "Contention Spike",
+      "budget_ms": 31.548419388491055,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 21.8144440459708,
+      "actual_latency_ms": 18.00060000095982,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1107428587189778
+    },
+    {
+      "sample_index": 54,
+      "scenario": "Contention Spike",
+      "budget_ms": 29.92719124848638,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 21.644104736550617,
+      "actual_latency_ms": 21.293900004820898,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1099338515181896
+    },
+    {
+      "sample_index": 55,
+      "scenario": "Contention Spike",
+      "budget_ms": 27.785648363576332,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 21.628340298860078,
+      "actual_latency_ms": 18.43340000777971,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.1025478472133452
+    },
+    {
+      "sample_index": 56,
+      "scenario": "Contention Spike",
+      "budget_ms": 27.03267643489767,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 21.484415492588504,
+      "actual_latency_ms": 17.377700001816265,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.092990418266328
+    },
+    {
+      "sample_index": 57,
+      "scenario": "Contention Spike",
+      "budget_ms": 25.20257590454103,
+      "selected_config": [
+        0.4,
+        32
+      ],
+      "predicted_latency_ms": 17.333480703047723,
+      "actual_latency_ms": 15.171699997154064,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0867545654017803
+    },
+    {
+      "sample_index": 58,
+      "scenario": "Contention Spike",
+      "budget_ms": 24.40540675645493,
+      "selected_config": [
+        0.4,
+        32
+      ],
+      "predicted_latency_ms": 17.234587763559627,
+      "actual_latency_ms": 14.13370000955183,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0777584472568362
+    },
+    {
+      "sample_index": 59,
+      "scenario": "Contention Spike",
+      "budget_ms": 22.69940803774613,
+      "selected_config": [
+        0.4,
+        32
+      ],
+      "predicted_latency_ms": 17.09192041930691,
+      "actual_latency_ms": 15.163000003667548,
+      "missed_deadline": false,
+      "correct": false,
+      "k_adapt": 1.0721156629227233
+    },
+    {
+      "sample_index": 60,
+      "scenario": "Contention Spike",
+      "budget_ms": 19.76769744231458,
+      "selected_config": [
+        0.3,
+        32
+      ],
+      "predicted_latency_ms": 13.113456322766533,
+      "actual_latency_ms": 10.458899996592663,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0619941653524556
+    },
+    {
+      "sample_index": 61,
+      "scenario": "Contention Spike",
+      "budget_ms": 17.75377822630947,
+      "selected_config": [
+        0.3,
+        32
+      ],
+      "predicted_latency_ms": 12.989656418615464,
+      "actual_latency_ms": 14.164899999741465,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0665179323531044
+    },
+    {
+      "sample_index": 62,
+      "scenario": "Contention Spike",
+      "budget_ms": 16.428584373091482,
+      "selected_config": [
+        0.3,
+        32
+      ],
+      "predicted_latency_ms": 13.044988341307146,
+      "actual_latency_ms": 10.750200002803467,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.057722262021851
+    },
+    {
+      "sample_index": 63,
+      "scenario": "Contention Spike",
+      "budget_ms": 13.92775007317423,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 11.01902209500642,
+      "actual_latency_ms": 9.014399998704903,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0486260732719892
+    },
+    {
+      "sample_index": 64,
+      "scenario": "Contention Spike",
+      "budget_ms": 12.198260060145067,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.924260825045549,
+      "actual_latency_ms": 8.430200003203936,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0372108349241296
+    },
+    {
+      "sample_index": 65,
+      "scenario": "Contention Spike",
+      "budget_ms": 11.889910235850426,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.80534041645512,
+      "actual_latency_ms": 9.087700003874488,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.029262726181693
+    },
+    {
+      "sample_index": 66,
+      "scenario": "Contention Spike",
+      "budget_ms": 10.891009503395438,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.722539487524106,
+      "actual_latency_ms": 11.261499996180646,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.031775939163019
+    },
+    {
+      "sample_index": 67,
+      "scenario": "Contention Spike",
+      "budget_ms": 9.45499484013688,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.748721359991983,
+      "actual_latency_ms": 10.64149999001529,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0312771757920762
+    },
+    {
+      "sample_index": 68,
+      "scenario": "Contention Spike",
+      "budget_ms": 9.53378176765713,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.743525398063287,
+      "actual_latency_ms": 8.30869999481365,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0199455815851666
+    },
+    {
+      "sample_index": 69,
+      "scenario": "Contention Spike",
+      "budget_ms": 8.415848667133304,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.62547636816114,
+      "actual_latency_ms": 10.127900008228607,
+      "missed_deadline": true,
+      "correct": false,
+      "k_adapt": 1.0176041507509523
+    },
+    {
+      "sample_index": 70,
+      "scenario": "Normal Load",
+      "budget_ms": 8.776843449622854,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.601084068762225,
+      "actual_latency_ms": 9.29109999560751,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0114256124776129
+    },
+    {
+      "sample_index": 71,
+      "scenario": "Normal Load",
+      "budget_ms": 8.138569430373277,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.536717975513291,
+      "actual_latency_ms": 9.001500002341345,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0041405262831276
+    },
+    {
+      "sample_index": 72,
+      "scenario": "Normal Load",
+      "budget_ms": 8.29055486423858,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.460824209613333,
+      "actual_latency_ms": 10.297299988451414,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.0033589233334688
+    },
+    {
+      "sample_index": 73,
+      "scenario": "Normal Load",
+      "budget_ms": 9.73638244682862,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.452681712777398,
+      "actual_latency_ms": 8.396500008529983,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9935232574213712
+    },
+    {
+      "sample_index": 74,
+      "scenario": "Normal Load",
+      "budget_ms": 10.299654300396458,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.350216799353587,
+      "actual_latency_ms": 11.213499994482845,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 0.9976936202836407
+    },
+    {
+      "sample_index": 75,
+      "scenario": "Normal Load",
+      "budget_ms": 10.965993838802698,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.3936623447236,
+      "actual_latency_ms": 10.037200001534075,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9959788140326444
+    },
+    {
+      "sample_index": 76,
+      "scenario": "Normal Load",
+      "budget_ms": 12.436525852974047,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.375798025660991,
+      "actual_latency_ms": 10.118999998667277,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9947413283647536
+    },
+    {
+      "sample_index": 77,
+      "scenario": "Normal Load",
+      "budget_ms": 15.137715403224624,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.362906284221534,
+      "actual_latency_ms": 10.02909999806434,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9931307459808068
+    },
+    {
+      "sample_index": 78,
+      "scenario": "Normal Load",
+      "budget_ms": 16.282140896523366,
+      "selected_config": [
+        0.25,
+        32
+      ],
+      "predicted_latency_ms": 10.346127737043549,
+      "actual_latency_ms": 8.301999987452291,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9832520367596147
+    },
+    {
+      "sample_index": 79,
+      "scenario": "Normal Load",
+      "budget_ms": 18.952973766316784,
+      "selected_config": [
+        0.35,
+        32
+      ],
+      "predicted_latency_ms": 13.809848301924587,
+      "actual_latency_ms": 15.848199996980838,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9906321022407546
+    },
+    {
+      "sample_index": 80,
+      "scenario": "Normal Load",
+      "budget_ms": 20.89074366775003,
+      "selected_config": [
+        0.35,
+        32
+      ],
+      "predicted_latency_ms": 13.913501872873384,
+      "actual_latency_ms": 13.403599994489923,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9887997027375871
+    },
+    {
+      "sample_index": 81,
+      "scenario": "Normal Load",
+      "budget_ms": 21.943678039793184,
+      "selected_config": [
+        0.4,
+        32
+      ],
+      "predicted_latency_ms": 15.6811443907873,
+      "actual_latency_ms": 19.329500006278977,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.000432640757197
+    },
+    {
+      "sample_index": 82,
+      "scenario": "Normal Load",
+      "budget_ms": 23.2131891216142,
+      "selected_config": [
+        0.4,
+        32
+      ],
+      "predicted_latency_ms": 15.86562844784106,
+      "actual_latency_ms": 16.19639999989886,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0014750562944865
+    },
+    {
+      "sample_index": 83,
+      "scenario": "Normal Load",
+      "budget_ms": 25.88961011322426,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 19.514895674845754,
+      "actual_latency_ms": 20.017000002553686,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0027615205832892
+    },
+    {
+      "sample_index": 84,
+      "scenario": "Normal Load",
+      "budget_ms": 26.78830055509883,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 19.53996391416695,
+      "actual_latency_ms": 15.530000004218891,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9925005909122759
+    },
+    {
+      "sample_index": 85,
+      "scenario": "Normal Load",
+      "budget_ms": 28.48257826006068,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 19.340017873775636,
+      "actual_latency_ms": 16.458799989777617,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9850517408057182
+    },
+    {
+      "sample_index": 86,
+      "scenario": "Normal Load",
+      "budget_ms": 29.161354027424277,
+      "selected_config": [
+        0.55,
+        32
+      ],
+      "predicted_latency_ms": 22.228703491218386,
+      "actual_latency_ms": 19.14609999221284,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9781179052353636
+    },
+    {
+      "sample_index": 87,
+      "scenario": "Normal Load",
+      "budget_ms": 30.399209583752498,
+      "selected_config": [
+        0.55,
+        32
+      ],
+      "predicted_latency_ms": 22.072234375368485,
+      "actual_latency_ms": 20.50460000464227,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9745667596103524
+    },
+    {
+      "sample_index": 88,
+      "scenario": "Normal Load",
+      "budget_ms": 31.714381768788247,
+      "selected_config": [
+        0.55,
+        32
+      ],
+      "predicted_latency_ms": 21.99209912979454,
+      "actual_latency_ms": 18.95350000995677,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9676583715071879
+    },
+    {
+      "sample_index": 89,
+      "scenario": "Normal Load",
+      "budget_ms": 31.478125877751957,
+      "selected_config": [
+        0.55,
+        32
+      ],
+      "predicted_latency_ms": 21.836204262158553,
+      "actual_latency_ms": 19.62969999294728,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 0.9626059726499491
+    },
+    {
+      "sample_index": 90,
+      "scenario": "Normal Load",
+      "budget_ms": 32.53747089433868,
+      "selected_config": [
+        0.6,
+        32
+      ],
+      "predicted_latency_ms": 24.686896610023584,
+      "actual_latency_ms": 54.59569999948144,
+      "missed_deadline": true,
+      "correct": true,
+      "k_adapt": 1.023182244876313
+    },
+    {
+      "sample_index": 91,
+      "scenario": "Normal Load",
+      "budget_ms": 32.41593429388416,
+      "selected_config": [
+        0.6,
+        32
+      ],
+      "predicted_latency_ms": 26.24042963595745,
+      "actual_latency_ms": 20.740599997225218,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0127025581580822
+    },
+    {
+      "sample_index": 92,
+      "scenario": "Normal Load",
+      "budget_ms": 32.117497161423294,
+      "selected_config": [
+        0.6,
+        32
+      ],
+      "predicted_latency_ms": 25.971668637304806,
+      "actual_latency_ms": 24.167199997464195,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.009228640742455
+    },
+    {
+      "sample_index": 93,
+      "scenario": "Normal Load",
+      "budget_ms": 31.591889770564396,
+      "selected_config": [
+        0.55,
+        32
+      ],
+      "predicted_latency_ms": 22.774280051076044,
+      "actual_latency_ms": 25.654700002633035,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0155524848883448
+    },
+    {
+      "sample_index": 94,
+      "scenario": "Normal Load",
+      "budget_ms": 28.922849756901446,
+      "selected_config": [
+        0.55,
+        32
+      ],
+      "predicted_latency_ms": 22.916984084397868,
+      "actual_latency_ms": 24.34730000095442,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0186731309369021
+    },
+    {
+      "sample_index": 95,
+      "scenario": "Normal Load",
+      "budget_ms": 29.306732086169372,
+      "selected_config": [
+        0.55,
+        32
+      ],
+      "predicted_latency_ms": 22.987404665206835,
+      "actual_latency_ms": 21.333899989258498,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0150765860027735
+    },
+    {
+      "sample_index": 96,
+      "scenario": "Normal Load",
+      "budget_ms": 26.725533351334658,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 19.779937157014718,
+      "actual_latency_ms": 19.75000000675209,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0150009104583444
+    },
+    {
+      "sample_index": 97,
+      "scenario": "Normal Load",
+      "budget_ms": 26.100646850503864,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 19.77846253181523,
+      "actual_latency_ms": 19.398300006287172,
+      "missed_deadline": false,
+      "correct": false,
+      "k_adapt": 1.014039858695811
+    },
+    {
+      "sample_index": 98,
+      "scenario": "Normal Load",
+      "budget_ms": 24.504405202739086,
+      "selected_config": [
+        0.5,
+        32
+      ],
+      "predicted_latency_ms": 19.759735330607285,
+      "actual_latency_ms": 17.80240000516642,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0090870207840374
+    },
+    {
+      "sample_index": 99,
+      "scenario": "Normal Load",
+      "budget_ms": 20.962644189155434,
+      "selected_config": [
+        0.35,
+        32
+      ],
+      "predicted_latency_ms": 14.172702582334432,
+      "actual_latency_ms": 12.87380000576377,
+      "missed_deadline": false,
+      "correct": true,
+      "k_adapt": 1.0045046111517713
+    }
+  ]
+}
