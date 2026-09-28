@@ -8,8 +8,10 @@ logs/
 *.pt
 *.pth
 *.ckpt
+*.pt.zip
 model/checkpoint/
 model/checkpoints/
+weights/surrogate_model.pkl
 
 # Virtual Environments
 env/
