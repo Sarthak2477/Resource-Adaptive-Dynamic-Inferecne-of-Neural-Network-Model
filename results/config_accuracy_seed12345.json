@@ -1,0 +1,4139 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-09-26T15:37:38.159441+00:00",
+  "experiment": "per_configuration_full_test_accuracy",
+  "dataset": {
+    "name": "CIFAR-10",
+    "split": "test",
+    "root": "C:\\Users\\sarth\\Resource-Adaptive-Dynamic-Inferecne-of-Neural-Network-Model\\cifar10",
+    "sample_count": 10000,
+    "expected_full_test_sample_count": 10000,
+    "class_sample_counts": {
+      "airplane": 1000,
+      "automobile": 1000,
+      "bird": 1000,
+      "cat": 1000,
+      "deer": 1000,
+      "dog": 1000,
+      "frog": 1000,
+      "horse": 1000,
+      "ship": 1000,
+      "truck": 1000
+    },
+    "class_names": [
+      "airplane",
+      "automobile",
+      "bird",
+      "cat",
+      "deer",
+      "dog",
+      "frog",
+      "horse",
+      "ship",
+      "truck"
+    ],
+    "class_to_idx": {
+      "airplane": 0,
+      "automobile": 1,
+      "bird": 2,
+      "cat": 3,
+      "deer": 4,
+      "dog": 5,
+      "frog": 6,
+      "horse": 7,
+      "ship": 8,
+      "truck": 9
+    }
+  },
+  "model": {
+    "architecture": "models.Model",
+    "checkpoint_path": "C:\\Users\\sarth\\Resource-Adaptive-Dynamic-Inferecne-of-Neural-Network-Model\\models\\checkpoint\\us_resnet_epoch100_checkpoint.pt.zip",
+    "checkpoint_sha256": "983999e69dac71046603a9d76391927e54daff00e7489db85c3ee8b21a401805",
+    "deploy_configs": [
+      {
+        "width_mult": 0.25,
+        "bit_width": 4
+      },
+      {
+        "width_mult": 0.25,
+        "bit_width": 8
+      },
+      {
+        "width_mult": 0.25,
+        "bit_width": 16
+      },
+      {
+        "width_mult": 0.25,
+        "bit_width": 32
+      },
+      {
+        "width_mult": 0.5,
+        "bit_width": 4
+      },
+      {
+        "width_mult": 0.5,
+        "bit_width": 8
+      },
+      {
+        "width_mult": 0.5,
+        "bit_width": 16
+      },
+      {
+        "width_mult": 0.5,
+        "bit_width": 32
+      },
+      {
+        "width_mult": 0.75,
+        "bit_width": 4
+      },
+      {
+        "width_mult": 0.75,
+        "bit_width": 8
+      },
+      {
+        "width_mult": 0.75,
+        "bit_width": 16
+      },
+      {
+        "width_mult": 0.75,
+        "bit_width": 32
+      },
+      {
+        "width_mult": 1.0,
+        "bit_width": 4
+      },
+      {
+        "width_mult": 1.0,
+        "bit_width": 8
+      },
+      {
+        "width_mult": 1.0,
+        "bit_width": 16
+      },
+      {
+        "width_mult": 1.0,
+        "bit_width": 32
+      }
+    ]
+  },
+  "protocol": {
+    "seed": 12345,
+    "deterministic_algorithms_requested": false,
+    "device": "cuda",
+    "batch_size": 256,
+    "bn_calibration_data_split": "train",
+    "bn_calibration_batches_per_configuration": 100,
+    "test_split_used_for_bn_calibration": false,
+    "confidence_interval": "95% Wilson score interval"
+  },
+  "environment": {
+    "python": "3.12.2",
+    "pytorch": "2.5.1+cu124",
+    "numpy": "1.26.4",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "cuda_version": "12.4",
+    "cuda_device_name": "NVIDIA GeForce GTX 1650"
+  },
+  "results": [
+    {
+      "width_mult": 0.25,
+      "bit_width": 4,
+      "total": 10000,
+      "correct": 8954,
+      "accuracy_percent": 89.54,
+      "wilson_95_percent": [
+        88.92491758618841,
+        90.12471582265846
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 899,
+          "accuracy_percent": 89.9,
+          "wilson_95_percent": [
+            87.87702573809261,
+            91.6175989347601
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 955,
+          "accuracy_percent": 95.5,
+          "wilson_95_percent": [
+            94.03171620637765,
+            96.62004877143683
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 871,
+          "accuracy_percent": 87.1,
+          "wilson_95_percent": [
+            84.87959904982232,
+            89.0364554705495
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 796,
+          "accuracy_percent": 79.6,
+          "wilson_95_percent": [
+            76.9913574238833,
+            81.98209847377184
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 884,
+          "accuracy_percent": 88.4,
+          "wilson_95_percent": [
+            86.26667265227275,
+            90.23943229603661
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 805,
+          "accuracy_percent": 80.5,
+          "wilson_95_percent": [
+            77.929577121571,
+            82.83699061081016
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 926,
+          "accuracy_percent": 92.6,
+          "wilson_95_percent": [
+            90.80945943544141,
+            94.0645007415893
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 932,
+          "accuracy_percent": 93.2,
+          "wilson_95_percent": [
+            91.46861384770105,
+            94.60075421914699
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 938,
+          "accuracy_percent": 93.8,
+          "wilson_95_percent": [
+            92.13119396866342,
+            95.13358198800192
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 948,
+          "accuracy_percent": 94.8,
+          "wilson_95_percent": [
+            93.24442606807199,
+            96.01269637162227
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            899,
+            6,
+            31,
+            12,
+            8,
+            0,
+            3,
+            3,
+            20,
+            18
+          ],
+          [
+            6,
+            955,
+            0,
+            0,
+            0,
+            1,
+            1,
+            0,
+            7,
+            30
+          ],
+          [
+            20,
+            0,
+            871,
+            20,
+            27,
+            14,
+            33,
+            8,
+            3,
+            4
+          ],
+          [
+            8,
+            3,
+            37,
+            796,
+            27,
+            80,
+            25,
+            11,
+            7,
+            6
+          ],
+          [
+            7,
+            1,
+            29,
+            26,
+            884,
+            13,
+            18,
+            17,
+            0,
+            5
+          ],
+          [
+            3,
+            1,
+            24,
+            108,
+            26,
+            805,
+            8,
+            23,
+            1,
+            1
+          ],
+          [
+            6,
+            2,
+            24,
+            25,
+            7,
+            6,
+            926,
+            3,
+            1,
+            0
+          ],
+          [
+            5,
+            1,
+            13,
+            14,
+            14,
+            14,
+            1,
+            932,
+            0,
+            6
+          ],
+          [
+            27,
+            6,
+            2,
+            4,
+            1,
+            0,
+            3,
+            0,
+            938,
+            19
+          ],
+          [
+            9,
+            23,
+            1,
+            4,
+            0,
+            0,
+            6,
+            0,
+            9,
+            948
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 0.25,
+      "bit_width": 8,
+      "total": 10000,
+      "correct": 9049,
+      "accuracy_percent": 90.49,
+      "wilson_95_percent": [
+        89.89939074166134,
+        91.04951307028128
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 926,
+          "accuracy_percent": 92.6,
+          "wilson_95_percent": [
+            90.80945943544141,
+            94.0645007415893
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 940,
+          "accuracy_percent": 94.0,
+          "wilson_95_percent": [
+            92.35289252086434,
+            95.3103527324068
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 880,
+          "accuracy_percent": 88.0,
+          "wilson_95_percent": [
+            85.83909241522872,
+            89.87007393986909
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 768,
+          "accuracy_percent": 76.8,
+          "wilson_95_percent": [
+            74.08422968503318,
+            79.31065606014108
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 906,
+          "accuracy_percent": 90.6,
+          "wilson_95_percent": [
+            88.6326845683493,
+            92.25658264262363
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 869,
+          "accuracy_percent": 86.9,
+          "wilson_95_percent": [
+            84.66683584396694,
+            88.8507493797991
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 942,
+          "accuracy_percent": 94.2,
+          "wilson_95_percent": [
+            92.57504237337675,
+            95.48667217650018
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 914,
+          "accuracy_percent": 91.4,
+          "wilson_95_percent": [
+            89.49999687497208,
+            92.98314752242396
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 950,
+          "accuracy_percent": 95.0,
+          "wilson_95_percent": [
+            93.46861797557492,
+            96.18697376072512
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 954,
+          "accuracy_percent": 95.4,
+          "wilson_95_percent": [
+            93.91877960583808,
+            96.5337507236735
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            926,
+            3,
+            19,
+            8,
+            6,
+            0,
+            4,
+            0,
+            20,
+            14
+          ],
+          [
+            6,
+            940,
+            0,
+            1,
+            0,
+            0,
+            2,
+            0,
+            6,
+            45
+          ],
+          [
+            17,
+            0,
+            880,
+            16,
+            23,
+            21,
+            25,
+            11,
+            2,
+            5
+          ],
+          [
+            7,
+            1,
+            29,
+            768,
+            21,
+            128,
+            23,
+            9,
+            9,
+            5
+          ],
+          [
+            8,
+            1,
+            19,
+            18,
+            906,
+            22,
+            9,
+            15,
+            1,
+            1
+          ],
+          [
+            5,
+            1,
+            15,
+            72,
+            17,
+            869,
+            2,
+            14,
+            2,
+            3
+          ],
+          [
+            4,
+            0,
+            19,
+            19,
+            7,
+            7,
+            942,
+            0,
+            2,
+            0
+          ],
+          [
+            11,
+            0,
+            14,
+            11,
+            13,
+            30,
+            1,
+            914,
+            1,
+            5
+          ],
+          [
+            26,
+            1,
+            2,
+            3,
+            1,
+            0,
+            2,
+            1,
+            950,
+            14
+          ],
+          [
+            6,
+            19,
+            0,
+            5,
+            0,
+            0,
+            4,
+            0,
+            12,
+            954
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 0.25,
+      "bit_width": 16,
+      "total": 10000,
+      "correct": 9058,
+      "accuracy_percent": 90.58,
+      "wilson_95_percent": [
+        89.99179648441304,
+        91.13703820782284
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 930,
+          "accuracy_percent": 93.0,
+          "wilson_95_percent": [
+            91.24853518487167,
+            94.4223635853706
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 938,
+          "accuracy_percent": 93.8,
+          "wilson_95_percent": [
+            92.13119396866342,
+            95.13358198800192
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 882,
+          "accuracy_percent": 88.2,
+          "wilson_95_percent": [
+            86.05279149182591,
+            90.05484415987767
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 768,
+          "accuracy_percent": 76.8,
+          "wilson_95_percent": [
+            74.08422968503318,
+            79.31065606014108
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 909,
+          "accuracy_percent": 90.9,
+          "wilson_95_percent": [
+            88.957441593046,
+            92.52952956283559
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 872,
+          "accuracy_percent": 87.2,
+          "wilson_95_percent": [
+            84.98604138497564,
+            89.12924778369906
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 941,
+          "accuracy_percent": 94.1,
+          "wilson_95_percent": [
+            92.46390972285408,
+            95.39857017871995
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 915,
+          "accuracy_percent": 91.5,
+          "wilson_95_percent": [
+            89.60871089966437,
+            93.07366814603455
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 950,
+          "accuracy_percent": 95.0,
+          "wilson_95_percent": [
+            93.46861797557492,
+            96.18697376072512
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 953,
+          "accuracy_percent": 95.3,
+          "wilson_95_percent": [
+            93.80600619184716,
+            96.44728948936154
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            930,
+            3,
+            17,
+            8,
+            6,
+            0,
+            4,
+            0,
+            18,
+            14
+          ],
+          [
+            7,
+            938,
+            0,
+            1,
+            0,
+            0,
+            2,
+            0,
+            6,
+            46
+          ],
+          [
+            17,
+            0,
+            882,
+            16,
+            23,
+            20,
+            25,
+            11,
+            2,
+            4
+          ],
+          [
+            8,
+            1,
+            27,
+            768,
+            22,
+            130,
+            21,
+            9,
+            9,
+            5
+          ],
+          [
+            8,
+            1,
+            18,
+            19,
+            909,
+            22,
+            8,
+            14,
+            1,
+            0
+          ],
+          [
+            5,
+            1,
+            14,
+            71,
+            17,
+            872,
+            2,
+            13,
+            2,
+            3
+          ],
+          [
+            3,
+            0,
+            19,
+            18,
+            7,
+            9,
+            941,
+            0,
+            2,
+            1
+          ],
+          [
+            9,
+            0,
+            12,
+            11,
+            13,
+            33,
+            1,
+            915,
+            1,
+            5
+          ],
+          [
+            26,
+            1,
+            2,
+            3,
+            1,
+            0,
+            2,
+            1,
+            950,
+            14
+          ],
+          [
+            7,
+            19,
+            0,
+            5,
+            0,
+            0,
+            4,
+            0,
+            12,
+            953
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 0.25,
+      "bit_width": 32,
+      "total": 10000,
+      "correct": 9056,
+      "accuracy_percent": 90.56,
+      "wilson_95_percent": [
+        89.97126050823204,
+        91.11758954393866
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 928,
+          "accuracy_percent": 92.8,
+          "wilson_95_percent": [
+            91.02882164172793,
+            94.24360783190856
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 940,
+          "accuracy_percent": 94.0,
+          "wilson_95_percent": [
+            92.35289252086434,
+            95.3103527324068
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 879,
+          "accuracy_percent": 87.9,
+          "wilson_95_percent": [
+            85.73230993571588,
+            89.77762177107904
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 766,
+          "accuracy_percent": 76.6,
+          "wilson_95_percent": [
+            73.87721670475355,
+            79.11919974381493
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 906,
+          "accuracy_percent": 90.6,
+          "wilson_95_percent": [
+            88.6326845683493,
+            92.25658264262363
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 872,
+          "accuracy_percent": 87.2,
+          "wilson_95_percent": [
+            84.98604138497564,
+            89.12924778369906
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 943,
+          "accuracy_percent": 94.3,
+          "wilson_95_percent": [
+            92.6862932340514,
+            95.57465596412841
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 917,
+          "accuracy_percent": 91.7,
+          "wilson_95_percent": [
+            89.82635048659463,
+            93.25449785571007
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 950,
+          "accuracy_percent": 95.0,
+          "wilson_95_percent": [
+            93.46861797557492,
+            96.18697376072512
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 955,
+          "accuracy_percent": 95.5,
+          "wilson_95_percent": [
+            94.03171620637765,
+            96.62004877143683
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            928,
+            3,
+            17,
+            8,
+            6,
+            0,
+            4,
+            0,
+            20,
+            14
+          ],
+          [
+            6,
+            940,
+            0,
+            1,
+            0,
+            0,
+            2,
+            0,
+            6,
+            45
+          ],
+          [
+            17,
+            0,
+            879,
+            16,
+            23,
+            21,
+            25,
+            11,
+            2,
+            6
+          ],
+          [
+            7,
+            1,
+            28,
+            766,
+            22,
+            131,
+            23,
+            8,
+            9,
+            5
+          ],
+          [
+            8,
+            1,
+            19,
+            19,
+            906,
+            23,
+            9,
+            14,
+            1,
+            0
+          ],
+          [
+            5,
+            1,
+            14,
+            71,
+            17,
+            872,
+            2,
+            13,
+            2,
+            3
+          ],
+          [
+            3,
+            0,
+            18,
+            17,
+            7,
+            9,
+            943,
+            0,
+            2,
+            1
+          ],
+          [
+            9,
+            0,
+            12,
+            10,
+            13,
+            32,
+            1,
+            917,
+            1,
+            5
+          ],
+          [
+            26,
+            1,
+            1,
+            3,
+            1,
+            0,
+            2,
+            1,
+            950,
+            15
+          ],
+          [
+            6,
+            20,
+            0,
+            4,
+            0,
+            0,
+            4,
+            0,
+            11,
+            955
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 0.5,
+      "bit_width": 4,
+      "total": 10000,
+      "correct": 9011,
+      "accuracy_percent": 90.11,
+      "wilson_95_percent": [
+        89.5094039014683,
+        90.67979174923602
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 905,
+          "accuracy_percent": 90.5,
+          "wilson_95_percent": [
+            88.52455602057478,
+            92.16547654209526
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 961,
+          "accuracy_percent": 96.1,
+          "wilson_95_percent": [
+            94.71306895804986,
+            97.13410390958195
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 871,
+          "accuracy_percent": 87.1,
+          "wilson_95_percent": [
+            84.87959904982232,
+            89.0364554705495
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 804,
+          "accuracy_percent": 80.4,
+          "wilson_95_percent": [
+            77.82523359291925,
+            82.74209949115902
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 889,
+          "accuracy_percent": 88.9,
+          "wilson_95_percent": [
+            86.80219923564879,
+            90.70007895417504
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 829,
+          "accuracy_percent": 82.9,
+          "wilson_95_percent": [
+            80.44158480970535,
+            85.10661448194513
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 939,
+          "accuracy_percent": 93.9,
+          "wilson_95_percent": [
+            92.24198811757162,
+            95.22202248739661
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 929,
+          "accuracy_percent": 92.9,
+          "wilson_95_percent": [
+            91.13863365698452,
+            94.33303046495486
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 943,
+          "accuracy_percent": 94.3,
+          "wilson_95_percent": [
+            92.6862932340514,
+            95.57465596412841
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 941,
+          "accuracy_percent": 94.1,
+          "wilson_95_percent": [
+            92.46390972285408,
+            95.39857017871995
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            905,
+            5,
+            21,
+            15,
+            5,
+            1,
+            7,
+            3,
+            27,
+            11
+          ],
+          [
+            7,
+            961,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            10,
+            21
+          ],
+          [
+            16,
+            1,
+            871,
+            26,
+            25,
+            18,
+            27,
+            8,
+            4,
+            4
+          ],
+          [
+            6,
+            2,
+            39,
+            804,
+            26,
+            68,
+            27,
+            15,
+            5,
+            8
+          ],
+          [
+            6,
+            1,
+            30,
+            32,
+            889,
+            12,
+            8,
+            19,
+            1,
+            2
+          ],
+          [
+            7,
+            0,
+            18,
+            94,
+            16,
+            829,
+            4,
+            27,
+            4,
+            1
+          ],
+          [
+            5,
+            1,
+            21,
+            22,
+            4,
+            5,
+            939,
+            1,
+            1,
+            1
+          ],
+          [
+            8,
+            1,
+            8,
+            16,
+            16,
+            11,
+            3,
+            929,
+            3,
+            5
+          ],
+          [
+            22,
+            7,
+            2,
+            5,
+            1,
+            1,
+            2,
+            3,
+            943,
+            14
+          ],
+          [
+            11,
+            32,
+            1,
+            2,
+            0,
+            0,
+            3,
+            0,
+            10,
+            941
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 0.5,
+      "bit_width": 8,
+      "total": 10000,
+      "correct": 9173,
+      "accuracy_percent": 91.73,
+      "wilson_95_percent": [
+        91.17401216863085,
+        92.25393932735247
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 939,
+          "accuracy_percent": 93.9,
+          "wilson_95_percent": [
+            92.24198811757162,
+            95.22202248739661
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 967,
+          "accuracy_percent": 96.7,
+          "wilson_95_percent": [
+            95.40187355329184,
+            97.64070720415732
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 886,
+          "accuracy_percent": 88.6,
+          "wilson_95_percent": [
+            86.48073995463685,
+            90.42383429027831
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 820,
+          "accuracy_percent": 82.0,
+          "wilson_95_percent": [
+            79.49777670979879,
+            84.25731074712569
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 923,
+          "accuracy_percent": 92.3,
+          "wilson_95_percent": [
+            90.48104693818263,
+            93.79520929393942
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 857,
+          "accuracy_percent": 85.7,
+          "wilson_95_percent": [
+            83.39350119390161,
+            87.73326825022974
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 940,
+          "accuracy_percent": 94.0,
+          "wilson_95_percent": [
+            92.35289252086434,
+            95.3103527324068
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 937,
+          "accuracy_percent": 93.7,
+          "wilson_95_percent": [
+            92.0205076295354,
+            95.04503367882711
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 957,
+          "accuracy_percent": 95.7,
+          "wilson_95_percent": [
+            94.25809961559159,
+            96.79213465882866
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 947,
+          "accuracy_percent": 94.7,
+          "wilson_95_percent": [
+            93.13253831625083,
+            95.92534947514054
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            939,
+            4,
+            17,
+            8,
+            4,
+            0,
+            4,
+            1,
+            19,
+            4
+          ],
+          [
+            5,
+            967,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            7,
+            19
+          ],
+          [
+            19,
+            0,
+            886,
+            21,
+            27,
+            10,
+            23,
+            8,
+            4,
+            2
+          ],
+          [
+            7,
+            1,
+            25,
+            820,
+            30,
+            79,
+            19,
+            8,
+            7,
+            4
+          ],
+          [
+            3,
+            1,
+            15,
+            24,
+            923,
+            14,
+            6,
+            12,
+            2,
+            0
+          ],
+          [
+            3,
+            0,
+            17,
+            79,
+            19,
+            857,
+            1,
+            18,
+            2,
+            4
+          ],
+          [
+            4,
+            1,
+            20,
+            15,
+            10,
+            6,
+            940,
+            0,
+            2,
+            2
+          ],
+          [
+            4,
+            0,
+            11,
+            11,
+            16,
+            17,
+            2,
+            937,
+            1,
+            1
+          ],
+          [
+            21,
+            4,
+            2,
+            2,
+            0,
+            0,
+            2,
+            1,
+            957,
+            11
+          ],
+          [
+            10,
+            27,
+            1,
+            3,
+            0,
+            0,
+            1,
+            0,
+            11,
+            947
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 0.5,
+      "bit_width": 16,
+      "total": 10000,
+      "correct": 9179,
+      "accuracy_percent": 91.79,
+      "wilson_95_percent": [
+        91.23577326466351,
+        92.31213215151534
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 940,
+          "accuracy_percent": 94.0,
+          "wilson_95_percent": [
+            92.35289252086434,
+            95.3103527324068
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 965,
+          "accuracy_percent": 96.5,
+          "wilson_95_percent": [
+            95.17133776255466,
+            97.4727736982887
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 889,
+          "accuracy_percent": 88.9,
+          "wilson_95_percent": [
+            86.80219923564879,
+            90.70007895417504
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 816,
+          "accuracy_percent": 81.6,
+          "wilson_95_percent": [
+            79.07901792135868,
+            83.87913094235422
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 925,
+          "accuracy_percent": 92.5,
+          "wilson_95_percent": [
+            90.69990602607456,
+            93.97481950265328
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 859,
+          "accuracy_percent": 85.9,
+          "wilson_95_percent": [
+            83.60535141123196,
+            87.91988732950519
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 941,
+          "accuracy_percent": 94.1,
+          "wilson_95_percent": [
+            92.46390972285408,
+            95.39857017871995
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 937,
+          "accuracy_percent": 93.7,
+          "wilson_95_percent": [
+            92.0205076295354,
+            95.04503367882711
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 959,
+          "accuracy_percent": 95.9,
+          "wilson_95_percent": [
+            94.48520067923587,
+            96.96350289179017
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 948,
+          "accuracy_percent": 94.8,
+          "wilson_95_percent": [
+            93.24442606807199,
+            96.01269637162227
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            940,
+            4,
+            17,
+            7,
+            4,
+            0,
+            4,
+            1,
+            19,
+            4
+          ],
+          [
+            5,
+            965,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            7,
+            21
+          ],
+          [
+            18,
+            0,
+            889,
+            19,
+            26,
+            10,
+            24,
+            8,
+            4,
+            2
+          ],
+          [
+            7,
+            1,
+            32,
+            816,
+            29,
+            76,
+            20,
+            8,
+            7,
+            4
+          ],
+          [
+            3,
+            1,
+            16,
+            23,
+            925,
+            13,
+            6,
+            11,
+            2,
+            0
+          ],
+          [
+            3,
+            0,
+            17,
+            78,
+            19,
+            859,
+            1,
+            18,
+            1,
+            4
+          ],
+          [
+            4,
+            1,
+            18,
+            15,
+            10,
+            7,
+            941,
+            0,
+            2,
+            2
+          ],
+          [
+            4,
+            0,
+            11,
+            10,
+            16,
+            18,
+            2,
+            937,
+            1,
+            1
+          ],
+          [
+            19,
+            4,
+            2,
+            2,
+            0,
+            0,
+            2,
+            1,
+            959,
+            11
+          ],
+          [
+            9,
+            26,
+            1,
+            3,
+            0,
+            0,
+            1,
+            0,
+            12,
+            948
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 0.5,
+      "bit_width": 32,
+      "total": 10000,
+      "correct": 9182,
+      "accuracy_percent": 91.82,
+      "wilson_95_percent": [
+        91.26665699883641,
+        92.34122537744021
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 939,
+          "accuracy_percent": 93.9,
+          "wilson_95_percent": [
+            92.24198811757162,
+            95.22202248739661
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 967,
+          "accuracy_percent": 96.7,
+          "wilson_95_percent": [
+            95.40187355329184,
+            97.64070720415732
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 890,
+          "accuracy_percent": 89.0,
+          "wilson_95_percent": [
+            86.90945010531242,
+            90.79206273281429
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 816,
+          "accuracy_percent": 81.6,
+          "wilson_95_percent": [
+            79.07901792135868,
+            83.87913094235422
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 926,
+          "accuracy_percent": 92.6,
+          "wilson_95_percent": [
+            90.80945943544141,
+            94.0645007415893
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 859,
+          "accuracy_percent": 85.9,
+          "wilson_95_percent": [
+            83.60535141123196,
+            87.91988732950519
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 941,
+          "accuracy_percent": 94.1,
+          "wilson_95_percent": [
+            92.46390972285408,
+            95.39857017871995
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 937,
+          "accuracy_percent": 93.7,
+          "wilson_95_percent": [
+            92.0205076295354,
+            95.04503367882711
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 960,
+          "accuracy_percent": 96.0,
+          "wilson_95_percent": [
+            94.5990355878742,
+            97.04890263145472
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 947,
+          "accuracy_percent": 94.7,
+          "wilson_95_percent": [
+            93.13253831625083,
+            95.92534947514054
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            939,
+            4,
+            17,
+            8,
+            4,
+            0,
+            4,
+            1,
+            19,
+            4
+          ],
+          [
+            5,
+            967,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            7,
+            19
+          ],
+          [
+            18,
+            0,
+            890,
+            19,
+            26,
+            10,
+            23,
+            8,
+            4,
+            2
+          ],
+          [
+            7,
+            1,
+            32,
+            816,
+            29,
+            76,
+            20,
+            8,
+            7,
+            4
+          ],
+          [
+            3,
+            1,
+            15,
+            23,
+            926,
+            13,
+            6,
+            11,
+            2,
+            0
+          ],
+          [
+            3,
+            0,
+            17,
+            78,
+            19,
+            859,
+            1,
+            17,
+            2,
+            4
+          ],
+          [
+            4,
+            1,
+            18,
+            15,
+            10,
+            7,
+            941,
+            0,
+            2,
+            2
+          ],
+          [
+            4,
+            0,
+            11,
+            10,
+            16,
+            18,
+            2,
+            937,
+            1,
+            1
+          ],
+          [
+            19,
+            4,
+            2,
+            2,
+            0,
+            0,
+            2,
+            1,
+            960,
+            10
+          ],
+          [
+            9,
+            27,
+            1,
+            3,
+            0,
+            0,
+            1,
+            0,
+            12,
+            947
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 0.75,
+      "bit_width": 4,
+      "total": 10000,
+      "correct": 9057,
+      "accuracy_percent": 90.57,
+      "wilson_95_percent": [
+        89.98152839833247,
+        91.1273139738708
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 918,
+          "accuracy_percent": 91.8,
+          "wilson_95_percent": [
+            89.93527833262955,
+            93.34480465797806
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 962,
+          "accuracy_percent": 96.2,
+          "wilson_95_percent": [
+            94.82730796686496,
+            97.21909954906974
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 872,
+          "accuracy_percent": 87.2,
+          "wilson_95_percent": [
+            84.98604138497564,
+            89.12924778369906
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 832,
+          "accuracy_percent": 83.2,
+          "wilson_95_percent": [
+            80.7566979119539,
+            85.38920532460523
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 870,
+          "accuracy_percent": 87.0,
+          "wilson_95_percent": [
+            84.77319733455312,
+            88.94362253751581
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 839,
+          "accuracy_percent": 83.9,
+          "wilson_95_percent": [
+            81.49299903062807,
+            86.04754674405129
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 937,
+          "accuracy_percent": 93.7,
+          "wilson_95_percent": [
+            92.0205076295354,
+            95.04503367882711
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 944,
+          "accuracy_percent": 94.4,
+          "wilson_95_percent": [
+            92.7976651850269,
+            95.6625186614558
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 945,
+          "accuracy_percent": 94.5,
+          "wilson_95_percent": [
+            92.90916123226242,
+            95.75025726252315
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 938,
+          "accuracy_percent": 93.8,
+          "wilson_95_percent": [
+            92.13119396866342,
+            95.13358198800192
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            918,
+            3,
+            17,
+            12,
+            6,
+            0,
+            3,
+            3,
+            21,
+            17
+          ],
+          [
+            7,
+            962,
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            8,
+            21
+          ],
+          [
+            19,
+            1,
+            872,
+            31,
+            21,
+            11,
+            31,
+            8,
+            4,
+            2
+          ],
+          [
+            4,
+            3,
+            35,
+            832,
+            23,
+            59,
+            21,
+            8,
+            6,
+            9
+          ],
+          [
+            8,
+            1,
+            29,
+            36,
+            870,
+            15,
+            17,
+            22,
+            0,
+            2
+          ],
+          [
+            6,
+            0,
+            13,
+            96,
+            17,
+            839,
+            4,
+            22,
+            1,
+            2
+          ],
+          [
+            5,
+            1,
+            23,
+            20,
+            5,
+            5,
+            937,
+            2,
+            0,
+            2
+          ],
+          [
+            5,
+            0,
+            7,
+            12,
+            11,
+            14,
+            3,
+            944,
+            0,
+            4
+          ],
+          [
+            32,
+            8,
+            1,
+            2,
+            0,
+            1,
+            2,
+            1,
+            945,
+            8
+          ],
+          [
+            12,
+            28,
+            1,
+            3,
+            0,
+            1,
+            3,
+            1,
+            13,
+            938
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 0.75,
+      "bit_width": 8,
+      "total": 10000,
+      "correct": 9218,
+      "accuracy_percent": 92.18,
+      "wilson_95_percent": [
+        91.6374317409483,
+        92.6901741565014
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 942,
+          "accuracy_percent": 94.2,
+          "wilson_95_percent": [
+            92.57504237337675,
+            95.48667217650018
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 972,
+          "accuracy_percent": 97.2,
+          "wilson_95_percent": [
+            95.98298168024068,
+            98.05577231872292
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 882,
+          "accuracy_percent": 88.2,
+          "wilson_95_percent": [
+            86.05279149182591,
+            90.05484415987767
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 823,
+          "accuracy_percent": 82.3,
+          "wilson_95_percent": [
+            79.81212935038732,
+            84.54066205144582
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 927,
+          "accuracy_percent": 92.7,
+          "wilson_95_percent": [
+            90.91909744657494,
+            94.15409737875866
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 867,
+          "accuracy_percent": 86.7,
+          "wilson_95_percent": [
+            84.45423199288764,
+            88.66488393427261
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 947,
+          "accuracy_percent": 94.7,
+          "wilson_95_percent": [
+            93.13253831625083,
+            95.92534947514054
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 944,
+          "accuracy_percent": 94.4,
+          "wilson_95_percent": [
+            92.7976651850269,
+            95.6625186614558
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 962,
+          "accuracy_percent": 96.2,
+          "wilson_95_percent": [
+            94.82730796686496,
+            97.21909954906974
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 952,
+          "accuracy_percent": 95.2,
+          "wilson_95_percent": [
+            93.6933911349866,
+            96.36066989791921
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            942,
+            3,
+            15,
+            6,
+            2,
+            0,
+            1,
+            1,
+            21,
+            9
+          ],
+          [
+            4,
+            972,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            5,
+            18
+          ],
+          [
+            20,
+            0,
+            882,
+            21,
+            31,
+            10,
+            22,
+            8,
+            4,
+            2
+          ],
+          [
+            5,
+            1,
+            29,
+            823,
+            29,
+            75,
+            23,
+            6,
+            6,
+            3
+          ],
+          [
+            3,
+            1,
+            15,
+            23,
+            927,
+            11,
+            7,
+            11,
+            1,
+            1
+          ],
+          [
+            3,
+            0,
+            16,
+            71,
+            21,
+            867,
+            2,
+            15,
+            1,
+            4
+          ],
+          [
+            3,
+            1,
+            16,
+            20,
+            6,
+            5,
+            947,
+            0,
+            1,
+            1
+          ],
+          [
+            5,
+            0,
+            10,
+            11,
+            15,
+            12,
+            1,
+            944,
+            1,
+            1
+          ],
+          [
+            20,
+            5,
+            1,
+            3,
+            1,
+            0,
+            2,
+            0,
+            962,
+            6
+          ],
+          [
+            9,
+            22,
+            0,
+            4,
+            0,
+            0,
+            2,
+            0,
+            11,
+            952
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 0.75,
+      "bit_width": 16,
+      "total": 10000,
+      "correct": 9218,
+      "accuracy_percent": 92.18,
+      "wilson_95_percent": [
+        91.6374317409483,
+        92.6901741565014
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 943,
+          "accuracy_percent": 94.3,
+          "wilson_95_percent": [
+            92.6862932340514,
+            95.57465596412841
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 970,
+          "accuracy_percent": 97.0,
+          "wilson_95_percent": [
+            95.74965858524128,
+            97.89062611711653
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 882,
+          "accuracy_percent": 88.2,
+          "wilson_95_percent": [
+            86.05279149182591,
+            90.05484415987767
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 823,
+          "accuracy_percent": 82.3,
+          "wilson_95_percent": [
+            79.81212935038732,
+            84.54066205144582
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 927,
+          "accuracy_percent": 92.7,
+          "wilson_95_percent": [
+            90.91909744657494,
+            94.15409737875866
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 866,
+          "accuracy_percent": 86.6,
+          "wilson_95_percent": [
+            84.34798887827,
+            88.57189240058736
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 949,
+          "accuracy_percent": 94.9,
+          "wilson_95_percent": [
+            93.35645136552382,
+            96.09990572247332
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 943,
+          "accuracy_percent": 94.3,
+          "wilson_95_percent": [
+            92.6862932340514,
+            95.57465596412841
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 962,
+          "accuracy_percent": 96.2,
+          "wilson_95_percent": [
+            94.82730796686496,
+            97.21909954906974
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 953,
+          "accuracy_percent": 95.3,
+          "wilson_95_percent": [
+            93.80600619184716,
+            96.44728948936154
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            943,
+            3,
+            15,
+            5,
+            2,
+            0,
+            1,
+            1,
+            21,
+            9
+          ],
+          [
+            4,
+            970,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            5,
+            19
+          ],
+          [
+            20,
+            0,
+            882,
+            21,
+            31,
+            10,
+            22,
+            8,
+            4,
+            2
+          ],
+          [
+            5,
+            1,
+            31,
+            823,
+            28,
+            75,
+            23,
+            6,
+            5,
+            3
+          ],
+          [
+            3,
+            1,
+            15,
+            23,
+            927,
+            11,
+            7,
+            11,
+            1,
+            1
+          ],
+          [
+            3,
+            0,
+            16,
+            72,
+            21,
+            866,
+            2,
+            15,
+            1,
+            4
+          ],
+          [
+            2,
+            1,
+            15,
+            20,
+            6,
+            5,
+            949,
+            0,
+            1,
+            1
+          ],
+          [
+            5,
+            0,
+            9,
+            11,
+            16,
+            13,
+            1,
+            943,
+            1,
+            1
+          ],
+          [
+            20,
+            5,
+            1,
+            3,
+            1,
+            0,
+            2,
+            0,
+            962,
+            6
+          ],
+          [
+            9,
+            21,
+            0,
+            4,
+            0,
+            0,
+            2,
+            0,
+            11,
+            953
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 0.75,
+      "bit_width": 32,
+      "total": 10000,
+      "correct": 9217,
+      "accuracy_percent": 92.17,
+      "wilson_95_percent": [
+        91.62712811378073,
+        92.68048546363639
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 943,
+          "accuracy_percent": 94.3,
+          "wilson_95_percent": [
+            92.6862932340514,
+            95.57465596412841
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 969,
+          "accuracy_percent": 96.9,
+          "wilson_95_percent": [
+            95.63345039877078,
+            97.80759965528414
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 883,
+          "accuracy_percent": 88.3,
+          "wilson_95_percent": [
+            86.15970906192936,
+            90.14716123807713
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 824,
+          "accuracy_percent": 82.4,
+          "wilson_95_percent": [
+            79.91696851594058,
+            84.63505753419544
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 928,
+          "accuracy_percent": 92.8,
+          "wilson_95_percent": [
+            91.02882164172793,
+            94.24360783190856
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 866,
+          "accuracy_percent": 86.6,
+          "wilson_95_percent": [
+            84.34798887827,
+            88.57189240058736
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 949,
+          "accuracy_percent": 94.9,
+          "wilson_95_percent": [
+            93.35645136552382,
+            96.09990572247332
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 942,
+          "accuracy_percent": 94.2,
+          "wilson_95_percent": [
+            92.57504237337675,
+            95.48667217650018
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 961,
+          "accuracy_percent": 96.1,
+          "wilson_95_percent": [
+            94.71306895804986,
+            97.13410390958195
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 952,
+          "accuracy_percent": 95.2,
+          "wilson_95_percent": [
+            93.6933911349866,
+            96.36066989791921
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            943,
+            2,
+            15,
+            6,
+            2,
+            0,
+            1,
+            1,
+            20,
+            10
+          ],
+          [
+            4,
+            969,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            6,
+            19
+          ],
+          [
+            19,
+            0,
+            883,
+            21,
+            31,
+            10,
+            22,
+            8,
+            4,
+            2
+          ],
+          [
+            5,
+            1,
+            31,
+            824,
+            28,
+            75,
+            22,
+            6,
+            5,
+            3
+          ],
+          [
+            3,
+            1,
+            15,
+            23,
+            928,
+            11,
+            7,
+            11,
+            0,
+            1
+          ],
+          [
+            3,
+            0,
+            16,
+            72,
+            21,
+            866,
+            2,
+            15,
+            1,
+            4
+          ],
+          [
+            2,
+            1,
+            15,
+            20,
+            6,
+            5,
+            949,
+            0,
+            1,
+            1
+          ],
+          [
+            5,
+            0,
+            9,
+            11,
+            17,
+            13,
+            1,
+            942,
+            1,
+            1
+          ],
+          [
+            20,
+            5,
+            1,
+            3,
+            1,
+            0,
+            2,
+            0,
+            961,
+            7
+          ],
+          [
+            10,
+            22,
+            0,
+            4,
+            0,
+            0,
+            2,
+            0,
+            10,
+            952
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 1.0,
+      "bit_width": 4,
+      "total": 10000,
+      "correct": 8989,
+      "accuracy_percent": 89.89,
+      "wilson_95_percent": [
+        89.28374431783186,
+        90.46562029215556
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 909,
+          "accuracy_percent": 90.9,
+          "wilson_95_percent": [
+            88.957441593046,
+            92.52952956283559
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 964,
+          "accuracy_percent": 96.4,
+          "wilson_95_percent": [
+            95.05643395327921,
+            97.38844285926127
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 874,
+          "accuracy_percent": 87.4,
+          "wilson_95_percent": [
+            85.19904953398138,
+            89.3147089312991
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 799,
+          "accuracy_percent": 79.9,
+          "wilson_95_percent": [
+            77.30388134679093,
+            82.26727849577289
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 811,
+          "accuracy_percent": 81.1,
+          "wilson_95_percent": [
+            78.55616182967687,
+            83.40581379252163
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 852,
+          "accuracy_percent": 85.2,
+          "wilson_95_percent": [
+            82.8644950702635,
+            87.26610113235343
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 943,
+          "accuracy_percent": 94.3,
+          "wilson_95_percent": [
+            92.6862932340514,
+            95.57465596412841
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 965,
+          "accuracy_percent": 96.5,
+          "wilson_95_percent": [
+            95.17133776255466,
+            97.4727736982887
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 953,
+          "accuracy_percent": 95.3,
+          "wilson_95_percent": [
+            93.80600619184716,
+            96.44728948936154
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 919,
+          "accuracy_percent": 91.9,
+          "wilson_95_percent": [
+            90.04427979303053,
+            93.43503784587998
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            909,
+            3,
+            22,
+            14,
+            3,
+            2,
+            3,
+            6,
+            29,
+            9
+          ],
+          [
+            8,
+            964,
+            3,
+            1,
+            0,
+            0,
+            0,
+            1,
+            10,
+            13
+          ],
+          [
+            12,
+            0,
+            874,
+            26,
+            18,
+            15,
+            35,
+            12,
+            6,
+            2
+          ],
+          [
+            5,
+            2,
+            36,
+            799,
+            10,
+            101,
+            23,
+            14,
+            7,
+            3
+          ],
+          [
+            11,
+            1,
+            37,
+            41,
+            811,
+            32,
+            17,
+            45,
+            5,
+            0
+          ],
+          [
+            5,
+            0,
+            14,
+            85,
+            10,
+            852,
+            5,
+            25,
+            3,
+            1
+          ],
+          [
+            5,
+            1,
+            20,
+            19,
+            3,
+            8,
+            943,
+            0,
+            1,
+            0
+          ],
+          [
+            5,
+            0,
+            5,
+            9,
+            4,
+            10,
+            1,
+            965,
+            0,
+            1
+          ],
+          [
+            27,
+            7,
+            0,
+            2,
+            0,
+            1,
+            3,
+            2,
+            953,
+            5
+          ],
+          [
+            16,
+            33,
+            1,
+            5,
+            0,
+            0,
+            1,
+            4,
+            21,
+            919
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 1.0,
+      "bit_width": 8,
+      "total": 10000,
+      "correct": 9226,
+      "accuracy_percent": 92.26,
+      "wilson_95_percent": [
+        91.71986989189833,
+        92.76767456581207
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 946,
+          "accuracy_percent": 94.6,
+          "wilson_95_percent": [
+            93.02078451539475,
+            95.83786862769372
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 972,
+          "accuracy_percent": 97.2,
+          "wilson_95_percent": [
+            95.98298168024068,
+            98.05577231872292
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 887,
+          "accuracy_percent": 88.7,
+          "wilson_95_percent": [
+            86.58784472486151,
+            90.51596416835653
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 826,
+          "accuracy_percent": 82.6,
+          "wilson_95_percent": [
+            80.12673037329014,
+            84.82376497345166
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 925,
+          "accuracy_percent": 92.5,
+          "wilson_95_percent": [
+            90.69990602607456,
+            93.97481950265328
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 876,
+          "accuracy_percent": 87.6,
+          "wilson_95_percent": [
+            85.41222509908472,
+            89.50000266280153
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 946,
+          "accuracy_percent": 94.6,
+          "wilson_95_percent": [
+            93.02078451539475,
+            95.83786862769372
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 941,
+          "accuracy_percent": 94.1,
+          "wilson_95_percent": [
+            92.46390972285408,
+            95.39857017871995
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 959,
+          "accuracy_percent": 95.9,
+          "wilson_95_percent": [
+            94.48520067923587,
+            96.96350289179017
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 948,
+          "accuracy_percent": 94.8,
+          "wilson_95_percent": [
+            93.24442606807199,
+            96.01269637162227
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            946,
+            3,
+            13,
+            4,
+            2,
+            0,
+            2,
+            2,
+            20,
+            8
+          ],
+          [
+            7,
+            972,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            5,
+            16
+          ],
+          [
+            21,
+            0,
+            887,
+            17,
+            28,
+            10,
+            21,
+            11,
+            4,
+            1
+          ],
+          [
+            7,
+            1,
+            28,
+            826,
+            27,
+            81,
+            17,
+            5,
+            5,
+            3
+          ],
+          [
+            2,
+            2,
+            16,
+            21,
+            925,
+            13,
+            7,
+            11,
+            1,
+            2
+          ],
+          [
+            2,
+            0,
+            13,
+            69,
+            19,
+            876,
+            2,
+            15,
+            1,
+            3
+          ],
+          [
+            3,
+            1,
+            17,
+            22,
+            4,
+            5,
+            946,
+            0,
+            1,
+            1
+          ],
+          [
+            5,
+            0,
+            9,
+            8,
+            15,
+            20,
+            1,
+            941,
+            0,
+            1
+          ],
+          [
+            20,
+            4,
+            1,
+            3,
+            1,
+            0,
+            1,
+            0,
+            959,
+            11
+          ],
+          [
+            12,
+            24,
+            0,
+            4,
+            0,
+            0,
+            1,
+            0,
+            11,
+            948
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 1.0,
+      "bit_width": 16,
+      "total": 10000,
+      "correct": 9240,
+      "accuracy_percent": 92.4,
+      "wilson_95_percent": [
+        91.86417626283541,
+        92.9032606753312
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 943,
+          "accuracy_percent": 94.3,
+          "wilson_95_percent": [
+            92.6862932340514,
+            95.57465596412841
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 973,
+          "accuracy_percent": 97.3,
+          "wilson_95_percent": [
+            96.10012692469599,
+            98.1378617225705
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 890,
+          "accuracy_percent": 89.0,
+          "wilson_95_percent": [
+            86.90945010531242,
+            90.79206273281429
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 837,
+          "accuracy_percent": 83.7,
+          "wilson_95_percent": [
+            81.28247624397997,
+            85.8596002340936
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 930,
+          "accuracy_percent": 93.0,
+          "wilson_95_percent": [
+            91.24853518487167,
+            94.4223635853706
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 873,
+          "accuracy_percent": 87.3,
+          "wilson_95_percent": [
+            85.09252474282142,
+            89.22199907415616
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 946,
+          "accuracy_percent": 94.6,
+          "wilson_95_percent": [
+            93.02078451539475,
+            95.83786862769372
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 940,
+          "accuracy_percent": 94.0,
+          "wilson_95_percent": [
+            92.35289252086434,
+            95.3103527324068
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 959,
+          "accuracy_percent": 95.9,
+          "wilson_95_percent": [
+            94.48520067923587,
+            96.96350289179017
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 949,
+          "accuracy_percent": 94.9,
+          "wilson_95_percent": [
+            93.35645136552382,
+            96.09990572247332
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            943,
+            3,
+            14,
+            5,
+            2,
+            0,
+            3,
+            3,
+            19,
+            8
+          ],
+          [
+            6,
+            973,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            5,
+            16
+          ],
+          [
+            22,
+            0,
+            890,
+            16,
+            27,
+            9,
+            21,
+            11,
+            4,
+            0
+          ],
+          [
+            6,
+            1,
+            28,
+            837,
+            26,
+            74,
+            15,
+            5,
+            5,
+            3
+          ],
+          [
+            2,
+            2,
+            16,
+            20,
+            930,
+            12,
+            6,
+            10,
+            1,
+            1
+          ],
+          [
+            2,
+            0,
+            13,
+            72,
+            19,
+            873,
+            2,
+            15,
+            1,
+            3
+          ],
+          [
+            3,
+            1,
+            17,
+            22,
+            4,
+            5,
+            946,
+            0,
+            1,
+            1
+          ],
+          [
+            5,
+            0,
+            10,
+            9,
+            15,
+            19,
+            1,
+            940,
+            0,
+            1
+          ],
+          [
+            20,
+            5,
+            1,
+            3,
+            1,
+            0,
+            1,
+            0,
+            959,
+            10
+          ],
+          [
+            12,
+            24,
+            0,
+            4,
+            0,
+            0,
+            1,
+            0,
+            10,
+            949
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    },
+    {
+      "width_mult": 1.0,
+      "bit_width": 32,
+      "total": 10000,
+      "correct": 9231,
+      "accuracy_percent": 92.31,
+      "wilson_95_percent": [
+        91.77140205011987,
+        92.81610400775348
+      ],
+      "per_class": [
+        {
+          "class_name": "airplane",
+          "total": 1000,
+          "correct": 943,
+          "accuracy_percent": 94.3,
+          "wilson_95_percent": [
+            92.6862932340514,
+            95.57465596412841
+          ]
+        },
+        {
+          "class_name": "automobile",
+          "total": 1000,
+          "correct": 972,
+          "accuracy_percent": 97.2,
+          "wilson_95_percent": [
+            95.98298168024068,
+            98.05577231872292
+          ]
+        },
+        {
+          "class_name": "bird",
+          "total": 1000,
+          "correct": 889,
+          "accuracy_percent": 88.9,
+          "wilson_95_percent": [
+            86.80219923564879,
+            90.70007895417504
+          ]
+        },
+        {
+          "class_name": "cat",
+          "total": 1000,
+          "correct": 830,
+          "accuracy_percent": 83.0,
+          "wilson_95_percent": [
+            80.5465935038086,
+            85.20084043614476
+          ]
+        },
+        {
+          "class_name": "deer",
+          "total": 1000,
+          "correct": 930,
+          "accuracy_percent": 93.0,
+          "wilson_95_percent": [
+            91.24853518487167,
+            94.4223635853706
+          ]
+        },
+        {
+          "class_name": "dog",
+          "total": 1000,
+          "correct": 873,
+          "accuracy_percent": 87.3,
+          "wilson_95_percent": [
+            85.09252474282142,
+            89.22199907415616
+          ]
+        },
+        {
+          "class_name": "frog",
+          "total": 1000,
+          "correct": 945,
+          "accuracy_percent": 94.5,
+          "wilson_95_percent": [
+            92.90916123226242,
+            95.75025726252315
+          ]
+        },
+        {
+          "class_name": "horse",
+          "total": 1000,
+          "correct": 940,
+          "accuracy_percent": 94.0,
+          "wilson_95_percent": [
+            92.35289252086434,
+            95.3103527324068
+          ]
+        },
+        {
+          "class_name": "ship",
+          "total": 1000,
+          "correct": 959,
+          "accuracy_percent": 95.9,
+          "wilson_95_percent": [
+            94.48520067923587,
+            96.96350289179017
+          ]
+        },
+        {
+          "class_name": "truck",
+          "total": 1000,
+          "correct": 950,
+          "accuracy_percent": 95.0,
+          "wilson_95_percent": [
+            93.46861797557492,
+            96.18697376072512
+          ]
+        }
+      ],
+      "confusion_matrix": {
+        "labels": [
+          "airplane",
+          "automobile",
+          "bird",
+          "cat",
+          "deer",
+          "dog",
+          "frog",
+          "horse",
+          "ship",
+          "truck"
+        ],
+        "rows_actual_columns_predicted": [
+          [
+            943,
+            3,
+            14,
+            5,
+            2,
+            0,
+            3,
+            3,
+            19,
+            8
+          ],
+          [
+            6,
+            972,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            5,
+            17
+          ],
+          [
+            21,
+            0,
+            889,
+            16,
+            28,
+            10,
+            21,
+            11,
+            4,
+            0
+          ],
+          [
+            6,
+            1,
+            29,
+            830,
+            26,
+            79,
+            16,
+            5,
+            5,
+            3
+          ],
+          [
+            2,
+            2,
+            16,
+            20,
+            930,
+            12,
+            6,
+            10,
+            1,
+            1
+          ],
+          [
+            2,
+            0,
+            13,
+            72,
+            20,
+            873,
+            1,
+            15,
+            1,
+            3
+          ],
+          [
+            3,
+            1,
+            17,
+            22,
+            5,
+            5,
+            945,
+            0,
+            1,
+            1
+          ],
+          [
+            5,
+            0,
+            9,
+            9,
+            15,
+            19,
+            2,
+            940,
+            0,
+            1
+          ],
+          [
+            20,
+            4,
+            1,
+            3,
+            1,
+            0,
+            1,
+            0,
+            959,
+            11
+          ],
+          [
+            12,
+            23,
+            0,
+            4,
+            0,
+            0,
+            1,
+            0,
+            10,
+            950
+          ]
+        ]
+      },
+      "bn_calibration_batches": 100
+    }
+  ]
+}

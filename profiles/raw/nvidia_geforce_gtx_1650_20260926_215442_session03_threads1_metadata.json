@@ -1,0 +1,38 @@
+{
+  "session_id": "session03",
+  "started_at_local": "2026-09-26T21:54:42.032356+05:30",
+  "device": "cuda",
+  "device_name": "nvidia_geforce_gtx_1650",
+  "torch_version": "2.5.1+cu124",
+  "cuda_runtime_version": "12.4",
+  "thread_count": 1,
+  "power_mode": "AC, High performance; GPU baseline 69C and 8% utilization",
+  "seed": 12345,
+  "checkpoint": "models\\checkpoint\\us_resnet_epoch100_checkpoint.pt.zip",
+  "checkpoint_sha256": "983999e69dac71046603a9d76391927e54daff00e7489db85c3ee8b21a401805",
+  "warm_samples_per_config": 200,
+  "warmup_samples_per_config": 20,
+  "transition_repeats_per_ordered_pair": 10,
+  "transition_pair_count": 240,
+  "transition_order": "seeded randomized; each pair restores and runs source before target",
+  "device_fingerprint": {
+    "device_speed_score": 49701.78945355485,
+    "cpu_cores": 4,
+    "cpu_cores_logical": 8,
+    "ram_gb": 8.362713088,
+    "has_cuda": 1.0,
+    "arch": "AMD64"
+  },
+  "device_metrics_start": {
+    "driver_version": "552.22",
+    "gpu_temperature_c": "81",
+    "gpu_power_draw_w": "26.71",
+    "gpu_power_limit_w": "[N/A]"
+  },
+  "device_metrics_end": {
+    "driver_version": "552.22",
+    "gpu_temperature_c": "85",
+    "gpu_power_draw_w": "27.42",
+    "gpu_power_limit_w": "[N/A]"
+  }
+}
