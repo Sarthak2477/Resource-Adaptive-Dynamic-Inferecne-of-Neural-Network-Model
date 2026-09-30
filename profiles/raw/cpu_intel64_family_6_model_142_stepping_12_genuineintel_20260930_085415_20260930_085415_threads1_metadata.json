@@ -1,0 +1,28 @@
+{
+  "session_id": "20260930_085415",
+  "started_at_local": "2026-09-30T08:54:15.072764+05:30",
+  "device": "cpu",
+  "device_name": "cpu_intel64_family_6_model_142_stepping_12_genuineintel",
+  "torch_version": "2.14.0+cpu",
+  "cuda_runtime_version": null,
+  "thread_count": 1,
+  "power_mode": "unspecified",
+  "seed": 12345,
+  "checkpoint": "models\\checkpoint\\us_resnet_epoch100_checkpoint.pt",
+  "checkpoint_sha256": "f7bc63b9d284c126f2fe1f9106307688d441219b6c211df19754eb5499047a46",
+  "warm_samples_per_config": 200,
+  "warmup_samples_per_config": 20,
+  "transition_repeats_per_ordered_pair": 10,
+  "transition_pair_count": 240,
+  "transition_order": "seeded randomized; each pair restores and runs source before target",
+  "device_fingerprint": {
+    "device_speed_score": 4157.946533821764,
+    "cpu_cores": 2,
+    "cpu_cores_logical": 4,
+    "ram_gb": 4.124798976,
+    "has_cuda": 0.0,
+    "arch": "AMD64"
+  },
+  "device_metrics_start": {},
+  "device_metrics_end": {}
+}
