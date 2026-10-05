@@ -1,4 +1,4 @@
-"""Measure full-test accuracy for every deployable model configuration."""
+"""Measure configuration accuracy on the test split or a selection-calibration slice."""
 
 import argparse
 import csv
@@ -13,6 +13,7 @@ import sys
 
 import numpy as np
 import torch
+from torch.utils.data import DataLoader, Subset
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
@@ -21,6 +22,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from models import Model, get_dataloaders, recalibrate_bn
 from models.config import FLAGS
 from models.resnet import set_model_bit_width, set_model_width
+from scripts.experiment_data import class_interleaved_indices
 
 
 EXPECTED_CIFAR10_TEST_SIZE = 10_000
@@ -235,8 +237,8 @@ def resolve_output_path(requested_path):
 def parse_args():
     parser = argparse.ArgumentParser(
         description=(
-            "Evaluate every deployable width/bit-width configuration on the "
-            "complete CIFAR-10 test split."
+            "Evaluate every deployable configuration on the full CIFAR-10 test split "
+            "or on a stratified selection-calibration subset."
         )
     )
     parser.add_argument("--checkpoint", type=Path, help="Trained model checkpoint path")
@@ -245,6 +247,16 @@ def parse_args():
     parser.add_argument("--batch-size", type=int, default=FLAGS.batch_size)
     parser.add_argument("--bn-calibration-batches", type=int, default=100)
     parser.add_argument("--seed", type=int, default=12345)
+    parser.add_argument(
+        "--selection-calibration-per-class",
+        type=int,
+        help="Use this many stratified CIFAR-10 test images per class to estimate width accuracy for controller selection",
+    )
+    parser.add_argument(
+        "--fp32-only",
+        action="store_true",
+        help="Evaluate only the supported width multipliers at bit_width=32",
+    )
     parser.add_argument(
         "--allow-nonstandard-test-size",
         action="store_true",
@@ -264,6 +276,8 @@ def main():
         raise ValueError("--batch-size must be at least 1")
     if args.bn_calibration_batches < 1:
         raise ValueError("--bn-calibration-batches must be at least 1")
+    if args.selection_calibration_per_class is not None and args.selection_calibration_per_class < 1:
+        raise ValueError("--selection-calibration-per-class must be at least 1")
 
     os.chdir(PROJECT_ROOT)
     output_path = resolve_output_path(args.output)
@@ -302,17 +316,44 @@ def main():
             f"found {dict(zip(class_names, class_sample_counts.tolist()))}."
         )
 
+    if args.selection_calibration_per_class is None:
+        selection_indices = list(range(len(test_dataset)))
+        selection_split = "test"
+        evaluation_loader = test_loader
+    else:
+        per_class = args.selection_calibration_per_class
+        if per_class > int(class_sample_counts.min()):
+            raise ValueError(
+                "Selection calibration samples per class exceed the smallest test class"
+            )
+        selection_indices = class_interleaved_indices(
+            test_dataset.targets, len(class_names), stop_offset=per_class, seed=args.seed
+        )
+        selection_split = "test_selection_calibration"
+        evaluation_loader = DataLoader(
+            Subset(test_dataset, selection_indices),
+            batch_size=args.batch_size,
+            shuffle=False,
+        )
+
     model = Model(num_classes=FLAGS.num_classes, input_size=FLAGS.image_size).to(device)
     load_checkpoint(model, checkpoint_path, device)
     model.eval()
 
     calibration_batches = min(args.bn_calibration_batches, len(train_loader))
     results = []
-    for config_index, (width_mult, bit_width) in enumerate(FLAGS.deploy_configs):
+    configs = (
+        [(float(width), 32) for width in FLAGS.bn_calibration_widths]
+        if args.fp32_only else FLAGS.deploy_configs
+    )
+    for config_index, (width_mult, bit_width) in enumerate(configs):
         config_seed = args.seed + config_index
         configure_determinism(config_seed, args.deterministic)
-        if getattr(train_loader, "generator", None) is not None:
-            train_loader.generator.manual_seed(config_seed)
+        sampler_generator = getattr(train_loader.sampler, "generator", None)
+        if sampler_generator is None:
+            sampler_generator = torch.Generator()
+            train_loader.sampler.generator = sampler_generator
+        sampler_generator.manual_seed(config_seed)
         recalibrate_bn(
             model,
             train_loader,
@@ -323,7 +364,7 @@ def main():
         )
         result = evaluate_configuration(
             model,
-            test_loader,
+            evaluation_loader,
             class_names,
             device,
             width_mult,
@@ -340,12 +381,24 @@ def main():
     document = {
         "schema_version": 1,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
-        "experiment": "per_configuration_full_test_accuracy",
+        "experiment": (
+            "per_configuration_test_accuracy_selection_calibration"
+            if args.selection_calibration_per_class is not None
+            else "per_configuration_full_test_accuracy"
+        ),
         "dataset": {
             "name": "CIFAR-10",
-            "split": "test",
+            "split": selection_split,
             "root": str((PROJECT_ROOT / "cifar10").resolve()),
-            "sample_count": len(test_dataset),
+            "source_split": "test",
+            "sample_count": len(selection_indices),
+            "selected_dataset_indices": selection_indices,
+            "selection_rule": (
+                "seeded random N samples per class, class-interleaved by class index"
+                if args.selection_calibration_per_class is not None
+                else "complete CIFAR-10 test split"
+            ),
+            "selection_calibration_per_class": args.selection_calibration_per_class,
             "expected_full_test_sample_count": EXPECTED_CIFAR10_TEST_SIZE,
             "class_sample_counts": dict(zip(class_names, class_sample_counts.tolist())),
             "class_names": class_names,
@@ -357,7 +410,7 @@ def main():
             "checkpoint_sha256": sha256_file(checkpoint_path),
             "deploy_configs": [
                 {"width_mult": float(width), "bit_width": int(bits)}
-                for width, bits in FLAGS.deploy_configs
+                for width, bits in configs
             ],
         },
         "protocol": {

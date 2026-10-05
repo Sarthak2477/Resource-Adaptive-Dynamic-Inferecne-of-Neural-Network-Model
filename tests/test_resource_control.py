@@ -78,6 +78,59 @@ class ResourceControlTests(unittest.TestCase):
 
         self.assertEqual(model.predict([row]), [10.0])
 
+    def test_measured_condition_profiles_change_latency_and_selection(self):
+        frontier = []
+        for row, baseline_latency, contention_latency in zip(
+            make_frontier(), (5.0, 10.0, 20.0), (8.0, 20.0, 40.0)
+        ):
+            frontier.append({
+                **row,
+                "condition_profiles": {
+                    "baseline": {"latency_ms": baseline_latency},
+                    "contention": {"latency_ms": contention_latency},
+                },
+            })
+        baseline_controller = SurrogateBackedController(
+            frontier,
+            surrogate_model=MeasuredFrontierLatencyModel(frontier),
+            min_dwell_s=0.0,
+        )
+        pressure_controller = SurrogateBackedController(
+            frontier,
+            surrogate_model=MeasuredFrontierLatencyModel(frontier),
+            min_dwell_s=0.0,
+        )
+        pressure_state = ResourceState(85.0, 1024.0, 80.0, 80.0, 0.0, "contention")
+
+        baseline_width = baseline_controller.select(make_state(), 15.0, make_fingerprint())
+        pressure_width = pressure_controller.select(pressure_state, 15.0, make_fingerprint())
+
+        self.assertEqual(baseline_width, (0.5, 32))
+        self.assertEqual(pressure_width, (0.25, 32))
+
+    def test_infeasible_fallback_uses_fastest_active_condition_prediction(self):
+        frontier = []
+        for row, contention_latency in zip(make_frontier(), (10.0, 3.0, 20.0)):
+            frontier.append({
+                **row,
+                "condition_profiles": {
+                    "baseline": {"latency_ms": row["latency_ms"]},
+                    "contention": {"latency_ms": contention_latency},
+                },
+            })
+        controller = SurrogateBackedController(
+            frontier,
+            surrogate_model=MeasuredFrontierLatencyModel(frontier),
+            min_dwell_s=0.0,
+        )
+        contention_state = ResourceState(85.0, 1024.0, 80.0, 80.0, 0.0, "contention")
+
+        selected = controller.select(contention_state, 1.0, make_fingerprint())
+
+        self.assertEqual(selected, (0.5, 32))
+        self.assertEqual(controller.last_selection_status, "infeasible_budget")
+        self.assertEqual(controller.last_predicted_latency, 3.0)
+
     def test_p95_policy_uses_percentile_and_classifies_infeasible_budget(self):
         frontier = make_frontier()
         for row in frontier:
@@ -127,6 +180,25 @@ class ResourceControlTests(unittest.TestCase):
 
         self.assertEqual(selected, (0.25, 32))
         self.assertAlmostEqual(controller.last_predicted_latency, 50.0)
+
+    def test_controller_fallback_uses_selected_quantile_order(self):
+        frontier = [
+            {"config": (1.0, 32), "latency_ms": 30.0, "latency_p50_ms": 9.0, "latency_p95_ms": 100.0, "latency_p99_ms": 150.0, "acc": 95.0},
+            {"config": (0.25, 32), "latency_ms": 5.0, "latency_p50_ms": 4.0, "latency_p95_ms": 10.0, "latency_p99_ms": 15.0, "acc": 85.0},
+            {"config": (0.5, 32), "latency_ms": 10.0, "latency_p50_ms": 7.0, "latency_p95_ms": 12.0, "latency_p99_ms": 18.0, "acc": 90.0},
+            {"config": (0.75, 32), "latency_ms": 15.0, "latency_p50_ms": 8.0, "latency_p95_ms": 30.0, "latency_p99_ms": 40.0, "acc": 93.0},
+        ]
+        controller = SurrogateBackedController(
+            frontier,
+            surrogate_model=ConstantSurrogate(1000.0),
+            min_dwell_s=0.0,
+            latency_policy="p95",
+        )
+
+        selected = controller.select(make_state(), 9.0, make_fingerprint())
+
+        self.assertEqual(selected, (0.25, 32))
+        self.assertEqual(controller.frontier[0]["config"], (0.25, 32))
 
     def test_feedback_updates_and_clips_adaptation_factor(self):
         controller = SurrogateBackedController(make_frontier(), min_dwell_s=0.0)

@@ -35,6 +35,7 @@ __pycache__/
 .idea/
 
 # OS files
+results
 .DS_Store
 Thumbs.db
 RESOURCE_CONTROL_GUIDE.md

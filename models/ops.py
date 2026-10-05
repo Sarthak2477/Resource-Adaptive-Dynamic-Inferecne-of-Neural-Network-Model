@@ -165,6 +165,8 @@ class ActQuant(nn.Module):
         self.bit_width = max(FLAGS.bit_width_list)
 
     def forward(self, x):
+        if self.bit_width >= 32:
+            return x
         return fake_quantize_act(x, self.bit_width)
 
 

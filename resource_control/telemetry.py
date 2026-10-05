@@ -12,6 +12,7 @@ class ResourceState:
     battery_pct: float | None
     thermal_c: float | None
     timestamp: float
+    resource_condition: str | None = None
 
 def device_speed_score(device, matmul_size=256, n_warmup=5, n_reps=30):
     """A single scalar proxying this device's matmul throughput.

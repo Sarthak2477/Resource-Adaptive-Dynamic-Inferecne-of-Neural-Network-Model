@@ -292,9 +292,49 @@ The periodic console log also prints the selected configuration, CPU utilization
 
 All scripts must be run from the **project root** (`anynet/`).
 
+### Static versus USM FP32 experiment
+
+This no-training comparison uses the same trained USM checkpoint in both arms:
+
+- `usm_pinned`: controller disabled; use the one width selected before final evaluation from a separate FP32 calibration profile.
+- `usm_adaptive`: use the existing controller to select among `0.25`, `0.50`, `0.75`, and `1.00`, always at FP32.
+
+The workflow evaluates each USM width on the full CIFAR-10 test split, profiles the checkpoint, freezes the pinned width using the widest-width-meeting-calibration-P95-deadline rule, and replays one shared synthetic request sequence across both arms. It does not train model weights. BN statistics are recalibrated from the training split for the four widths; this is forward-only calibration, not optimizer training. The default 100-request workload is a synthetic pilot, not an actual deployment trace. Its arrival timestamps are metadata only; the runner does not simulate queueing or real-time pacing. The request-level accuracy in the paired replay is based on those 100 test examples; the separate accuracy artifact reports all 10,000 test examples for every width.
+
+```powershell
+python .\scripts\run_static_vs_usm.py `
+  --usm-checkpoint .\models\checkpoint\us_resnet_epoch100_checkpoint.pt.zip `
+  --repetitions 10 `
+  --threads 1 `
+  --n-samples 10000 `
+  --target-deadline-ms 30 `
+  --policy p95
+```
+
+Use `--n-samples 10 --repetitions 1` only for a pipeline smoke test. The full setting uses the complete CIFAR-10 test ordering in each paired repetition. The replay resource labels repeat a fixed 100-request cycle (synthetic contention at cycle positions 30-69); they are controller inputs, not injected or measured device contention.
+
+Each run gets a unique directory under `results/static_vs_usm_fp32/runs/`. It contains full-test per-width accuracy, the checkpoint-matched FP32 latency profile, the frozen pinned-width config, source and dataset-bound workload files, an environment/protocol manifest, request-level JSONL for both arms, paired summaries, and plots. The deadline uses end-to-end time from controller selection/width assignment through model execution; preprocessing and data loading are excluded. Model-only latency is also retained. On CUDA, execution is synchronized before timing stops. Warm-up requests are excluded, and arm execution order alternates by repetition.
+
+### Actual-precision width sweep
+
+Run the separate precision experiment to measure real FP32, CUDA FP16 autocast, and native CPU INT8 inference at widths `0.25`, `0.50`, `0.75`, and `1.00`. It freezes each width, recalibrates BN from the CIFAR-10 training split, calibrates INT8 observers from training data, and measures accuracy on the held-out test split. No fake-quant timing is reported. INT4 is recorded as unsupported when no real INT4 convolution backend is installed.
+
+```powershell
+$run = ".\results\real_precision_$(Get-Date -Format yyyyMMdd_HHmmss)"
+python .\scripts\experiment_real_precision.py `
+  --output $run `
+  --sample-count 10000 `
+  --latency-samples 200 `
+  --latency-repeats 5 `
+  --threads 1 `
+  --device auto
+```
+
+`precision_width_summary.csv` contains accuracy and latency percentiles; `latency_observations.csv` contains individual timings; `run_metadata.json` records device, backend, checkpoint hash, and precision semantics. With `--device auto`, FP32 and FP16 use CUDA when available, while INT8 uses native CPU operators. These cross-device latency values are not directly comparable. For a same-CPU FP32/INT8 comparison, run a second experiment with `--device cpu` and a different output directory; FP16 will then be marked unsupported. On the current Windows/PyTorch stack, the GTX 1650 supports CUDA FP16 and the CPU supports x86 INT8, but no INT4 convolution backend is installed, so INT4 accuracy/latency is intentionally not fabricated.
+
 ### Step 0: Obtain a Pre-Trained Checkpoint
 
-The pre-trained weights file `models/checkpoint/us_resnet_epoch100_checkpoint.pt` is not tracked by git (it is ~380 MB). You have two options:
+The pre-trained weights file `models/checkpoint/us_resnet_epoch100_checkpoint.pt.zip` is not tracked by git (it is ~380 MB). You have two options:
 
 **Option A — Download the provided checkpoint** _(link to be added by maintainer)_
 

@@ -7,8 +7,12 @@ try:
 except ImportError:
     pd = None
 
-from telemetry import hardware_fingerprint
-from controller import FEATURES, extract_config_features
+try:
+    from .telemetry import hardware_fingerprint
+    from .controller import FEATURES, extract_config_features
+except ImportError:  # pragma: no cover - compatibility for legacy direct script usage
+    from telemetry import hardware_fingerprint
+    from controller import FEATURES, extract_config_features
 
 def collect_profiling_data(model, device, configs, load_levels=[0], n_repeats=3, sample_input=None):
     """
@@ -123,7 +127,10 @@ def train_surrogate(df):
         model = RandomForestRegressor(n_estimators=50, random_state=42)
     except ImportError:
         # Pure Python fallback model
-        from controller import PhysicsSurrogateModel
+        try:
+            from .controller import PhysicsSurrogateModel
+        except ImportError:  # pragma: no cover
+            from controller import PhysicsSurrogateModel
         class CustomFitter:
             def __init__(self):
                 self.phys = PhysicsSurrogateModel()
