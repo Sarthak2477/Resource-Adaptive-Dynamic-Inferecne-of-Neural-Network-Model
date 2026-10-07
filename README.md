@@ -164,12 +164,17 @@ anynet/
 ├── scripts/                         # Runnable entry-point scripts
 │   ├── profile_hardware.py          # Step 1 – measure latency of all 16 configs on this device
 │   ├── train_surrogate.py           # Step 2 – train RandomForest surrogate on profiles/
-│   └── evaluate.py                  # Step 3 – closed-loop evaluation with sinusoidal budgets
+│   ├── evaluate.py                  # Step 3 – closed-loop evaluation with sinusoidal budgets
+│   ├── run_experiments.py           # Batch evaluation across policies and traces
+│   ├── run_static_vs_usm.py         # Static (pinned) vs adaptive USM comparison experiment
+│   ├── evaluate_config_accuracy.py  # Per-config accuracy sweep on full test set
+│   └── generate_usm_qat_report.py   # Report + plots generator for static vs USM runs
 │
 ├── profiles/                        # Auto-generated hardware latency databases (CSV)
 │   ├── nvidia_geforce_gtx_1650_profile.csv
 │   ├── tesla_t4_profile.csv
-│   └── cpu_x86_64_profile.csv
+│   ├── cpu_x86_64_profile.csv
+│   └── raw/                         # Per-session raw observations and transition matrices
 │
 ├── weights/
 │   └── surrogate_model.pkl          # Trained RandomForest surrogate (not tracked by git)
@@ -178,8 +183,11 @@ anynet/
 │   ├── test.py                      # Basic smoke tests
 │   └── test_resource_control.py     # Scenario-based integration tests for the controller
 │
+├── results/                         # Experiment outputs (JSON, CSV, plots)
+│   └── static_vs_usm_fp32/runs/     # Per-run artifacts for static vs USM experiment
 ├── data/                            # Placeholder for dataset utilities
 ├── cifar10/                         # Auto-downloaded CIFAR-10 dataset (not tracked by git)
+├── show_configs.py                  # Print all 60 supernetwork configurations with accuracy
 ├── RESOURCE_CONTROL_GUIDE.md        # Deep-dive math reference for the control system
 └── README.md                        # This file
 ```
@@ -217,6 +225,23 @@ The evaluation in `scripts/evaluate.py` simulates 100 inference steps with:
 
 The controller dynamically switched between configs — selecting the largest/most-accurate subnet when the budget was generous, falling back to `(0.25, 32)` during tight budget windows, without manual tuning.
 
+### Static (Pinned) vs Adaptive USM Comparison (CPU, 3 repetitions, 100 samples)
+
+| Metric | USM Full (1.0, 32) fixed | USM Adaptive | Difference (95% CI) |
+| :--- | ---: | ---: | ---: |
+| Accuracy (%) | 79.00 | 78.00 | -1.00 |
+| Model P50 latency (ms) | 54.24 | 32.52 | -21.72 |
+| Model P95 latency (ms) | 92.47 | 44.45 | -48.03 |
+| Model P99 latency (ms) | 103.03 | 47.89 | -55.14 |
+| E2E P50 latency (ms) | 521.97 | 41.63 | -480.35 |
+| E2E P95 latency (ms) | 643.67 | 54.42 | -589.24 |
+| Deadline Miss Rate (%) | 100.00 | 97.00 | -3.00 |
+| Mean Deadline Violation (ms) | 488.95 | 23.32 | -465.63 |
+| Mean Selected Width | 1.00 | 0.25 | -0.75 |
+| Controller Overhead (ms) | 0.00 | 0.14 | +0.14 |
+
+> Adaptive USM reduces model P95 latency by ~48 ms and mean deadline violation by ~466 ms at a cost of only 1% accuracy. The high absolute miss rate reflects tight synthetic deadlines on CPU inference.
+
 ---
 
 ## 6. Prerequisites & Installation
@@ -245,7 +270,7 @@ source env/bin/activate
 
 # 3. Install dependencies
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-pip install scikit-learn pandas numpy psutil
+pip install scikit-learn pandas numpy psutil matplotlib
 ```
 
 > **Note:** Replace `cu121` with your CUDA version (e.g. `cu118`, `cpu`). See [pytorch.org/get-started](https://pytorch.org/get-started/locally/) for the exact command.
@@ -303,11 +328,10 @@ The workflow evaluates each USM width on the full CIFAR-10 test split, profiles 
 
 ```powershell
 python .\scripts\run_static_vs_usm.py `
-  --usm-checkpoint .\models\checkpoint\us_resnet_epoch100_checkpoint.pt.zip `
+  --usm-checkpoint .\models\checkpoint\us_resnet_epoch100_checkpoint.pt `
   --repetitions 10 `
   --threads 1 `
   --n-samples 10000 `
-  --target-deadline-ms 30 `
   --policy p95
 ```
 
@@ -360,16 +384,25 @@ python scripts/profile_hardware.py
 
 - Detects your GPU or CPU automatically.
 - Runs 20 warmup + 200 measurement passes for each of the 16 `(width_mult, bit_width)` configurations.
-- Saves results to `profiles/<device_name>_profile.csv`.
+- Saves raw observations and config summaries to `profiles/raw/<device>_<timestamp>_config_summary.csv`.
+- Copy the config summary to `profiles/<device_name>_profile.csv` before running `evaluate.py`.
 
 **Example output:**
 
 ```
 Detected Hardware Device: cuda (nvidia_geforce_gtx_1650)
-[1/16] Profiling config: width=0.25, bits=4 ...  Avg: 5.12ms | Std: 0.83ms
-[2/16] Profiling config: width=0.25, bits=8 ...  Avg: 5.48ms | Std: 0.91ms
+[1/16] Profiling warm config: width=0.25, bits=4 ... mean: 5.12ms | n=200
+[2/16] Profiling warm config: width=0.25, bits=8 ... mean: 5.48ms | n=200
 ...
-Profiling complete! Results saved to: profiles/nvidia_geforce_gtx_1650_profile.csv
+Profiling complete. Session artifacts:
+  Raw observations: profiles/raw/nvidia_geforce_gtx_1650_<timestamp>_observations.csv
+  Config summaries: profiles/raw/nvidia_geforce_gtx_1650_<timestamp>_config_summary.csv
+```
+
+After profiling, copy the config summary to the expected location:
+
+```powershell
+copy profiles\raw\<config_summary_filename>.csv profiles\<device_name>_profile.csv
 ```
 
 > **Why this step?** Latency varies significantly between devices (a GTX 1650 vs. a T4 vs. a laptop CPU). The surrogate model is device-aware, so it needs your hardware's measurements to be accurate.
