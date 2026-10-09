@@ -455,27 +455,32 @@ def main():
         })
 
         # Print progress logs
-        progress_total = len(subset_dataset)
-        if (idx + 1) % max(1, min(10, progress_total)) == 0:
-            print(
-                f"Sample {idx+1:03d}/{progress_total} | {scenario:<16} | "
-                f"Budget: {budget:4.1f}ms | Pred: {pred_latency or 0.0:4.1f}ms | "
-                f"Actual: {dt:4.1f}ms | K_adapt: {controller.k_adapt:.3f} | "
-                f"Miss: {str(missed_deadline):5} | Selected: {str(selected_cfg):8} | "
-                f"Width: {selected_features['width_mult']:.2f} | "
-                f"Bits: {int(selected_features['bit_width']):2d} | "
-                f"CPU: {selected_features['cpu_pct']:4.1f}% | "
-                f"RAM avail: {selected_features['mem_available_mb']:7.1f}MB | "
-                f"Temp: {selected_features['thermal_c'] if selected_features['thermal_c'] is not None else 0.0:4.1f}C | "
-                f"Speed: {selected_features['device_speed_score']:8.1f} | "
-                f"Cores: {selected_features['cpu_cores']:2d} | "
-                f"RAM: {selected_features['ram_gb']:4.1f}GB | "
-                f"CUDA: {int(selected_features['has_cuda'])} | "
-                f"FLOPs: {selected_features['approx_flops']:9.0f} | "
-                f"Params: {selected_features['approx_params']:8.0f} | "
-                f"FLOPs/speed: {selected_features['flops_per_speed']:7.2f} | "
-                f"Correct: {is_correct}"
-            )
+        if (idx + 1) % 10 == 0:
+            miss_marker = "MISS" if missed_deadline else "OK  "
+            correct_marker = "YES" if is_correct else "NO "
+            W, V = 26, 12
+            sep  = "+" + "-" * (W + V + 3) + "+" + "-" * (W + V + 3) + "+"
+            hdr  = "+" + "=" * (W + V + 3) + "+" + "=" * (W + V + 3) + "+"
+            def row(l1, v1, l2, v2):
+                return f"| {l1:<{W}} {v1:>{V}} | {l2:<{W}} {v2:>{V}} |"
+            print(f"\n{hdr}")
+            title = f"  Sample {idx+1:03d}/100  |  {scenario:<16}  |  Deadline: {miss_marker}  |  Correct: {correct_marker}"
+            print(f"| {title:<{W+V+W+V+5}} |")
+            print(hdr)
+            print(row("Metric", "Value", "Metric", "Value"))
+            print(sep)
+            print(row("Config (width, bits)",    f"({selected_cfg[0]:.2f},{selected_cfg[1]}b)",  "Budget (ms)",           f"{budget:.1f}"))
+            print(row("Predicted Latency (ms)",  f"{pred_latency or 0.0:.1f}",                   "Actual Latency (ms)",   f"{dt:.1f}"))
+            print(row("K_adapt",                 f"{controller.k_adapt:.3f}",                    "Pred Error (ms)",       f"{abs(dt-(pred_latency or 0.0)):.1f}"))
+            print(sep)
+            print(row("CPU Load (%)",            f"{cpu_pct:.1f}",                               "Temperature (C)",       f"{thermal_c:.1f}"))
+            print(row("RAM Available (MB)",      f"{selected_features['mem_available_mb']:.1f}", "RAM Total (GB)",        f"{selected_features['ram_gb']:.1f}"))
+            print(row("Device Speed Score",      f"{selected_features['device_speed_score']:.1f}","CPU Cores",            f"{selected_features['cpu_cores']}"))
+            print(row("CUDA Available",          str(bool(selected_features['has_cuda'])),        "Width Multiplier",      f"{selected_features['width_mult']:.2f}"))
+            print(sep)
+            print(row("Bit Width",               f"{int(selected_features['bit_width'])}",        "Approx FLOPs",          f"{selected_features['approx_flops']:.0f}"))
+            print(row("Approx Params",           f"{selected_features['approx_params']:.0f}",     "FLOPs / Speed",         f"{selected_features['flops_per_speed']:.2f}"))
+            print(sep)
 
     print_banner("5. Evaluation Summary")
     avg_latency = sum(inference_times) / len(inference_times)

@@ -166,7 +166,7 @@ def write_run_manifests(run_root, run_id, args):
 def main():
     parser = argparse.ArgumentParser(description="Compare fixed full-capacity USM with resource-aware adaptive width-bit USM.")
     parser.add_argument("--run-id", default=None)
-    parser.add_argument("--usm-checkpoint", default=os.path.join(project_root, "models", "checkpoint", "us_resnet_epoch100_checkpoint.pt.zip"))
+    parser.add_argument("--usm-checkpoint", default=None)
     parser.add_argument("--repetitions", type=int, default=3)
     parser.add_argument("--threads", type=int, default=1)
     parser.add_argument("--n-samples", type=int, default=200)
@@ -196,8 +196,9 @@ def main():
         bind_test_workload, capture_environment, create_partition, run_command,
     )
     from scripts.usm_qat_data import stratified_train_partition
+    from models.checkpoint_io import resolve_usm_checkpoint
 
-    checkpoint = Path(args.usm_checkpoint).resolve()
+    checkpoint = resolve_usm_checkpoint(args.usm_checkpoint)
     environment = capture_environment(run_id, checkpoint, args.threads, args.device)
     (run_root / "environment.json").write_text(json.dumps(environment, indent=2) + "\n", encoding="utf-8")
     protocol = {
