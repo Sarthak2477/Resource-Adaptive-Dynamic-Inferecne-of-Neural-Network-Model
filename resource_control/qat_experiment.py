@@ -27,8 +27,8 @@ def validate_accuracy_table(rows):
             raise ValueError(f"Unsupported QAT candidate in accuracy table: {config}")
         if config in result:
             raise ValueError(f"Duplicate accuracy row for {config}")
-        total = int(row["total"])
-        correct = int(row["correct"])
+        total = int(row.get("total", row.get("sample_count", 0)))
+        correct = int(row.get("correct", row.get("correct_count", 0)))
         if total <= 0 or not 0 <= correct <= total:
             raise ValueError(f"Invalid accuracy counts for {config}")
         result[config] = {

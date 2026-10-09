@@ -111,21 +111,11 @@ def capture_environment(run_id, checkpoint, threads, device_name="auto"):
 def bind_test_workload(workload_path, dataset_root, seed, output_path):
     document = json.loads(Path(workload_path).read_text(encoding="utf-8"))
     test_dataset = make_test_imagefolder(dataset_root)
-    by_class = {index: [] for index in range(len(test_dataset.classes))}
-    for dataset_index, target in enumerate(test_dataset.targets):
-        by_class[int(target)].append(dataset_index)
-    for values in by_class.values():
-        values.sort()
-    maximum = min(map(len, by_class.values()))
-    dataset_indices = [
-        by_class[class_index][offset]
-        for offset in range(maximum)
-        for class_index in range(len(test_dataset.classes))
-    ]
     requests = document["requests"]
-    if len(requests) > len(dataset_indices):
-        raise ValueError("Workload is larger than the held-out CIFAR-10 test split")
-    dataset_indices = dataset_indices[:len(requests)]
+    from scripts.evaluate_width_latency import select_stratified_indices
+    dataset_indices = select_stratified_indices(
+        test_dataset.targets, len(test_dataset.classes), len(requests), seed,
+    )
     for request, dataset_index in zip(requests, dataset_indices):
         request["dataset_index"] = dataset_index
         request["dataset_image_path"] = test_dataset.samples[dataset_index][0]

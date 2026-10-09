@@ -39,3 +39,4 @@ results
 .DS_Store
 Thumbs.db
 RESOURCE_CONTROL_GUIDE.md
+results/evaluation_p95_sinusoidal_seed12345_threads1.json

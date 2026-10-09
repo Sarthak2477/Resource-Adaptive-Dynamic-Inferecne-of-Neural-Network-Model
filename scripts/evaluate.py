@@ -133,6 +133,7 @@ def main():
     parser.add_argument("--threads", type=int, default=None)
     parser.add_argument("--trace", choices=("sinusoidal", "step", "bursty", "heldout"), default="sinusoidal")
     parser.add_argument("--seed", type=int, default=12345)
+    parser.add_argument("--num-samples", type=int, default=500, help="Balanced CIFAR-10 evaluation subset size; defaults to 500 samples")
     parser.add_argument("--interpolate", action="store_true", help="Include unprofiled interpolated widths as an ablation")
     args = parser.parse_args()
     print_banner("1. Initializing Model and Loading Checkpoint")
@@ -197,15 +198,22 @@ def main():
     test_dataset = test_loader.dataset
     from models import recalibrate_bn
     
-    # Select a balanced subset of 100 samples (10 from each of the 10 classes)
+    num_samples = args.num_samples
+    if num_samples <= 0 or num_samples > 10000:
+        raise ValueError(f"--num-samples must be between 1 and 10000, got {num_samples}.")
+
+    # Select a balanced subset across the 10 CIFAR-10 classes.
+    # By default this is 50 samples per class (500 total), matching the
+    # requested evaluation workload while remaining deterministic.
+    class_counts = [num_samples // 10 + (1 if i < num_samples % 10 else 0) for i in range(10)]
     subset_indices = []
-    for class_idx in range(10):
+    for class_idx, class_count in enumerate(class_counts):
         start_idx = class_idx * 1000
-        subset_indices.extend(range(start_idx, start_idx + 10))
-        
+        subset_indices.extend(range(start_idx, start_idx + class_count))
+
     subset_dataset = Subset(test_dataset, subset_indices)
     eval_loader = torch.utils.data.DataLoader(
-        subset_dataset, 
+        subset_dataset,
         batch_size=1,  # process sample-by-sample for real-time control simulation
         shuffle=False
     )
@@ -447,9 +455,10 @@ def main():
         })
 
         # Print progress logs
-        if (idx + 1) % 10 == 0:
+        progress_total = len(subset_dataset)
+        if (idx + 1) % max(1, min(10, progress_total)) == 0:
             print(
-                f"Sample {idx+1:03d}/100 | {scenario:<16} | "
+                f"Sample {idx+1:03d}/{progress_total} | {scenario:<16} | "
                 f"Budget: {budget:4.1f}ms | Pred: {pred_latency or 0.0:4.1f}ms | "
                 f"Actual: {dt:4.1f}ms | K_adapt: {controller.k_adapt:.3f} | "
                 f"Miss: {str(missed_deadline):5} | Selected: {str(selected_cfg):8} | "
