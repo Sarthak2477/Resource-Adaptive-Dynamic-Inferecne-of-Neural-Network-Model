@@ -217,7 +217,8 @@ def main():
         batch_size=1,  # process sample-by-sample for real-time control simulation
         shuffle=False
     )
-    print(f"Loaded {len(subset_dataset)} test samples.")
+    total_samples = len(subset_dataset)
+    print(f"Loaded {total_samples} test samples.")
 
     print_banner("3. Initializing Resource Controller")
     monitor = ResourceMonitor()
@@ -464,7 +465,7 @@ def main():
             def row(l1, v1, l2, v2):
                 return f"| {l1:<{W}} {v1:>{V}} | {l2:<{W}} {v2:>{V}} |"
             print(f"\n{hdr}")
-            title = f"  Sample {idx+1:03d}/100  |  {scenario:<16}  |  Deadline: {miss_marker}  |  Correct: {correct_marker}"
+            title = f"  Sample {idx+1:03d}/{total_samples}  |  {scenario:<16}  |  Deadline: {miss_marker}  |  Correct: {correct_marker}"
             print(f"| {title:<{W+V+W+V+5}} |")
             print(hdr)
             print(row("Metric", "Value", "Metric", "Value"))
