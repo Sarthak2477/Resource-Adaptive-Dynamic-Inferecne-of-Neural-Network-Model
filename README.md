@@ -12,7 +12,7 @@
 4. [Project Structure](#4-project-structure)
 5. [Results](#5-results)
 6. [Prerequisites & Installation](#6-prerequisites--installation)
-7. [Step-by-Step Usage Guide](#7-step-by-step-usage-guide)
+7. [Step-by-Step Usage Guide](#7-step-by-step-usage-guide) — Step 0 through Step 6 + Quick Reference
 8. [Component Deep Dive](#8-component-deep-dive)
 9. [Configuration Reference](#9-configuration-reference)
 10. [Running the Tests](#10-running-the-tests)
@@ -218,7 +218,7 @@ anynet/
 
 ### Closed-Loop Evaluation Summary
 
-The evaluation in `scripts/evaluate.py` simulates 100 inference steps with:
+The evaluation in `scripts/evaluate.py` simulates 500 inference steps (default) with:
 
 - **Sinusoidal latency budget**: mean 20 ms, amplitude ±12 ms, period 40 steps
 - **Contention spike** at steps 30–70: CPU load jumps to 85%, thermal to 80°C
@@ -285,82 +285,20 @@ python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
 
 ## 7. Step-by-Step Usage Guide
 
-### Controlled latency experiments
+> All commands must be run from the **project root** (`anynet/`) directory.
 
-Regenerate the device profile with one CPU thread and warm/cold percentile measurements:
-
-```powershell
-python .\scripts\profile_hardware.py --threads 1
-```
-
-Run a single P95 or P99 evaluation. The default uses only the measured deployable configurations; use `--interpolate` only for the interpolation ablation:
-
-```powershell
-python .\scripts\evaluate.py --policy p95 --trace sinusoidal --threads 1 --seed 12345
-python .\scripts\evaluate.py --policy p99 --trace sinusoidal --threads 1 --seed 12345
-```
-
-Run repeated sinusoidal and held-out traces:
-
-```powershell
-python .\scripts\run_experiments.py --repetitions 10 --threads 1 --policies p95 p99 --traces sinusoidal heldout
-```
-
-Each evaluation writes a separate JSON file under `results/`, including infeasible-budget rate, feasible-only miss rate, cold-transition misses, warm misses, and per-sample decisions. Each sample records:
-
-- `selected_width_mult` and `selected_bit_width`: the chosen subnet width and precision.
-- `controller_features`: the full feature vector used for selection, including FLOPs, parameters, CPU load, available memory, thermal state, device speed, CPU cores, RAM, and CUDA availability.
-- `resource_state`: the simulated resource state at selection time.
-- `budget_ms`, predicted/actual latency, feasibility status, and deadline result.
-
-The periodic console log also prints the selected configuration, CPU utilization, and temperature. This makes it possible to correlate each width/precision decision with the hardware conditions that caused it.
-
-All scripts must be run from the **project root** (`anynet/`).
-
-### Static versus USM FP32 experiment
-
-This no-training comparison uses the same trained USM checkpoint in both arms:
-
-- `usm_pinned`: controller disabled; use the one width selected before final evaluation from a separate FP32 calibration profile.
-- `usm_adaptive`: use the existing controller to select among `0.25`, `0.50`, `0.75`, and `1.00`, always at FP32.
-
-The workflow evaluates each USM width on the full CIFAR-10 test split, profiles the checkpoint, freezes the pinned width using the widest-width-meeting-calibration-P95-deadline rule, and replays one shared synthetic request sequence across both arms. It does not train model weights. BN statistics are recalibrated from the training split for the four widths; this is forward-only calibration, not optimizer training. The default 100-request workload is a synthetic pilot, not an actual deployment trace. Its arrival timestamps are metadata only; the runner does not simulate queueing or real-time pacing. The request-level accuracy in the paired replay is based on those 100 test examples; the separate accuracy artifact reports all 10,000 test examples for every width.
-
-```powershell
-python .\scripts\run_static_vs_usm.py `
-  --usm-checkpoint .\models\checkpoint\us_resnet_epoch100_checkpoint.pt `
-  --repetitions 10 `
-  --threads 1 `
-  --n-samples 10000 `
-  --policy p95
-```
-
-Use `--n-samples 10 --repetitions 1` only for a pipeline smoke test. The full setting uses the complete CIFAR-10 test ordering in each paired repetition. The replay resource labels repeat a fixed 100-request cycle (synthetic contention at cycle positions 30-69); they are controller inputs, not injected or measured device contention.
-
-Each run gets a unique directory under `results/static_vs_usm_fp32/runs/`. It contains full-test per-width accuracy, the checkpoint-matched FP32 latency profile, the frozen pinned-width config, source and dataset-bound workload files, an environment/protocol manifest, request-level JSONL for both arms, paired summaries, and plots. The deadline uses end-to-end time from controller selection/width assignment through model execution; preprocessing and data loading are excluded. Model-only latency is also retained. On CUDA, execution is synchronized before timing stops. Warm-up requests are excluded, and arm execution order alternates by repetition.
-
-### Actual-precision width sweep
-
-Run the separate precision experiment to measure real FP32, CUDA FP16 autocast, and native CPU INT8 inference at widths `0.25`, `0.50`, `0.75`, and `1.00`. It freezes each width, recalibrates BN from the CIFAR-10 training split, calibrates INT8 observers from training data, and measures accuracy on the held-out test split. No fake-quant timing is reported. INT4 is recorded as unsupported when no real INT4 convolution backend is installed.
-
-```powershell
-$run = ".\results\real_precision_$(Get-Date -Format yyyyMMdd_HHmmss)"
-python .\scripts\experiment_real_precision.py `
-  --output $run `
-  --sample-count 10000 `
-  --latency-samples 200 `
-  --latency-repeats 5 `
-  --threads 1 `
-  --device auto
-```
-
-`precision_width_summary.csv` contains accuracy and latency percentiles; `latency_observations.csv` contains individual timings; `run_metadata.json` records device, backend, checkpoint hash, and precision semantics. With `--device auto`, FP32 and FP16 use CUDA when available, while INT8 uses native CPU operators. These cross-device latency values are not directly comparable. For a same-CPU FP32/INT8 comparison, run a second experiment with `--device cpu` and a different output directory; FP16 will then be marked unsupported. On the current Windows/PyTorch stack, the GTX 1650 supports CUDA FP16 and the CPU supports x86 INT8, but no INT4 convolution backend is installed, so INT4 accuracy/latency is intentionally not fabricated.
+---
 
 ### Step 0: Obtain a Pre-Trained Checkpoint
 
-The pre-trained weights file `models/checkpoint/us_resnet_epoch100_checkpoint.pt.zip` is not tracked by git (it is ~380 MB). You have two options:
+The pre-trained weights file is not tracked by git (~380 MB). You have two options:
 
 **Option A — Download the provided checkpoint** _(link to be added by maintainer)_
+
+Place the file at:
+```
+models/checkpoint/us_resnet_epoch100_checkpoint.pt
+```
 
 **Option B — Train from scratch** (requires a GPU, ~4–8 hours on a single T4):
 
@@ -376,16 +314,29 @@ This runs the full sandwich-rule + knowledge-distillation training loop for 100 
 
 Generate a device-specific latency database. This takes ~5–10 minutes.
 
-```bash
-python scripts/profile_hardware.py
+```powershell
+python .\scripts\profile_hardware.py --threads 1
 ```
+
+**Available arguments:**
+
+| Argument | Default | Description |
+| --- | --- | --- |
+| `--threads` | `1` | Number of CPU threads for inference |
+| `--warm-samples` | `200` | Warm measurement passes per config |
+| `--warmup-samples` | `20` | Warmup passes before measurement |
+| `--transition-repeats` | `10` | Repeats per ordered config transition pair |
+| `--seed` | `12345` | Random seed |
+| `--session-id` | timestamp | Custom session identifier |
+| `--power-mode` | `unspecified` | Record OS power mode for this session |
+| `--allow-random-init` | off | Allow profiling without a trained checkpoint |
 
 **What it does:**
 
 - Detects your GPU or CPU automatically.
-- Runs 20 warmup + 200 measurement passes for each of the 16 `(width_mult, bit_width)` configurations.
-- Saves raw observations and config summaries to `profiles/raw/<device>_<timestamp>_config_summary.csv`.
-- Copy the config summary to `profiles/<device_name>_profile.csv` before running `evaluate.py`.
+- Runs warmup + measurement passes for each of the 16 `(width_mult, bit_width)` configurations.
+- Measures cold-transition latency for every ordered config pair.
+- Saves all artifacts to `profiles/raw/` — it does **not** write directly to `profiles/`.
 
 **Example output:**
 
@@ -395,80 +346,213 @@ Detected Hardware Device: cuda (nvidia_geforce_gtx_1650)
 [2/16] Profiling warm config: width=0.25, bits=8 ... mean: 5.48ms | n=200
 ...
 Profiling complete. Session artifacts:
-  Raw observations: profiles/raw/nvidia_geforce_gtx_1650_<timestamp>_observations.csv
-  Config summaries: profiles/raw/nvidia_geforce_gtx_1650_<timestamp>_config_summary.csv
+  Raw observations : profiles/raw/nvidia_geforce_gtx_1650_<timestamp>_observations.csv
+  Config summaries : profiles/raw/nvidia_geforce_gtx_1650_<timestamp>_config_summary.csv
+  Transition matrix: profiles/raw/nvidia_geforce_gtx_1650_<timestamp>_transition_summary.csv
+  Session metadata : profiles/raw/nvidia_geforce_gtx_1650_<timestamp>_metadata.json
 ```
 
 After profiling, copy the config summary to the expected location:
 
 ```powershell
-copy profiles\raw\<config_summary_filename>.csv profiles\<device_name>_profile.csv
+# Windows
+copy profiles\raw\<stem>_config_summary.csv profiles\<device_name>_profile.csv
+
+# Example
+copy profiles\raw\nvidia_geforce_gtx_1650_20240101_120000_..._config_summary.csv profiles\nvidia_geforce_gtx_1650_profile.csv
 ```
 
-> **Why this step?** Latency varies significantly between devices (a GTX 1650 vs. a T4 vs. a laptop CPU). The surrogate model is device-aware, so it needs your hardware's measurements to be accurate.
+> **Why this step?** Latency varies significantly between devices. The surrogate model is device-aware, so it needs your hardware's measurements to be accurate.
 
 ---
 
 ### Step 2: Train the Surrogate Latency Model
 
-```bash
-python scripts/train_surrogate.py
+```powershell
+python .\scripts\train_surrogate.py
 ```
 
 **What it does:**
 
-- Reads all CSV files from `profiles/`.
-- Synthesizes additional training rows by simulating high-CPU (×1.3) and high-thermal (×1.25) load scenarios.
+- Reads all `*_profile.csv` files from `profiles/`.
+- Synthesizes additional training rows for high-CPU (×1.3), high-thermal (×1.25), and combined stress (×1.6) scenarios.
 - Trains a `RandomForestRegressor` (100 estimators) on 12 input features.
 - Saves the model to `weights/surrogate_model.pkl`.
 
 **Feature set used:**
 
-| Feature              | Description                                 |
-| -------------------- | ------------------------------------------- |
-| `width_mult`         | Active channel fraction (0.25–1.0)          |
-| `bit_width`          | Quantization precision (4, 8, 16, 32)       |
-| `approx_flops`       | Estimated FLOPs ∝ width_mult² × 10⁶         |
-| `approx_params`      | Estimated parameter count                   |
-| `flops_per_speed`    | FLOPs normalized by device throughput score |
-| `cpu_pct`            | Current CPU utilization (%)                 |
-| `mem_available_mb`   | Available RAM (MB)                          |
-| `thermal_c`          | CPU/GPU temperature (°C)                    |
-| `device_speed_score` | Matmul throughput proxy (matmuls/sec)       |
-| `cpu_cores`          | Physical CPU core count                     |
-| `ram_gb`             | Total system RAM (GB)                       |
-| `has_cuda`           | 1.0 if CUDA GPU is active, else 0.0         |
+| Feature | Description |
+| --- | --- |
+| `width_mult` | Active channel fraction (0.25–1.0) |
+| `bit_width` | Quantization precision (4, 8, 16, 32) |
+| `approx_flops` | Estimated FLOPs ∝ width_mult² × 10⁶ |
+| `approx_params` | Estimated parameter count |
+| `flops_per_speed` | FLOPs normalized by device throughput score |
+| `cpu_pct` | Current CPU utilization (%) |
+| `mem_available_mb` | Available RAM (MB) |
+| `thermal_c` | CPU/GPU temperature (°C) |
+| `device_speed_score` | Matmul throughput proxy (matmuls/sec) |
+| `cpu_cores` | Physical CPU core count |
+| `ram_gb` | Total system RAM (GB) |
+| `has_cuda` | 1.0 if CUDA GPU is active, else 0.0 |
 
-> **Tip:** If you have profiles from multiple devices, place them all in `profiles/` before running this step. The surrogate will generalise better across hardware.
+> **Tip:** Place profiles from multiple devices in `profiles/` before running this step. The surrogate will generalise better across hardware.
 
 ---
 
 ### Step 3: Run the Closed-Loop Evaluation
 
-```bash
-python scripts/evaluate.py
+```powershell
+python .\scripts\evaluate.py --policy p95 --trace sinusoidal --threads 1 --seed 12345
 ```
+
+**Available arguments:**
+
+| Argument | Default | Description |
+| --- | --- | --- |
+| `--policy` | `p95` | Latency policy: `avg`, `p50`, `p95`, `p99` |
+| `--trace` | `sinusoidal` | Budget trace: `sinusoidal`, `step`, `bursty`, `heldout` |
+| `--threads` | `1` | Number of CPU threads |
+| `--seed` | `12345` | Random seed for reproducibility |
+| `--num-samples` | `500` | Number of balanced CIFAR-10 test samples (1–10000) |
+| `--interpolate` | off | Expand 16 discrete configs to ~60 via interpolation (ablation only) |
 
 **What it does:**
 
-- Loads the pre-trained ResNet-50 checkpoint.
-- Loads the surrogate model and device profile.
-- Selects 100 balanced CIFAR-10 test samples (10 per class).
-- For each sample, simulates a dynamic latency budget and hardware contention scenario, asks the controller to pick the best config, runs inference, and feeds back the actual latency.
-- Prints a per-sample log every 10 steps and a final summary.
+- Loads the pre-trained ResNet-50 checkpoint and hardware profile.
+- Selects a balanced CIFAR-10 test subset (equal samples per class).
+- For each sample: simulates a dynamic latency budget, asks the controller to pick the best config, runs inference, and feeds back the actual latency to update `k_adapt`.
+- Prints a per-sample table every 10 steps and a final summary.
+- Writes a detailed JSON result to `results/evaluation_<policy>_<trace>_seed<N>_threads<N>.json`.
 
 **Example output:**
 
 ```
-Sample 010/100 | Normal Load     | Budget: 28.3ms | Pred: 24.2ms | Actual: 25.1ms | K_adapt: 1.033 | Miss: False | Selected: (1.0, 32) | Correct: True
-Sample 040/100 | Contention Spike| Budget: 14.7ms | Pred: 11.2ms | Actual: 13.8ms | K_adapt: 1.112 | Miss: False | Selected: (0.5, 8)  | Correct: True
-...
-Total Samples Evaluated: 100
-Overall Accuracy: 93.00%
-Average Inference Latency: 10.78 ms
-Mean Absolute Prediction Error (MAE): 3.58 ms
-Deadline Miss Rate: 21.00% (21/100 missed)
-K_adapt Operating Range: [0.633, 1.299]
+Total Samples Evaluated : 500
+Overall Accuracy        : 93.00%
+Average Latency         : 10.78 ms
+P95 Latency             : 18.42 ms
+P99 Latency             : 24.11 ms
+Prediction MAE          : 3.58 ms
+Deadline Miss Rate      : 21.00% (105/500)
+K_adapt Range           : [0.633, 1.299]
+```
+
+---
+
+### Step 4: Run Batch Experiments
+
+Run repeated evaluations across multiple policies and trace types:
+
+```powershell
+python .\scripts\run_experiments.py --repetitions 10 --threads 1 --policies p95 p99 --traces sinusoidal heldout
+```
+
+**Available arguments:**
+
+| Argument | Default | Description |
+| --- | --- | --- |
+| `--repetitions` | `10` | Number of repeated runs per policy/trace combination |
+| `--threads` | `1` | Number of CPU threads |
+| `--policies` | `p95 p99` | One or more latency policies |
+| `--traces` | `sinusoidal heldout` | One or more budget trace types |
+
+Results are aggregated into `results/experiment_summary.json`.
+
+---
+
+### Step 5: Per-Config Accuracy Sweep
+
+Measure accuracy for every deployable configuration on the full CIFAR-10 test set:
+
+```powershell
+python .\scripts\evaluate_config_accuracy.py --device auto --bn-calibration-batches 100
+```
+
+**Available arguments:**
+
+| Argument | Default | Description |
+| --- | --- | --- |
+| `--checkpoint` | auto-detected | Path to trained model checkpoint |
+| `--output` | `results/config_accuracy_<timestamp>.json` | Output JSON path (sibling CSV also written) |
+| `--device` | `auto` | `auto`, `cpu`, or `cuda` |
+| `--batch-size` | `256` | Evaluation batch size |
+| `--bn-calibration-batches` | `100` | Training batches used to recalibrate BN stats |
+| `--seed` | `12345` | Random seed |
+| `--fp32-only` | off | Evaluate only FP32 widths (0.25, 0.50, 0.75, 1.00) |
+| `--selection-calibration-per-class` | full test | Use N stratified test images per class instead of full set |
+| `--deterministic` | off | Force deterministic PyTorch algorithms |
+
+Outputs a JSON + CSV with per-config accuracy, Wilson 95% confidence intervals, and per-class breakdowns.
+
+---
+
+### Step 6: Static vs Adaptive USM Comparison
+
+Compare a fixed full-capacity model against the adaptive controller using the same checkpoint:
+
+```powershell
+python .\scripts\run_static_vs_usm.py `
+  --usm-checkpoint .\models\checkpoint\us_resnet_epoch100_checkpoint.pt `
+  --repetitions 3 `
+  --threads 1 `
+  --n-samples 200 `
+  --policy p95
+```
+
+**Available arguments:**
+
+| Argument | Default | Description |
+| --- | --- | --- |
+| `--usm-checkpoint` | auto-detected | Path to the USM checkpoint |
+| `--repetitions` | `3` | Number of paired repetitions |
+| `--threads` | `1` | Number of CPU threads |
+| `--n-samples` | `200` | Number of test samples per repetition |
+| `--policy` | `p95` | Latency policy (only `p95` supported) |
+| `--trace` | `heldout` | Budget trace: `sinusoidal`, `step`, `bursty`, `heldout` |
+| `--device` | `auto` | `auto`, `cpu`, or `cuda` |
+| `--seed` | `12345` | Random seed |
+| `--bn-calibration-batches` | `10` | BN recalibration batches per width |
+| `--run-id` | timestamp | Custom run identifier (alphanumeric/underscore/hyphen) |
+
+For a quick smoke test use `--n-samples 10 --repetitions 1`. For the full experiment use `--n-samples 10000 --repetitions 10`.
+
+Each run creates a unique directory under `results/static_vs_usm_fp32/runs/<run-id>/` containing accuracy CSVs, latency profiles, request-level JSONL for both arms, paired summaries, and plots.
+
+---
+
+### Utility: Show All Supernetwork Configurations
+
+Print all 60 interpolated configurations with their accuracy estimates:
+
+```powershell
+python .\show_configs.py
+```
+
+---
+
+### Controlled Latency Experiment (Quick Reference)
+
+The recommended sequence for a clean controlled experiment on a single device:
+
+```powershell
+# 1. Profile hardware (single thread, reproducible)
+python .\scripts\profile_hardware.py --threads 1
+
+# 2. Copy config summary to profiles/ (replace <stem> with actual filename)
+copy profiles\raw\<stem>_config_summary.csv profiles\<device_name>_profile.csv
+
+# 3. Train surrogate
+python .\scripts\train_surrogate.py
+
+# 4. Run P95 evaluation
+python .\scripts\evaluate.py --policy p95 --trace sinusoidal --threads 1 --seed 12345
+
+# 5. Run P99 evaluation
+python .\scripts\evaluate.py --policy p99 --trace sinusoidal --threads 1 --seed 12345
+
+# 6. Run batch experiments (10 repetitions)
+python .\scripts\run_experiments.py --repetitions 10 --threads 1 --policies p95 p99 --traces sinusoidal heldout
 ```
 
 ---
