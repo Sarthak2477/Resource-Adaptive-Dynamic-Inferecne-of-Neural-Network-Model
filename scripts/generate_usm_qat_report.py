@@ -270,29 +270,92 @@ def create_report(run_id, run_root, output_dir=None):
     }
     (analysis_dir / "controller_quality.json").write_text(json.dumps(quality, indent=2) + "\n", encoding="utf-8")
 
-    result_lines = [
-        "# USM Full Versus Adaptive USM Results", "",
-        "Paired repetitions are the independent units; request rows are not treated as independent replicates.",
-        "Latency is PyTorch fake-quantized execution, not integer INT4/INT8 kernel performance.", "",
-        "| Metric | USM Full fixed | USM Adaptive | Adaptive - Full (95% paired bootstrap CI) |",
-        "| --- | ---: | ---: | ---: |",
-    ]
+    METRIC_LABELS = {
+        "accuracy_percent":                       "Accuracy (%)",
+        "model_p50_ms":                           "Model P50 Latency (ms)",
+        "model_p95_ms":                           "Model P95 Latency (ms)",
+        "model_p99_ms":                           "Model P99 Latency (ms)",
+        "e2e_p50_ms":                             "E2E P50 Latency (ms)",
+        "e2e_p95_ms":                             "E2E P95 Latency (ms)",
+        "e2e_p99_ms":                             "E2E P99 Latency (ms)",
+        "deadline_miss_rate_percent":             "Deadline Miss Rate (%)",
+        "mean_violation_ms":                      "Mean Deadline Violation (ms)",
+        "p95_violation_ms":                       "P95 Deadline Violation (ms)",
+        "max_violation_ms":                       "Max Deadline Violation (ms)",
+        "switch_rate_percent":                    "Switch Rate (%)",
+        "mean_selected_width":                    "Mean Selected Width",
+        "mean_selected_bit_width":                "Mean Selected Bit Width",
+        "controller_overhead_mean_ms":            "Controller Overhead (ms)",
+        "switch_overhead_mean_ms":                "Switch Overhead (ms)",
+        "mean_queue_delay_ms":                    "Mean Queue Delay (ms)",
+        "width_only_switches":                    "Width-Only Switches",
+        "bit_only_switches":                      "Bit-Only Switches",
+        "width_and_bit_switches":                 "Width + Bit Switches",
+        "fallback_rate_percent":                  "Fallback Rate (%)",
+    }
+    METRIC_GROUPS = {
+        "Accuracy": ["accuracy_percent"],
+        "Model Latency": ["model_p50_ms", "model_p95_ms", "model_p99_ms"],
+        "End-to-End Latency": ["e2e_p50_ms", "e2e_p95_ms", "e2e_p99_ms"],
+        "Deadline": ["deadline_miss_rate_percent", "mean_violation_ms", "p95_violation_ms", "max_violation_ms"],
+        "Configuration Selection": ["mean_selected_width", "mean_selected_bit_width", "fallback_rate_percent"],
+        "Controller Overhead": ["controller_overhead_mean_ms", "switch_rate_percent", "switch_overhead_mean_ms",
+                                 "width_only_switches", "bit_only_switches", "width_and_bit_switches", "mean_queue_delay_ms"],
+    }
     arm_means = summary.groupby("arm").mean(numeric_only=True)
-    for _, row in paired.iterrows():
-        metric = row["metric"]
-        result_lines.append(
-            f"| {metric} | {arm_means.loc['usm_pinned', metric]:.4f} | "
-            f"{arm_means.loc['usm_adaptive', metric]:.4f} | "
-            f"{row['mean_paired_difference_adaptive_minus_pinned']:.4f} "
-            f"[{row['ci_95_lower']:.4f}, {row['ci_95_upper']:.4f}] |"
-        )
+    paired_lookup = paired.set_index("metric")
     pinned_config = json.loads((run_root / "config.json").read_text(encoding="utf-8"))
-    result_lines.extend([
-        "", f"Pinned configuration (fixed, not calibrated): `({pinned_config['width_mult']:.2f}, {pinned_config['bit_width']})`.",
-        (f"Held-out profile prediction validation: MAE={validation['mae_ms']:.4f} ms, RMSE={validation['rmse_ms']:.4f} ms."
-         if "mae_ms" in validation else f"Held-out profile prediction validation: {validation['status']}.") ,
+    validation_note = (
+        f"MAE = {validation['mae_ms']:.2f} ms, RMSE = {validation['rmse_ms']:.2f} ms"
+        if "mae_ms" in validation else validation.get("status", "not available")
+    )
+
+    COL_M = 34
+    COL_V = 14
+    sep  = f"+{'-' * (COL_M + 2)}+{'-' * (COL_V + 2)}+{'-' * (COL_V + 2)}+{'-' * (COL_V + 2)}+"
+    hdr  = f"+{'=' * (COL_M + 2)}+{'=' * (COL_V + 2)}+{'=' * (COL_V + 2)}+{'=' * (COL_V + 2)}+"
+
+    def fmt(value, metric):
+        if metric in ("width_only_switches", "bit_only_switches", "width_and_bit_switches"):
+            return f"{int(round(value))}"
+        if metric in ("mean_selected_width", "mean_selected_bit_width"):
+            return f"{value:.2f}"
+        return f"{value:.2f}"
+
+    def table_row(label, pinned_val, adaptive_val, diff_val, ci_lo, ci_hi):
+        diff_str = f"{diff_val:+.2f} [{ci_lo:+.2f}, {ci_hi:+.2f}]"
+        return (f"| {label:<{COL_M}} | {pinned_val:>{COL_V}} | {adaptive_val:>{COL_V}} | {diff_str:>{COL_V}} |")
+
+    result_lines = [
+        "# USM Full vs Adaptive USM — Results Summary", "",
+        f"Pinned configuration: `(width={pinned_config['width_mult']:.2f}, bits={pinned_config['bit_width']})`  ",
+        f"Surrogate validation: {validation_note}  ",
+        "Differences are Adaptive minus Pinned (95% paired bootstrap CI).  ",
+        "Latency is PyTorch fake-quantized execution, not native INT4/INT8 kernel performance.",
         "",
-    ])
+    ]
+
+    for group_name, metrics in METRIC_GROUPS.items():
+        result_lines += [
+            f"## {group_name}", "",
+            hdr,
+            f"| {'Metric':<{COL_M}} | {'USM Full':>{COL_V}} | {'USM Adaptive':>{COL_V}} | {'Diff (95% CI)':>{COL_V}} |",
+            hdr,
+        ]
+        for metric in metrics:
+            if metric not in arm_means.columns:
+                continue
+            p = arm_means.loc["usm_pinned", metric]
+            a = arm_means.loc["usm_adaptive", metric]
+            row = paired_lookup.loc[metric]
+            result_lines.append(table_row(
+                METRIC_LABELS.get(metric, metric),
+                fmt(p, metric), fmt(a, metric),
+                row["mean_paired_difference_adaptive_minus_pinned"],
+                row["ci_95_lower"], row["ci_95_upper"],
+            ))
+        result_lines += [sep, ""]
+
     (analysis_dir / "result_table.md").write_text("\n".join(result_lines), encoding="utf-8")
 
     adaptive_first = df[(df["repetition"] == 1) & (df["arm"] == "usm_adaptive")].sort_values("sample_index")
