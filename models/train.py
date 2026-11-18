@@ -11,7 +11,7 @@ from .config import FLAGS
 from .ops import ResnetBatchNorm2d
 from .resnet import Model, set_model_width, set_model_bit_width
 
-def get_dataloaders():
+def get_dataloaders(num_workers=2):
     """Sets up CIFAR-10 data loaders. Downloads/extracts dataset if missing."""
     # Ensure data directory exists
     os.makedirs("./data", exist_ok=True)
@@ -55,7 +55,7 @@ def get_dataloaders():
         train_dataset,
         batch_size=FLAGS.batch_size,
         shuffle=True,
-        num_workers=2,
+        num_workers=num_workers,
         pin_memory=True,
     )
 
@@ -63,7 +63,7 @@ def get_dataloaders():
         test_dataset,
         batch_size=FLAGS.batch_size,
         shuffle=False,
-        num_workers=2,
+        num_workers=num_workers,
         pin_memory=True,
     )
 
@@ -110,8 +110,114 @@ def train_one_epoch(model, loader, optimizer, criterion, device):
     return total_loss / n_steps
 
 
+def get_default_bn_cache_path():
+    project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    return os.path.join(project_root, "models", "checkpoint", "bn_calibration_cache.pt")
+
+
+def save_bn_calibration(model, cache_path=None):
+    """
+    Saves calibrated running mean and var statistics from all ResnetBatchNorm2d layers
+    to a persistent cache file. Merges with any existing cache file at cache_path so
+    previously calibrated configurations are preserved.
+    """
+    if cache_path is None:
+        cache_path = get_default_bn_cache_path()
+    os.makedirs(os.path.dirname(os.path.abspath(cache_path)), exist_ok=True)
+
+    core = model.module if hasattr(model, 'module') else model
+
+    cache = {"version": 1, "layers": {}}
+    if os.path.isfile(cache_path):
+        try:
+            loaded = torch.load(cache_path, map_location="cpu", weights_only=False)
+            if isinstance(loaded, dict) and "layers" in loaded:
+                cache = loaded
+        except Exception:
+            pass
+
+    saved_keys = set()
+    bn_count = 0
+    for name, module in core.named_modules():
+        if isinstance(module, ResnetBatchNorm2d):
+            bn_count += 1
+            layer_dict = cache["layers"].setdefault(name, {"mean": {}, "var": {}})
+            for k, v in module.calibrated_running_mean.items():
+                norm_key = (float(k[0]), int(k[1]))
+                layer_dict["mean"][norm_key] = v.detach().cpu()
+                saved_keys.add(norm_key)
+            for k, v in module.calibrated_running_var.items():
+                norm_key = (float(k[0]), int(k[1]))
+                layer_dict["var"][norm_key] = v.detach().cpu()
+                saved_keys.add(norm_key)
+
+    if bn_count > 0 and len(saved_keys) > 0:
+        temp_path = cache_path + ".tmp"
+        torch.save(cache, temp_path)
+        os.replace(temp_path, cache_path)
+
+    return saved_keys
+
+
+def load_bn_calibration(model, cache_path=None, device=None):
+    """
+    Loads pre-calibrated running mean and var statistics from cache_path into
+    all ResnetBatchNorm2d layers of the model.
+
+    Returns:
+        set of (width_mult, bit_width) tuples that were successfully loaded.
+    """
+    if cache_path is None:
+        cache_path = get_default_bn_cache_path()
+
+    if not os.path.isfile(cache_path):
+        return set()
+
+    if device is None:
+        try:
+            device = next(model.parameters()).device
+        except StopIteration:
+            device = torch.device("cpu")
+
+    try:
+        cache = torch.load(cache_path, map_location=device, weights_only=False)
+    except Exception:
+        return set()
+
+    if not isinstance(cache, dict) or "layers" not in cache:
+        return set()
+
+    core = model.module if hasattr(model, 'module') else model
+    layers = cache["layers"]
+    loaded_keys = set()
+
+    for name, module in core.named_modules():
+        if isinstance(module, ResnetBatchNorm2d) and name in layers:
+            layer_data = layers[name]
+            for k, v in layer_data.get("mean", {}).items():
+                norm_key = (float(k[0]), int(k[1]))
+                module.calibrated_running_mean[norm_key] = v.to(device)
+                loaded_keys.add(norm_key)
+            for k, v in layer_data.get("var", {}).items():
+                norm_key = (float(k[0]), int(k[1]))
+                module.calibrated_running_var[norm_key] = v.to(device)
+                loaded_keys.add(norm_key)
+
+    return loaded_keys
+
+
 @torch.no_grad()
-def recalibrate_bn(model, loader, width_mult, bit_width, device, num_batches=100):
+def recalibrate_bn(
+    model,
+    loader,
+    width_mult,
+    bit_width,
+    device,
+    num_batches=100,
+    progress_callback=None,
+    save_cache=True,
+    cache_path=None,
+):
     core = model.module if hasattr(model, 'module') else model
     core.set_width(width_mult)
     core.set_bit_width(bit_width)
@@ -147,6 +253,8 @@ def recalibrate_bn(model, loader, width_mult, bit_width, device, num_batches=100
             if i >= num_batches:
                 break
             core(images.to(device))
+            if progress_callback is not None:
+                progress_callback(i + 1, num_batches)
     finally:
         for h in handles:
             h.remove()
@@ -158,6 +266,9 @@ def recalibrate_bn(model, loader, width_mult, bit_width, device, num_batches=100
             m.calibrated_running_var[key] = s['var']
 
     core.eval()
+
+    if save_cache and len(bn_layers) > 0:
+        save_bn_calibration(core, cache_path=cache_path)
 
 
 @torch.no_grad()

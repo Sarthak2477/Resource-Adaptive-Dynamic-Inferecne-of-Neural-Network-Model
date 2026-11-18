@@ -11,4 +11,12 @@ from .ops import (
     set_quant_cache_enabled,
 )
 from .resnet import Block, Model, set_model_width, set_model_bit_width
-from .train import train_one_epoch, recalibrate_bn, evaluate, get_dataloaders
+from .train import (
+    train_one_epoch,
+    recalibrate_bn,
+    evaluate,
+    get_dataloaders,
+    save_bn_calibration,
+    load_bn_calibration,
+    get_default_bn_cache_path,
+)

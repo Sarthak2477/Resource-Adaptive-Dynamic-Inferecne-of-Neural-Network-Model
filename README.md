@@ -571,6 +571,55 @@ All model and training hyperparameters live in `models/config.py` as a `FLAGS` o
 
 ---
 
+## Research Dashboard
+
+The React dashboard lives in `frontend/`; FastAPI serves its production build from `dashboard/` and exposes the integration API from `dashboard_api/`. The dashboard reads existing result files in place and writes dashboard-created runs to separate result subdirectories.
+
+Install and build the frontend from the project root:
+
+```powershell
+cd frontend
+npm install
+npm run build
+```
+
+Start the API from the project root in an environment that has the project ML dependencies and `requirements-dashboard.txt` installed:
+
+```powershell
+python -m pip install -r requirements-dashboard.txt
+python -m uvicorn dashboard_api.main:app --host 127.0.0.1 --port 8000
+```
+
+If port 8000 is occupied, choose a free port, for example `8001`, and set the Vite target below to the same port. Start Uvicorn from the project root with the package-qualified module above; running `uvicorn main:app` from `dashboard_api/` does not use this app's intended import context.
+
+For frontend development, leave the API running and start Vite in another terminal:
+
+```powershell
+cd frontend
+$env:VITE_API_TARGET = "http://127.0.0.1:8000"
+npm run dev
+```
+
+Open `http://127.0.0.1:5173`. Vite proxies `/api` and `/ws` to `VITE_API_TARGET` (default `http://127.0.0.1:8000`). Set it to the selected API port if 8000 is unavailable, for example `http://127.0.0.1:8001`. For a production-style local run, build the frontend and open the API's URL.
+
+Dashboard integration tests can be run from the project root with:
+
+```powershell
+python -m unittest discover -s tests -p test_dashboard_api.py
+```
+
+The API uses same-origin relative URLs; only the Vite development proxy uses the optional `VITE_API_TARGET` setting.
+
+### Research interpretation limits
+
+- The real-evaluator endpoint runs the existing PyTorch evaluator as a background process and streams structured phase, configuration-decision, batch-normalization calibration, and completed-sample events over WebSocket. Its resource/deadline trace is synthetic even though model inference latency is measured on the selected device.
+- While Live Inference is open, `/api/system/resources` reports independently measured host CPU/RAM, evaluator process CPU/RSS, and NVIDIA GPU utilization/memory/temperature when `nvidia-smi` is available. These host readings are informational: the current evaluator's configuration decisions use the synthetic values recorded on each decision event.
+- The standalone simulation calls the existing `MeasuredQATController` with synthetic resource conditions and saved calibration tables. Its per-sample latencies are predictions derived from measured P95 profiles, not live inference measurements.
+- Dynamic lower-bit model paths use fake quantization. They must not be interpreted as integer-kernel acceleration. The dashboard does not present them as hardware speedups.
+- The evaluator does not emit image payloads or confidence values, and does not support pause/resume. The dashboard exposes recorded class labels, runtime sample events, and stop support only.
+- Real evaluation sample artifacts include predicted and ground-truth CIFAR-10 class indices/names and a `correct` flag. Prediction confidence and image bytes are not currently recorded.
+- Comparison charts use saved artifact metrics; they do not assert that workloads or hardware are comparable. Missing metrics remain blank.
+
 ## 10. Running the Tests
 
 ```bash

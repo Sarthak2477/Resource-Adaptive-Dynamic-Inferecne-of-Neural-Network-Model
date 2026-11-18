@@ -33,6 +33,20 @@ def json_default(value):
         return value.item()
     raise TypeError(f"Object of type {type(value).__name__} is not JSON serializable")
 
+
+def emit_dashboard_event(enabled, event_type, **payload):
+    if enabled:
+        print("DASHBOARD_EVENT:" + json.dumps({"type": event_type, **payload}, default=json_default), flush=True)
+
+
+def resolve_latency_budget(trace_budget_ms, configured_deadline_ms):
+    """Use a configured fixed deadline, or retain legacy trace-derived budgets."""
+    if configured_deadline_ms is not None:
+        if configured_deadline_ms <= 0:
+            raise ValueError("--deadline-ms must be positive")
+        return float(configured_deadline_ms)
+    return max(4.0, float(trace_budget_ms))
+
 def expand_frontier_continuous(discrete_frontier, step=0.05):
     """
     Expands a discrete Pareto frontier with 4 width steps to a continuous/dense frontier
@@ -134,8 +148,18 @@ def main():
     parser.add_argument("--trace", choices=("sinusoidal", "step", "bursty", "heldout"), default="sinusoidal")
     parser.add_argument("--seed", type=int, default=12345)
     parser.add_argument("--num-samples", type=int, default=500, help="Balanced CIFAR-10 evaluation subset size; defaults to 500 samples")
+    parser.add_argument("--deadline-ms", type=float, default=None, help="Fixed per-sample deadline; when omitted, use the selected trace's varying budgets")
     parser.add_argument("--interpolate", action="store_true", help="Include unprofiled interpolated widths as an ablation")
+    parser.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto", help="Execution device")
+    parser.add_argument("--bn-cache", default=None, help="Path to persistent BatchNorm calibration cache (.pt)")
+    parser.add_argument("--no-bn-cache", action="store_true", help="Disable persistent BatchNorm calibration caching")
+    parser.add_argument("--precalibrate-bn", action="store_true", help="Calibrate all candidate BatchNorm configs and exit")
+    parser.add_argument("--output", default=None, help="Optional result JSON path; existing outputs are never overwritten by the dashboard")
+    parser.add_argument("--dashboard-events", action="store_true", help="Emit structured progress events for the dashboard runner")
     args = parser.parse_args()
+    if args.deadline_ms is not None and args.deadline_ms <= 0:
+        parser.error("--deadline-ms must be positive")
+    emit_dashboard_event(args.dashboard_events, "phase", phase="model_loading", message="Loading model checkpoint")
     print_banner("1. Initializing Model and Loading Checkpoint")
 
     seed = args.seed
@@ -152,7 +176,7 @@ def main():
         torch.cuda.manual_seed_all(seed)
     print(f"Evaluation seed: {seed}")
     
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cpu" if args.device == "cpu" else ("cuda" if torch.cuda.is_available() else "cpu"))
     print(f"Using device: {device}")
     
     # Initialize model
@@ -192,11 +216,47 @@ def main():
     model = model.to(device)
     model.eval()
 
+    from models import (
+        recalibrate_bn,
+        save_bn_calibration,
+        load_bn_calibration,
+        get_default_bn_cache_path,
+    )
+
+    bn_cache_path = None
+    if not args.no_bn_cache:
+        bn_cache_path = args.bn_cache or get_default_bn_cache_path()
+        loaded_keys = load_bn_calibration(model, bn_cache_path, device=device)
+        if loaded_keys:
+            formatted_keys = ", ".join(f"({w:g}, {b})" for w, b in sorted(loaded_keys))
+            print(f"[BN Cache] Loaded cached statistics for {len(loaded_keys)} configs: {formatted_keys}")
+        else:
+            print(f"[BN Cache] No cached statistics found at {bn_cache_path}. Will calibrate and persist lazily.")
+
+    if args.precalibrate_bn:
+        print_banner("Pre-calibrating BatchNorm Statistics for Deployment Configs")
+        train_loader, _ = get_dataloaders(num_workers=0 if args.dashboard_events else 2)
+        configs_to_calibrate = FLAGS.deploy_configs
+        for i, (wm, bw) in enumerate(configs_to_calibrate):
+            print(f"[{i+1}/{len(configs_to_calibrate)}] Calibrating (width={wm:g}, bits={bw})...")
+            recalibrate_bn(
+                model,
+                train_loader,
+                wm,
+                bw,
+                device,
+                num_batches=10,
+                save_cache=False,
+            )
+        save_bn_calibration(model, bn_cache_path)
+        print(f"[BN Cache] All {len(configs_to_calibrate)} configurations successfully calibrated and persisted to {bn_cache_path}!")
+        return
+
     print_banner("2. Preparing CIFAR-10 Evaluation Subset")
+    emit_dashboard_event(args.dashboard_events, "phase", phase="dataset_loading", message="Loading CIFAR-10 test samples")
     # Load dataset
-    train_loader, test_loader = get_dataloaders()
+    train_loader, test_loader = get_dataloaders(num_workers=0 if args.dashboard_events else 2)
     test_dataset = test_loader.dataset
-    from models import recalibrate_bn
     
     num_samples = args.num_samples
     if num_samples <= 0 or num_samples > 10000:
@@ -218,8 +278,16 @@ def main():
         shuffle=False
     )
     print(f"Loaded {len(subset_dataset)} test samples.")
+    emit_dashboard_event(
+        args.dashboard_events,
+        "phase",
+        phase="dataset_ready",
+        total_samples=len(subset_dataset),
+        message="CIFAR-10 evaluation subset ready",
+    )
 
     print_banner("3. Initializing Resource Controller")
+    emit_dashboard_event(args.dashboard_events, "phase", phase="controller_initialization", message="Preparing controller and hardware profile")
     monitor = ResourceMonitor()
     hw_fingerprint = monitor.get_hardware_fingerprint(device)
     
@@ -316,6 +384,14 @@ def main():
         latency_policy=args.policy,
     )
 
+    emit_dashboard_event(
+        args.dashboard_events,
+        "phase",
+        phase="evaluation_ready",
+        total_samples=num_samples,
+        message="Model, dataset, and controller ready",
+    )
+
     print_banner("4. Starting Resource-Controlled Evaluation")
     
     correct = 0
@@ -337,19 +413,20 @@ def main():
     for idx, (image, label) in enumerate(eval_loader):
         image, label = image.to(device), label.to(device)
         
-        # 1. Generate Sinusoidal Budget with minor random jitter
+        # 1. Generate the legacy trace budget, then apply an explicit fixed deadline when configured.
         phase = (2.0 * np.pi * idx) / 40.0
         if args.trace == "sinusoidal":
-            budget = 20.0 + 12.0 * np.sin(phase) + np.random.uniform(-1.0, 1.0)
+            trace_budget = 20.0 + 12.0 * np.sin(phase) + np.random.uniform(-1.0, 1.0)
         elif args.trace == "step":
-            budget = (12.0 if idx < 25 else 28.0 if idx < 50 else 8.0 if idx < 75 else 24.0) + np.random.uniform(-0.5, 0.5)
+            trace_budget = (12.0 if idx < 25 else 28.0 if idx < 50 else 8.0 if idx < 75 else 24.0) + np.random.uniform(-0.5, 0.5)
         elif args.trace == "bursty":
-            budget = 24.0 + np.random.uniform(-2.0, 2.0)
+            trace_budget = 24.0 + np.random.uniform(-2.0, 2.0)
             if idx % 10 in (0, 1, 2):
-                budget -= 14.0
+                trace_budget -= 14.0
         else:
-            budget = 18.0 + 10.0 * np.sin(phase * 1.7 + 0.8) + np.random.uniform(-2.0, 2.0)
-        budget = max(4.0, budget)  # Enforce minimum budget of 4.0ms
+            trace_budget = 18.0 + 10.0 * np.sin(phase * 1.7 + 0.8) + np.random.uniform(-2.0, 2.0)
+        trace_budget = max(4.0, trace_budget)
+        budget = resolve_latency_budget(trace_budget, args.deadline_ms)
         
         # 2. Simulate hardware contention state
         if args.trace == "heldout":
@@ -377,6 +454,35 @@ def main():
         selected_cfg = controller.select(state, latency_budget_ms=budget, hw_fingerprint=hw_fingerprint)
         pred_latency = controller.last_predicted_latency
         config_counts[selected_cfg] = config_counts.get(selected_cfg, 0) + 1
+        controller_inputs = {
+            "cpu_pct": float(state.cpu_pct),
+            "mem_available_mb": float(state.mem_available_mb),
+            "thermal_c": float(state.thermal_c) if state.thermal_c is not None else None,
+            "battery_pct": float(state.battery_pct) if state.battery_pct is not None else None,
+            "source": "synthetic_trace",
+            "resource_condition": scenario,
+            "hardware_fingerprint": {
+                "device_speed_score": float(hw_fingerprint["device_speed_score"]),
+                "cpu_cores": int(hw_fingerprint["cpu_cores"]),
+                "ram_gb": float(hw_fingerprint["ram_gb"]),
+                "has_cuda": bool(hw_fingerprint["has_cuda"]),
+                "source": "measured_at_run_start",
+            },
+        }
+        emit_dashboard_event(
+            args.dashboard_events,
+            "decision",
+            sample_index=idx,
+            total_samples=num_samples,
+            selected_config=[float(selected_cfg[0]), int(selected_cfg[1])],
+            predicted_latency_ms=float(pred_latency) if pred_latency is not None else None,
+            trace_budget_ms=float(trace_budget),
+            configured_deadline_ms=float(args.deadline_ms) if args.deadline_ms is not None else None,
+            latency_budget_ms=float(budget),
+            budget_feasible=bool(controller.last_budget_feasible),
+            selection_status=controller.last_selection_status,
+            controller_inputs=controller_inputs,
+        )
 
         selected_features = extract_config_features(selected_cfg)
         selected_features.update({
@@ -395,13 +501,49 @@ def main():
         set_model_bit_width(model, selected_cfg[1])
 
         # 4b. Lazy BN statistics calibration if needed
-        key = (selected_cfg[0], selected_cfg[1])
+        key = (float(selected_cfg[0]), int(selected_cfg[1]))
         from models.ops import ResnetBatchNorm2d
-        first_bn = next(m for m in model.modules() if isinstance(m, ResnetBatchNorm2d))
-        if key not in first_bn.calibrated_running_mean:
+        first_bn = next((m for m in model.modules() if isinstance(m, ResnetBatchNorm2d)), None)
+        if first_bn is not None and key not in first_bn.calibrated_running_mean:
             print(f"\n[BN Calibration] Lazily calibrating BN statistics for {key} on 10 batches...")
-            recalibrate_bn(model, train_loader, selected_cfg[0], selected_cfg[1], device, num_batches=10)
-            print("[BN Calibration] Done!")
+            emit_dashboard_event(
+                args.dashboard_events,
+                "calibration_started",
+                sample_index=idx,
+                selected_config=[float(selected_cfg[0]), int(selected_cfg[1])],
+                completed_batches=0,
+                total_batches=10,
+            )
+            def report_calibration_progress(completed_batches, total_batches):
+                emit_dashboard_event(
+                    args.dashboard_events,
+                    "calibration_progress",
+                    sample_index=idx,
+                    selected_config=[float(selected_cfg[0]), int(selected_cfg[1])],
+                    completed_batches=completed_batches,
+                    total_batches=total_batches,
+                )
+
+            recalibrate_bn(
+                model,
+                train_loader,
+                selected_cfg[0],
+                selected_cfg[1],
+                device,
+                num_batches=10,
+                progress_callback=report_calibration_progress if args.dashboard_events else None,
+                save_cache=(bn_cache_path is not None),
+                cache_path=bn_cache_path,
+            )
+            emit_dashboard_event(
+                args.dashboard_events,
+                "calibration_completed",
+                sample_index=idx,
+                selected_config=[float(selected_cfg[0]), int(selected_cfg[1])],
+                completed_batches=10,
+                total_batches=10,
+            )
+            print("[BN Calibration] Done and persisted to cache!" if bn_cache_path else "[BN Calibration] Done!")
 
         # 5. Inference & Actual Time measurement
         t0 = time.perf_counter()
@@ -426,13 +568,17 @@ def main():
 
         # 7. Accuracy tracking
         pred = output.argmax(dim=1)
-        is_correct = (pred == label).item()
+        predicted_class_index = int(pred.item())
+        ground_truth_class_index = int(label.item())
+        is_correct = predicted_class_index == ground_truth_class_index
         if is_correct:
             correct += 1
         total += 1
         sample_records.append({
             "sample_index": int(idx),
             "scenario": scenario,
+            "trace_budget_ms": float(trace_budget),
+            "configured_deadline_ms": float(args.deadline_ms) if args.deadline_ms is not None else None,
             "budget_ms": float(budget),
             "selected_config": [float(selected_cfg[0]), int(selected_cfg[1])],
             "selected_width_mult": float(selected_cfg[0]),
@@ -448,11 +594,24 @@ def main():
             "actual_latency_ms": float(dt),
             "missed_deadline": bool(missed_deadline),
             "correct": bool(is_correct),
+            "predicted_class_index": predicted_class_index,
+            "ground_truth_class_index": ground_truth_class_index,
+            "predicted_class": test_dataset.classes[predicted_class_index],
+            "ground_truth_class": test_dataset.classes[ground_truth_class_index],
             "k_adapt": float(controller.k_adapt),
             "budget_feasible": bool(controller.last_budget_feasible),
             "selection_status": controller.last_selection_status,
             "prediction_is_cold": bool(controller.last_prediction_is_cold),
         })
+        emit_dashboard_event(
+            args.dashboard_events,
+            "sample_completed",
+            sample_index=idx,
+            completed_samples=total,
+            total_samples=num_samples,
+            sample=sample_records[-1],
+            controller_inputs=controller_inputs,
+        )
 
         # Print progress logs
         if (idx + 1) % 10 == 0:
@@ -512,6 +671,10 @@ def main():
     results = {
         "seed": seed,
         "trace": args.trace,
+        "configured_deadline_ms": float(args.deadline_ms) if args.deadline_ms is not None else None,
+        "deadline_mode": "fixed" if args.deadline_ms is not None else "trace_varying",
+        "configured_deadline_ms": float(args.deadline_ms) if args.deadline_ms is not None else None,
+        "deadline_mode": "fixed" if args.deadline_ms is not None else "trace_varying",
         "latency_policy": args.policy,
         "interpolated_frontier": args.interpolate,
         "thread_count": thread_count,
@@ -544,10 +707,11 @@ def main():
     }
     results_dir = os.path.join(project_root, "results")
     os.makedirs(results_dir, exist_ok=True)
-    results_path = os.path.join(
+    results_path = args.output or os.path.join(
         results_dir,
         f"evaluation_{args.policy}_{args.trace}_seed{seed}_threads{thread_count}.json",
     )
+    os.makedirs(os.path.dirname(os.path.abspath(results_path)), exist_ok=True)
     temp_results_path = results_path + ".tmp"
     with open(temp_results_path, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, default=json_default)

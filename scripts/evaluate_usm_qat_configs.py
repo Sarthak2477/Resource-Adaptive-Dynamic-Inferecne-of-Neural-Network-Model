@@ -304,8 +304,6 @@ def evaluate_all(
         row = {
             "width_mult": float(width),
             "bit_width": int(bits),
-            "total": int(total),
-            "correct": int(correct),
             "sample_count": int(total),
             "correct_count": int(correct),
             "accuracy_percent": float(accuracy_percent),

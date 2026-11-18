@@ -28,6 +28,7 @@ from resource_control.qat_experiment import (
 )
 from resource_control.stress import ResourceStress
 from resource_control.telemetry import ResourceMonitor
+from scripts.recalib_bn import build_or_load_bn_bank, config_key
 from scripts.profile_usm_qat_configs import query_gpu_metrics
 from scripts.usm_qat_data import make_test_imagefolder, make_train_imagefolders
 
@@ -87,9 +88,15 @@ def read_accuracy(path):
     return document, accuracies
 
 
-def configure_model(model, config):
+def configure_model(model, config, bn_bank):
+    """Switch width/bit-width AND the BN statistics calibrated for that config.
+
+    The bank swap re-points buffers at cached tensors (no copy, no recalibration),
+    so it must run after the width/bit setters and counts toward switch overhead.
+    """
     set_model_width(model, float(config[0]))
     set_model_bit_width(model, int(config[1]))
+    bn_bank.activate(config)
 
 
 def validate_workload(workload, conditions):
@@ -110,21 +117,37 @@ def validate_workload(workload, conditions):
     return requests
 
 
-def prepare_bn_statistics(model, train_bn_dataset, bn_indices, device, batches, seed):
+def prepare_bn_statistics(
+    model, train_bn_dataset, bn_indices, device, batches, seed,
+    cache_dir=None, checkpoint_sha256="",
+):
+    """Calibrate every candidate once and return a BNBank of per-config statistics.
+
+    recalibrate_bn writes into one shared set of buffers, so each config's
+    statistics are snapshotted immediately after its calibration. The bank is
+    reloaded from cache_dir when the checkpoint, BN samples, batch count, seed,
+    and candidate list are unchanged.
+    """
     loader = DataLoader(
         Subset(train_bn_dataset, bn_indices), batch_size=32, shuffle=False,
         num_workers=0,
     )
-    for index, config in enumerate(candidate_configurations()):
-        candidate_seed = seed + index
-        random.seed(candidate_seed)
-        torch.manual_seed(candidate_seed)
-        if device.type == "cuda":
-            torch.cuda.manual_seed_all(candidate_seed)
-        recalibrate_bn(model, loader, config[0], config[1], device, num_batches=batches)
+    bank = build_or_load_bn_bank(
+        model, loader, candidate_configurations(), device, recalibrate_bn,
+        batches, seed, cache_dir=cache_dir,
+        checkpoint_sha256=checkpoint_sha256, bn_indices=bn_indices,
+    )
+    missing = {config_key(c) for c in QAT_CANDIDATES} - set(bank.configs)
+    if missing:
+        raise ValueError(f"BN bank is missing statistics for candidates: {sorted(missing)}")
+    differing = bank.difference_report()
+    print("[bn_cache] buffers differing from the (1.0, 32) reference, per config: "
+          + ", ".join(f"{w:g}/{b}b={n}" for (w, b), n in differing.items()))
+    model.eval()
+    return bank
 
 
-def warm_candidates(model, device, warmup_requests, seed):
+def warm_candidates(model, device, warmup_requests, seed, bn_bank):
     rng = random.Random(seed)
     warm_order = list(QAT_CANDIDATES)
     rng.shuffle(warm_order)
@@ -132,7 +155,7 @@ def warm_candidates(model, device, warmup_requests, seed):
     model.eval()
     with torch.inference_mode():
         for config in warm_order:
-            configure_model(model, config)
+            configure_model(model, config, bn_bank)
             for _ in range(warmup_requests):
                 model(sample)
                 if device.type == "cuda":
@@ -143,8 +166,10 @@ def warm_candidates(model, device, warmup_requests, seed):
 def run_arm(
     arm, model, requests, test_dataset, test_indices, pinned_config, controller,
     device, run_id, repetition, checkpoint_hash, hw_fingerprint, warmup_rounds=1,
-    seed=12345, stress_size=512, enable_stress=False,
+    seed=12345, stress_size=512, enable_stress=False, bn_bank=None,
 ):
+    if bn_bank is None:
+        raise ValueError("run_arm requires the per-config BN statistics bank")
     if arm not in ("usm_pinned", "usm_adaptive"):
         raise ValueError("Unsupported QAT policy arm")
     if arm == "usm_adaptive" and controller is None:
@@ -152,7 +177,8 @@ def run_arm(
     if arm == "usm_pinned" and controller is not None:
         raise ValueError("Pinned arm must not receive a controller")
 
-    warm_order = warm_candidates(model, device, warmup_rounds, seed)
+    warm_order = warm_candidates(model, device, warmup_rounds, seed, bn_bank)
+    model.eval()
 
     eval_loader = DataLoader(
         Subset(test_dataset, test_indices[:len(requests)]), batch_size=1,
@@ -217,7 +243,7 @@ def run_arm(
 
             switch_type = classify_switch(previous_config, selected_config)
             switch_started = time.perf_counter()
-            configure_model(model, selected_config)
+            configure_model(model, selected_config, bn_bank)
             switch_overhead_ms = (time.perf_counter() - switch_started) * 1000.0 if switch_type != "none" else 0.0
             if device.type == "cuda":
                 torch.cuda.reset_peak_memory_stats(device)
@@ -297,6 +323,48 @@ def run_arm(
     return records, warm_order
 
 
+def measure_pinned_accuracy(model, test_dataset, test_indices, pinned_config, bn_bank, device):
+    """Measure the pinned config on the exact replay samples before timing runs.
+
+    This diagnostic separates a bad/mismatched BN bank or replay preprocessing
+    from the candidate-accuracy artifact. It is deliberately run before the
+    repetitions and its time is not included in replay latency measurements.
+    """
+    loader = DataLoader(
+        Subset(test_dataset, test_indices), batch_size=1,
+        shuffle=False, num_workers=0,
+    )
+    configure_model(model, pinned_config, bn_bank)
+    model.eval()
+    correct = 0
+    total = 0
+    with torch.inference_mode():
+        for images, labels in loader:
+            images = images.to(device)
+            labels = labels.to(device)
+            predictions = model(images).argmax(dim=1)
+            correct += int((predictions == labels).sum().item())
+            total += int(labels.numel())
+    if total == 0:
+        raise ValueError("Cannot run pinned accuracy preflight on an empty test subset")
+    return {"correct": correct, "total": total, "accuracy_percent": 100.0 * correct / total}
+
+
+def lookup_candidate_accuracy(rows, config):
+    """Find the expected candidate accuracy while tolerating numeric JSON values."""
+    width, bits = float(config[0]), int(config[1])
+    for row in rows:
+        row_width = row.get("width_mult", row.get("width"))
+        row_bits = row.get("bit_width", row.get("bits"))
+        if row_width is not None and row_bits is not None:
+            if abs(float(row_width) - width) < 1e-8 and int(row_bits) == bits:
+                value = row.get("accuracy_percent")
+                if value is None:
+                    value = row.get("accuracy")
+                return None if value is None else float(value)
+    return None
+
+
 def run_repetitions(args):
     run_root = Path(args.run_root).resolve()
     raw_dir = run_root / "raw"
@@ -330,9 +398,11 @@ def run_repetitions(args):
     partition = json.loads(Path(args.partition).read_text(encoding="utf-8"))
     model = Model(num_classes=len(train_bn.classes), input_size=32).to(device)
     provenance = load_model_checkpoint(model, checkpoint, device)
-    prepare_bn_statistics(
+    bn_bank = prepare_bn_statistics(
         model, train_bn, partition["bn_calibration_indices"], device,
         args.bn_calibration_batches, args.seed,
+        cache_dir=args.bn_cache_dir if args.bn_cache_dir is not None else run_root / "bn_cache",
+        checkpoint_sha256=provenance["checkpoint_sha256"],
     )
     test_dataset = make_test_imagefolder(args.dataset_root)
     test_indices = [int(index) for index in workload["dataset_indices"]]
@@ -340,6 +410,30 @@ def run_repetitions(args):
         raise ValueError("Workload test dataset index mapping is invalid")
     if any(index < 0 or index >= len(test_dataset) for index in test_indices):
         raise ValueError("Workload includes a test dataset index outside the test split")
+
+    # Accuracy preflight: same checkpoint, BN bank, preprocessing, and exact
+    # test indices as replay. This catches large accuracy mismatches before a
+    # multi-repetition experiment consumes time.
+    pinned_preflight = measure_pinned_accuracy(
+        model, test_dataset, test_indices, pinned_config, bn_bank, device,
+    )
+    expected_pinned_accuracy = lookup_candidate_accuracy(
+        accuracy_document["results"], pinned_config,
+    )
+    print(
+        "[accuracy_preflight] pinned=(1.0, 32) on replay samples: "
+        f"{pinned_preflight['accuracy_percent']:.2f}% "
+        f"({pinned_preflight['correct']}/{pinned_preflight['total']}); "
+        f"candidate artifact={expected_pinned_accuracy if expected_pinned_accuracy is not None else 'not found'}%"
+    )
+    if expected_pinned_accuracy is not None:
+        gap = abs(pinned_preflight["accuracy_percent"] - expected_pinned_accuracy)
+        if gap >= 8.0:
+            raise RuntimeError(
+                "Pinned accuracy preflight differs from candidate accuracy artifact by "
+                f"{gap:.2f} percentage points. Refusing to run misleading paired results. "
+                "Check BN-bank cache/statistics, checkpoint, test transforms, and workload indices."
+            )
 
     expected_files = [
         raw_dir / f"{arm}_{args.run_id}_rep{rep + 1:03d}.jsonl"
@@ -363,7 +457,7 @@ def run_repetitions(args):
                 controller, device, args.run_id, repetition + 1,
                 provenance["checkpoint_sha256"], fingerprint, args.warmup_rounds,
                 args.seed, args.stress_matrix_size,
-                args.enable_stress,
+                args.enable_stress, bn_bank,
             )
             output = raw_dir / f"{arm}_{args.run_id}_rep{repetition + 1:03d}.jsonl"
             with output.open("x", encoding="utf-8") as target:
@@ -394,6 +488,8 @@ def main():
     parser.add_argument("--warmup-rounds", type=int, default=1)
     parser.add_argument("--stress-matrix-size", type=int, default=512)
     parser.add_argument("--enable-stress", action="store_true")
+    parser.add_argument("--bn-cache-dir", type=Path, default=None,
+                        help="Directory for cached per-config BN statistics (default: <run-root>/bn_cache)")
     parser.add_argument("--seed", type=int, default=12345)
     parser.add_argument("--device", choices=("auto", "cpu", "cuda"), default="auto")
     args = parser.parse_args()

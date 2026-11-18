@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 import math
+from pathlib import Path
+import runpy
 from typing import Mapping, Sequence
 
-from models.config import FLAGS
+FLAGS = runpy.run_path(str(Path(__file__).resolve().parents[1] / "models" / "config.py"))["FLAGS"]
 
 
 WIDTHS = (0.25, 0.50, 0.75, 1.00)

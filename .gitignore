@@ -12,7 +12,7 @@ logs/
 model/checkpoint/
 model/checkpoints/
 weights/surrogate_model.pkl
-
+frontend/node_modules/
 # Virtual Environments
 env/
 venv/
